@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 
 @SpringBootTest
-class AdvancedQuizApplicationTests {
+class QuizApplicationTests {
 
 	@Autowired
 	private QuizDataBaseService quizDataBaseService;
@@ -18,12 +18,13 @@ class AdvancedQuizApplicationTests {
 	void dataBaseQuizTests() {
 		ArrayList<Question> allQuestionsList = quizDataBaseService.showAllQuestions();
 
-		System.out.println("Meus dados do quiz: " + allQuestionsList);
-		System.out.println("Pause:\n\n");
+		System.out.println("Foram encontradas no total " + allQuestionsList.size() + " Questões de quiz.\n\n");
 
-		System.out.println("Mostrando apenas o tema Cinema: \n" +
-				quizDataBaseService.findByTheme(allQuestionsList, "Cinema"));
+		System.out.println("Vamos listar apenas as com o tema Cinema: \n" + quizDataBaseService.findByTheme(allQuestionsList, "Cinema"));
+		System.out.println("Foram encontrados " + quizDataBaseService.findByTheme(allQuestionsList, "Cinema").size() + " com o tema Cinema");
 
+		System.out.println("\n");
+		System.out.println("Agora vamos listar todas as questões do Quiz: " + allQuestionsList);
 	}
 
 	//Isso aqui só funciona se não tiver dependencias de configurações no resource como por exemplo configurações de banco de dados

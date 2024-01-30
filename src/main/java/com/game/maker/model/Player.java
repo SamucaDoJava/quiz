@@ -2,8 +2,12 @@ package com.game.maker.model;
 
 public class Player {
 
+    private Long id;
+
     private String nickName;
     private Integer score;
+
+    private String tema;
 
     private User user;
 
@@ -14,6 +18,21 @@ public class Player {
     public Player(String nickName, Integer score, User user) {
         this.nickName = nickName;
         this.score = score;
+        this.user = user;
+    }
+
+    public Player(String nickName, Integer score, String tema, User user) {
+        this.nickName = nickName;
+        this.score = score;
+        this.tema = tema;
+        this.user = user;
+    }
+
+    public Player(Long id, String nickName, Integer score, String tema, User user) {
+        this.id = id;
+        this.nickName = nickName;
+        this.score = score;
+        this.tema = tema;
         this.user = user;
     }
 
@@ -41,12 +60,19 @@ public class Player {
         this.user = user;
     }
 
+    public String getTema() {
+        return tema;
+    }
+
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
+
     @Override
     public String toString() {
-        return "Player{" +
-                "nickName='" + nickName + '\'' +
-                ", score=" + score +
-                ", user=" + user +
-                '}';
+        return "\n\nPlayer - id: " + id +
+                "\nNickName='" + nickName +
+                "\nScore=" + score +
+                "\nUser=" + user;
     }
 }
