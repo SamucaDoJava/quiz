@@ -1,10 +1,17 @@
 package com.game.maker.model;
 
+import java.util.ArrayList;
+
 public class Question {
 
-    private String theme;
+    private Long id;
     private String question;
+    private String theme;
     private String response;
+
+    private Long questionAlternativeID;
+
+    private ArrayList<QuestionAlternative> questionAlternativeArrayList;
 
     public Question(){
 
@@ -14,6 +21,15 @@ public class Question {
         this.theme = theme;
         this.question = question;
         this.response = response;
+    }
+
+    public Question(Long id, String theme, String question, String response, Long questionAlternativeID, ArrayList<QuestionAlternative> questionAlternativeArrayList){
+        this.id = id;
+        this.theme = theme;
+        this.question = question;
+        this.response = response;
+        this.questionAlternativeArrayList = questionAlternativeArrayList;
+        this.questionAlternativeID = questionAlternativeID;
     }
 
     public String getTheme() {
@@ -42,11 +58,11 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" +
-                "theme='" + theme + '\'' +
-                ", question='" + question + '\'' +
-                ", response='" + response + '\'' +
-                '}';
+        return  "\n\n" +
+                "id = " + id +
+                "\nTheme = " + theme +
+                "\nQuestion = " + question +
+                "\nResponse = " + response;
     }
 
 

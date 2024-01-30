@@ -2,6 +2,8 @@ package com.game.maker.model;
 
 public class Player {
 
+    private Long id;
+
     private String nickName;
     private Integer score;
 
