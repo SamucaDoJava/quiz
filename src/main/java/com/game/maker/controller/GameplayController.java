@@ -1,6 +1,11 @@
 package com.game.maker.controller;
 
+import com.game.maker.dto.PlayerDTO;
+import com.game.maker.dto.StartGameplayDTO;
 import com.game.maker.model.Player;
+import com.game.maker.model.User;
+import com.game.maker.service.GameplayService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -8,19 +13,21 @@ import java.util.List;
 @RequestMapping("/gameplay")
 public class GameplayController {
 
+    @Autowired
+    private GameplayService gameplayService;
 
+
+    // TODO: Adicione lógica para iniciar o jogo
     @PostMapping("/start")
-    public void startGameplay(@RequestBody List<Player> playerList) {
+    public PlayerDTO startGameplay(@RequestBody StartGameplayDTO gameplayDTO) {
         System.out.println("pause start gameplay");
-        // TODO: Adicione lógica para iniciar o jogo
+        PlayerDTO playerDTO = gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUser());
+        return playerDTO;
     }
 
     @PostMapping("/validate-gameplay")
-    public void validateAlternative(@RequestParam String myAlternative,
-                                    @RequestParam Long questionID,
-                                    @RequestParam Long alternativeID) {
-        System.out.println("Pause validate:");
-        // TODO: Adicione lógica para validar a alternativa
+    public void validateAlternative(@RequestBody PlayerDTO playerDTO){
+        gameplayService.validatePlayerQuestionIsCorrect(playerDTO);
     }
 
     @GetMapping("/punctuation")
@@ -28,5 +35,7 @@ public class GameplayController {
         System.out.println("pause punctuation");
         // TODO: Adicione lógica para mostrar a pontuação
     }
+
+
 }
 

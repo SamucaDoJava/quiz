@@ -6,23 +6,23 @@ public class QuestionAlternative {
 
     private String alternative;
 
-    private Boolean isCorrect;
+    private Boolean itsCorrect;
     private String reference;
 
     public QuestionAlternative(){
 
     }
 
-    public QuestionAlternative(String reference, String alternative, Boolean isCorrect) {
+    public QuestionAlternative(String reference, String alternative, Boolean itsCorrect) {
         this.alternative = alternative;
-        this.isCorrect = isCorrect;
+        this.itsCorrect = itsCorrect;
         this.reference = reference;
     }
 
-    public QuestionAlternative(Long id, String referenc, String alternative, Boolean isCorrect) {
+    public QuestionAlternative(Long id, String referenc, String alternative, Boolean itsCorrect) {
         this.id = id;
         this.alternative = alternative;
-        this.isCorrect = isCorrect;
+        this.itsCorrect = itsCorrect;
         this.reference = reference;
     }
 
@@ -46,12 +46,13 @@ public class QuestionAlternative {
         this.alternative = alternative;
     }
 
-    public Boolean getCorrect() {
-        return isCorrect;
+
+    public Boolean getItsCorrect() {
+        return itsCorrect;
     }
 
-    public void setCorrect(Boolean correct) {
-        isCorrect = correct;
+    public void setItsCorrect(Boolean correct) {
+        itsCorrect = correct;
     }
 
 
@@ -69,7 +70,7 @@ public class QuestionAlternative {
                 "---> id= " + id +
                 "---> Reference= " + reference +
                 "---> Alternative= " + alternative +
-                "---> isCorrect= " + isCorrect;
+                "---> isCorrect= " + itsCorrect;
     }
     
 }

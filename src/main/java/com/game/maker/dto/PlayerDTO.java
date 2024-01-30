@@ -1,8 +1,12 @@
-package com.game.maker.model;
+package com.game.maker.dto;
+
+import com.game.maker.model.Question;
+import com.game.maker.model.QuestionAlternative;
+import com.game.maker.model.User;
 
 import java.util.ArrayList;
 
-public class Player {
+public class PlayerDTO {
 
     private Long id;
 
@@ -19,24 +23,24 @@ public class Player {
 
     private QuestionAlternative selectedQuestionAlternative;
 
-    public Player(){
+    public PlayerDTO(){
 
     }
 
-    public Player(String nickName, Integer score, User user) {
+    public PlayerDTO(String nickName, Integer score, User user) {
         this.nickName = nickName;
         this.score = score;
         this.user = user;
     }
 
-    public Player(String nickName, Integer score, String theme, User user) {
+    public PlayerDTO(String nickName, Integer score, String theme, User user) {
         this.nickName = nickName;
         this.score = score;
+        this.user = user;
         this.theme = theme;
-        this.user = user;
     }
 
-    public Player(Long id, String nickName, Integer score, String theme, User user) {
+    public PlayerDTO(Long id, String nickName, Integer score, String theme, User user) {
         this.id = id;
         this.nickName = nickName;
         this.score = score;
