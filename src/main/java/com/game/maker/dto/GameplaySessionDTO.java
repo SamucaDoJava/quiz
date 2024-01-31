@@ -1,21 +1,19 @@
 package com.game.maker.dto;
 
-import com.game.maker.model.User;
-
-public class StartGameplayDTO {
+public class GameplaySessionDTO {
 
     private String nickName;
     private String theme;
-    private User user;
+     private UserDTO userDTO;
 
 
-    public StartGameplayDTO(String nickName, String theme, User user) {
+    public GameplaySessionDTO(String nickName, String theme, UserDTO userDTO) {
         this.nickName = nickName;
         this.theme = theme;
-        this.user = user;
+        this.userDTO = userDTO;
     }
 
-    public StartGameplayDTO(){
+    public GameplaySessionDTO(){
 
     }
 
@@ -35,20 +33,19 @@ public class StartGameplayDTO {
         this.theme = theme;
     }
 
-    public User getUser() {
-        return user;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     @Override
     public String toString() {
-        return "StartGameplayDTO{" +
-                "nickName='" + nickName + '\'' +
-                ", theme='" + theme + '\'' +
-                ", user=" + user +
-                '}';
+        return "GameplaySessionDTO: " +
+                "\nnickName= " + nickName +
+                "\ntheme= " + theme +
+                "\nuser= " + userDTO;
     }
 }

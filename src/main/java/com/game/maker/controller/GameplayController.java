@@ -1,13 +1,12 @@
 package com.game.maker.controller;
 
+import com.game.maker.dto.GameplaySessionDTO;
 import com.game.maker.dto.PlayerDTO;
-import com.game.maker.dto.StartGameplayDTO;
-import com.game.maker.model.Player;
-import com.game.maker.model.User;
+import com.game.maker.dto.QuestionDTO;
+import com.game.maker.model.GameplaySession;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/gameplay")
@@ -17,23 +16,27 @@ public class GameplayController {
     private GameplayService gameplayService;
 
 
-    // TODO: Adicione lógica para iniciar o jogo
     @PostMapping("/start")
-    public PlayerDTO startGameplay(@RequestBody StartGameplayDTO gameplayDTO) {
+    public PlayerDTO startGameplay(@RequestBody GameplaySessionDTO gameplayDTO) {
         System.out.println("pause start gameplay");
-        PlayerDTO playerDTO = gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUser());
-        return playerDTO;
+        return gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUserDTO());
     }
 
     @PostMapping("/validate-gameplay")
-    public void validateAlternative(@RequestBody PlayerDTO playerDTO){
-        gameplayService.validatePlayerQuestionIsCorrect(playerDTO);
+    public PlayerDTO validateAlternative(@RequestBody PlayerDTO playerDTO){
+        return gameplayService.validateItPlayerQuestionIsCorrect(playerDTO);
     }
 
-    @GetMapping("/punctuation")
-    public void showMyPontuation() {
-        System.out.println("pause punctuation");
-        // TODO: Adicione lógica para mostrar a pontuação
+    @PostMapping("/find-player-question-by-id")
+    public QuestionDTO findPlayerQuestionByID(@RequestBody Long id){
+        return gameplayService.findPlayerQuestionAndAlternativesByQuestionId(id);
+    }
+
+    @GetMapping("/show-session")
+    public GameplaySession showMyPontuation() {
+        GameplaySession gameplaySession = gameplayService.getCurrentSession();
+        System.out.println("A sessão atual de jogadores tem " + gameplaySession.getPlayerDTOList().size() + " usuários.");
+        return gameplaySession;
     }
 
 

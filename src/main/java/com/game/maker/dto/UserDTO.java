@@ -1,19 +1,20 @@
-package com.game.maker.model;
+package com.game.maker.dto;
 
 
-public class User {
+public class UserDTO {
 
     private Long id;
+
     private String name;
     private String fullName;
 
     private Integer age;
 
-    public User() {
+    public UserDTO() {
 
     }
 
-    public User(String name, String fullName, Integer age) {
+    public UserDTO(String name, String fullName, Integer age) {
         this.name = name;
         this.fullName = fullName;
         this.age = age;

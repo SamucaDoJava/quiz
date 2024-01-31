@@ -10,7 +10,7 @@ public class Question {
     private String question;
     private String response;
 
-    private Long correctQuestionID;
+    private Long correctQuestionAlternativeID;
 
     private ArrayList<QuestionAlternative> questionAlternativeArrayList;
 
@@ -39,12 +39,12 @@ public class Question {
         this.questionAlternativeArrayList = questionAlternativeArrayList;
     }
 
-    public Question(Long id, String theme, String question, String response, Long correctQuestionID, ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+    public Question(Long id, String theme, String question, String response, Long correctQuestionAlternativeID, ArrayList<QuestionAlternative> questionAlternativeArrayList) {
         this.id = id;
         this.theme = theme;
         this.question = question;
         this.response = response;
-        this.correctQuestionID = correctQuestionID;
+        this.correctQuestionAlternativeID = correctQuestionAlternativeID;
         this.questionAlternativeArrayList = questionAlternativeArrayList;
     }
 
@@ -81,13 +81,30 @@ public class Question {
         this.response = response;
     }
 
+    public Long getCorrectQuestionAlternativeID() {
+        return correctQuestionAlternativeID;
+    }
+
+    public void setCorrectQuestionAlternativeID(Long correctQuestionAlternativeID) {
+        this.correctQuestionAlternativeID = correctQuestionAlternativeID;
+    }
+
+    public ArrayList<QuestionAlternative> getQuestionAlternativeArrayList() {
+        return questionAlternativeArrayList;
+    }
+
+    public void setQuestionAlternativeArrayList(ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+        this.questionAlternativeArrayList = questionAlternativeArrayList;
+    }
+
     @Override
     public String toString() {
         return  "\n\n" +
                 "id = " + id +
                 "\nTheme = " + theme +
                 "\nQuestion = " + question +
-                "\nResponse = " + response;
+                "\nResponse = " + response +
+                "\nCorrect Question id = " + correctQuestionAlternativeID;
     }
 
 

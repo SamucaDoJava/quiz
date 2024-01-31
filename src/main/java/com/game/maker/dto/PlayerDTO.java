@@ -1,51 +1,46 @@
 package com.game.maker.dto;
 
-import com.game.maker.model.Question;
-import com.game.maker.model.QuestionAlternative;
-import com.game.maker.model.User;
-
 import java.util.ArrayList;
 
 public class PlayerDTO {
 
     private Long id;
-
     private String nickName;
     private Integer score;
-
     private String theme;
+    private UserDTO userDTO;
+    private QuestionDTO currentPlayerQuestionDTO;
+    private Long currentQuestionID;
+    private QuestionAlternativeDTO selectedQuestionAlternative;
 
-    private User user;
+    private Long selectedQuestionAlternativeID;
 
-    private Question currentPlayerQuestion;
+    private ArrayList<QuestionDTO> playerQuestionsDTOList;
 
-    private ArrayList<Question> playerQuestionsList;
-
-    private QuestionAlternative selectedQuestionAlternative;
 
     public PlayerDTO(){
 
     }
 
-    public PlayerDTO(String nickName, Integer score, User user) {
+    public PlayerDTO(String nickName, Integer score, UserDTO userDTO) {
         this.nickName = nickName;
         this.score = score;
-        this.user = user;
+        this.userDTO = userDTO;
     }
 
-    public PlayerDTO(String nickName, Integer score, String theme, User user) {
+    public PlayerDTO(String nickName, Integer score, String theme, UserDTO userDTO) {
         this.nickName = nickName;
         this.score = score;
-        this.user = user;
+        this.userDTO = userDTO;
         this.theme = theme;
     }
 
-    public PlayerDTO(Long id, String nickName, Integer score, String theme, User user) {
+    public PlayerDTO(Long id, String nickName, Integer score, String theme, UserDTO userDTO) {
         this.id = id;
         this.nickName = nickName;
         this.score = score;
         this.theme = theme;
-        this.user = user;
+        this.userDTO = userDTO;
     }
 
     public Long getId() {
@@ -72,12 +67,12 @@ public class PlayerDTO {
         this.score = score;
     }
 
-    public User getUser() {
-        return user;
+    public UserDTO getUser() {
+        return userDTO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     public String getTheme() {
@@ -89,28 +84,49 @@ public class PlayerDTO {
     }
 
 
-    public ArrayList<Question> getPlayerQuestionsList() {
-        return playerQuestionsList;
+    public ArrayList<QuestionDTO> getPlayerQuestionsDTOList() {
+        return playerQuestionsDTOList;
     }
 
-    public void setPlayerQuestionsList(ArrayList<Question> playerQuestionsList) {
-        this.playerQuestionsList = playerQuestionsList;
+    public void setPlayerQuestionsDTOList(ArrayList<QuestionDTO> playerQuestionsDTOList) {
+        this.playerQuestionsDTOList = playerQuestionsDTOList;
     }
 
-    public Question getCurrentPlayerQuestion() {
-        return currentPlayerQuestion;
+    public QuestionDTO getCurrentPlayerQuestionDTO() {
+        return currentPlayerQuestionDTO;
     }
 
-    public void setCurrentPlayerQuestion(Question currentPlayerQuestion) {
-        this.currentPlayerQuestion = currentPlayerQuestion;
-    }
-
-    public QuestionAlternative getSelectedQuestionAlternative() {
+    public QuestionAlternativeDTO getSelectedQuestionAlternative() {
         return selectedQuestionAlternative;
     }
 
-    public void setSelectedQuestionAlternative(QuestionAlternative selectedQuestionAlternative) {
+    public void setSelectedQuestionAlternative(QuestionAlternativeDTO selectedQuestionAlternative) {
         this.selectedQuestionAlternative = selectedQuestionAlternative;
+    }
+
+
+    public void setCurrentPlayerQuestion(QuestionDTO currentPlayerQuestionDTO) {
+        this.currentPlayerQuestionDTO = currentPlayerQuestionDTO;
+    }
+
+    public void setCurrentPlayerQuestionDTO(QuestionDTO currentPlayerQuestionDTO) {
+        this.currentPlayerQuestionDTO = currentPlayerQuestionDTO;
+    }
+
+    public Long getCurrentQuestionID() {
+        return currentQuestionID;
+    }
+
+    public void setCurrentQuestionID(Long currentQuestionID) {
+        this.currentQuestionID = currentQuestionID;
+    }
+
+    public Long getSelectedQuestionAlternativeID() {
+        return selectedQuestionAlternativeID;
+    }
+
+    public void setSelectedQuestionAlternativeID(Long selectedQuestionAlternativeID) {
+        this.selectedQuestionAlternativeID = selectedQuestionAlternativeID;
     }
 
     @Override
@@ -118,9 +134,11 @@ public class PlayerDTO {
         return "\n\nPlayerDTO - id: " + id +
                 "\nNickName='" + nickName +
                 "\nScore=" + score +
-                "\nUser=" + user +
+                "\nUserDTO=" + userDTO +
                 "\nTheme=" + theme +
-                "\nCurrent Question: " + currentPlayerQuestion +
-                "\nSelectedQuestionAlternative: " + selectedQuestionAlternative;
+                "\nCurrent Question: " + currentPlayerQuestionDTO +
+                "\nSelectedQuestionAlternative: " + selectedQuestionAlternative +
+                "\ncurrentQuestionID: " + currentQuestionID +
+                "\nselectedQuestionAlternativeID = " + selectedQuestionAlternativeID;
     }
 }
