@@ -22,7 +22,7 @@ class AdvancedQuizApplicationTests {
 
 	@Test
 	void dataBaseQuizTests() {
-//		showMyQuizDatabase();
+		//showMyQuizDatabase();
 
 		User user = new User("Samuel", "Samuel Ferreira Duarte", 38);
 		PlayerDTO playerDTO = gameplayService.startQuizGameplay("Samuquinha", "Cinema", user);
