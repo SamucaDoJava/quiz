@@ -4,7 +4,7 @@ public class GameplaySessionDTO {
 
     private String nickName;
     private String theme;
-     private UserDTO userDTO;
+    private UserDTO userDTO;
 
 
     public GameplaySessionDTO(String nickName, String theme, UserDTO userDTO) {
