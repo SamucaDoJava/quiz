@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("/{email}/{password}")
-    public List<UserDTO> findByEmailPassword(String email, String password) {
-        return userService.findAll();
+    public UserDTO findByEmailPassword(String email, String password) {
+        return userService.findByEmailAndPassword(email, password);
     }
 
 }

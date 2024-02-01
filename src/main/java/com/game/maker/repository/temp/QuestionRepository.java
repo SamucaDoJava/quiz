@@ -33,8 +33,13 @@ public class QuestionRepository {
     }
 
     public Optional<Question> findQuestionById(Long id){
-        return questionFakeDataBase.ShowMeMyFakeQuestionDataBaseValues().stream()
+        List<Question> questionList = questionFakeDataBase.ShowMeMyFakeQuestionDataBaseValues();
+
+        Optional<Question> questionIntoDB = questionList
+                .stream()
                 .filter(question -> question.getId().equals(id))
                 .findFirst();
+
+        return questionIntoDB;
     }
 }

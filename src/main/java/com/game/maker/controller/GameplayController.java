@@ -3,13 +3,9 @@ package com.game.maker.controller;
 import com.game.maker.dto.GameplaySessionDTO;
 import com.game.maker.dto.PlayerDTO;
 import com.game.maker.dto.QuestionDTO;
-import com.game.maker.model.GameplaySession;
-import com.game.maker.model.Question;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/gameplay")

@@ -84,10 +84,11 @@ public class GameplayService {
 
     public QuestionDTO findPlayerQuestionByID(Long questionID){
         System.out.println("Inicializando a busca da questão na base de dados, a questão solicitada foi a do id =" + questionID);
-        return questionMapper.toDTO(
-                questionRepository.findQuestionById(questionID)
-                        .orElseThrow(() -> new NoSuchElementException("Pergunta não encontrada com o ID: " + questionID))
-        );
+
+        Question questionIntoDB = questionRepository.findQuestionById(questionID).
+                orElseThrow(() -> new NoSuchElementException("Pergunta não encontrada com Id: " + questionID));
+
+        return (questionIntoDB != null) ? (questionMapper.toDTO(questionIntoDB)) : (null);
     }
 
 }

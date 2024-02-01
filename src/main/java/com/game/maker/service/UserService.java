@@ -35,7 +35,7 @@ public class UserService {
 
     public UserDTO findByEmailAndPassword(String email, String password) {
         User user = userRepository.findByEmailAndPassword(email, password).orElse(null);
-        return (user != null) ? userMapper.toDTO(user) : null;
+        return (user != null) ? (userMapper.toDTO(user)) : (null);
     }
 
 }
