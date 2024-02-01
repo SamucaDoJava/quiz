@@ -5,6 +5,7 @@ import com.game.maker.model.QuestionAlternative;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class QuizDataBaseService {
@@ -47,8 +48,8 @@ public class QuizDataBaseService {
         return null;
     }
 
-    public ArrayList<QuestionAlternative> findQuestionAlternativesByQuestionId(Long questionId){
-        ArrayList<Question> dataBaseQuestions = StaticDataBaseOnlyForTests.staticDataBaseWithHardcode();
+    public List<QuestionAlternative> findQuestionAlternativesByQuestionId(Long questionId){
+         List<Question> dataBaseQuestions = StaticDataBaseOnlyForTests.staticDataBaseWithHardcode();
          for(Question question:dataBaseQuestions){
             if(question.getId().equals(questionId)) {
                 return question.getQuestionAlternativeArrayList();

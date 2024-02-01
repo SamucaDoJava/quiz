@@ -46,6 +46,14 @@ public class GameplayService {
         return playerDTO;
     }
 
+    public QuestionDTO findPlayerQuestionAndAlternativesByQuestionId(Long questionID){
+        QuestionDTO questionDTO = questionMapper.toDTO(quizDataBaseService.findQuestionById(questionID));
+
+        List<QuestionAlternative> questionAlternativesList = quizDataBaseService.findQuestionAlternativesByQuestionId(questionID);
+        questionDTO.setQuestionAlternativeDTOArrayList(questionAlternativeMapper.toListDTO(questionAlternativesList));
+        return questionDTO;
+    }
+
     /** Valida se a resposta colocada pelo Player está correta, se sim! Remove a pergunta
      * para que o usuário não possa ter a mesma pergunta repetida novamente.*/
     public PlayerDTO validateItPlayerQuestionIsCorrect(PlayerDTO playerDTO) {
@@ -75,7 +83,7 @@ public class GameplayService {
                 System.out.println("E encontramos o mesmo id em questionsIntoPlayerIteratorId = " + questionsIntoPlayerIteratorId);
 
                 // Recuperamos a partir da Question atual a lista das alternativas da Question.
-                ArrayList<QuestionAlternative> currentSelectedQuestionAlternativeList = quizDataBaseService.findQuestionAlternativesByQuestionId(playerSelectedQuestionID);
+                List<QuestionAlternative> currentSelectedQuestionAlternativeList = quizDataBaseService.findQuestionAlternativesByQuestionId(playerSelectedQuestionID);
 
                 System.out.println("Achamos as seguintes anternativas: " + currentSelectedQuestionAlternativeList);
                 System.out.println("Quantidade de anternativas: " + currentSelectedQuestionAlternativeList.size());
@@ -115,14 +123,6 @@ public class GameplayService {
             }
         }
         return null;
-    }
-
-    public QuestionDTO findPlayerQuestionAndAlternativesByQuestionId(Long questionID){
-        QuestionDTO questionDTO = questionMapper.toDTO(quizDataBaseService.findQuestionById(questionID));
-
-        ArrayList<QuestionAlternative> questionAlternativesList = quizDataBaseService.findQuestionAlternativesByQuestionId(questionID);
-        questionDTO.setQuestionAlternativeDTOArrayList(questionAlternativeMapper.toListDTO(questionAlternativesList));
-        return questionDTO;
     }
 
 }

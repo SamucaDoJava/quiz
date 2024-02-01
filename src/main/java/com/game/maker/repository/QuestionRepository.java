@@ -1,7 +1,6 @@
 package com.game.maker.repository;
 
-public class QuestionRepository {
-
+public interface QuestionRepository {
 
 
 }

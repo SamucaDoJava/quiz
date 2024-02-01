@@ -1,6 +1,7 @@
 package com.game.maker.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Question {
 
@@ -12,7 +13,7 @@ public class Question {
 
     private Long correctQuestionAlternativeID;
 
-    private ArrayList<QuestionAlternative> questionAlternativeArrayList;
+    private List<QuestionAlternative> questionAlternativeArrayList;
 
     public Question(){
 
@@ -24,14 +25,14 @@ public class Question {
         this.response = response;
     }
 
-    public Question(String theme, String question, String response, ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+    public Question(String theme, String question, String response, List<QuestionAlternative> questionAlternativeArrayList) {
         this.theme = theme;
         this.question = question;
         this.response = response;
         this.questionAlternativeArrayList = questionAlternativeArrayList;
     }
 
-    public Question(Long id, String theme, String question, String response, ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+    public Question(Long id, String theme, String question, String response, List<QuestionAlternative> questionAlternativeArrayList) {
         this.id = id;
         this.theme = theme;
         this.question = question;
@@ -39,7 +40,7 @@ public class Question {
         this.questionAlternativeArrayList = questionAlternativeArrayList;
     }
 
-    public Question(Long id, String theme, String question, String response, Long correctQuestionAlternativeID, ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+    public Question(Long id, String theme, String question, String response, Long correctQuestionAlternativeID, List<QuestionAlternative> questionAlternativeArrayList) {
         this.id = id;
         this.theme = theme;
         this.question = question;
@@ -89,11 +90,11 @@ public class Question {
         this.correctQuestionAlternativeID = correctQuestionAlternativeID;
     }
 
-    public ArrayList<QuestionAlternative> getQuestionAlternativeArrayList() {
+    public List<QuestionAlternative> getQuestionAlternativeArrayList() {
         return questionAlternativeArrayList;
     }
 
-    public void setQuestionAlternativeArrayList(ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+    public void setQuestionAlternativeArrayList(List<QuestionAlternative> questionAlternativeArrayList) {
         this.questionAlternativeArrayList = questionAlternativeArrayList;
     }
 
