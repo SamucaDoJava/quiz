@@ -31,6 +31,11 @@ public class GameplayController {
         return gameplayService.generateQuestion();
     }
 
+    @GetMapping("/robson")
+    public String robson(){
+        return "Você tem esse código? Pow Sanagi em Robson";
+    }
+
 
  }
 
