@@ -5,6 +5,7 @@ import com.game.maker.model.Player;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,16 +26,14 @@ public class PlayerMapper {
         return modelMapper.map(dto, Player.class);
     }
 
-    public List<PlayerDTO> toListDTO(List<Player> modelList) {
+    public ArrayList<PlayerDTO> toListDTO(List<Player> modelList) {
         return modelList.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+                .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public List<Player> toList(List<PlayerDTO> dtosList) {
         return dtosList.stream()
-                .map(this::toEntity)
-                .collect(Collectors.toList());
+                .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
     }
 
 }

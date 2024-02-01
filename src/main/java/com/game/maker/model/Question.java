@@ -97,14 +97,63 @@ public class Question {
         this.questionAlternativeArrayList = questionAlternativeArrayList;
     }
 
+
     @Override
     public String toString() {
-        return  "\n\n" +
-                "id = " + id +
-                "\nTheme = " + theme +
-                "\nQuestion = " + question +
-                "\nResponse = " + response +
-                "\nCorrect Question id = " + correctQuestionAlternativeID;
+        return "Question{" +
+                "id=" + id +
+                ", theme='" + theme + '\'' +
+                ", question='" + question + '\'' +
+                ", response='" + response + '\'' +
+                ", correctQuestionAlternativeID=" + correctQuestionAlternativeID +
+                ", questionAlternativeArrayList=" + questionAlternativeArrayList +
+                '}';
+    }
+
+    public static final class Builder {
+        private Question questionBuilder;
+
+        private Builder() {
+            questionBuilder = new Question();
+        }
+
+        public static Builder aQuestion() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            questionBuilder.setId(id);
+            return this;
+        }
+
+        public Builder theme(String theme) {
+            questionBuilder.setTheme(theme);
+            return this;
+        }
+
+        public Builder question(String question) {
+            questionBuilder.setQuestion(question);
+            return this;
+        }
+
+        public Builder response(String response) {
+            questionBuilder.setResponse(response);
+            return this;
+        }
+
+        public Builder correctQuestionAlternativeID(Long correctQuestionAlternativeID) {
+            questionBuilder.setCorrectQuestionAlternativeID(correctQuestionAlternativeID);
+            return this;
+        }
+
+        public Builder questionAlternativeArrayList(ArrayList<QuestionAlternative> questionAlternativeArrayList) {
+            questionBuilder.setQuestionAlternativeArrayList(questionAlternativeArrayList);
+            return this;
+        }
+
+        public Question build() {
+            return questionBuilder;
+        }
     }
 
 

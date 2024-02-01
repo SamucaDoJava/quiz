@@ -22,17 +22,17 @@ public class GameplayController {
         return gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUserDTO());
     }
 
-    @PostMapping("/validate-gameplay")
+    @PutMapping("/validate")
     public PlayerDTO validateAlternative(@RequestBody PlayerDTO playerDTO){
         return gameplayService.validateItPlayerQuestionIsCorrect(playerDTO);
     }
 
-    @PostMapping("/find-player-question-by-id")
-    public QuestionDTO findPlayerQuestionByID(@RequestBody Long id){
+    @GetMapping("/question/{id}")
+    public QuestionDTO findPlayerQuestionByID(@PathVariable Long id){
         return gameplayService.findPlayerQuestionAndAlternativesByQuestionId(id);
     }
 
-    @GetMapping("/show-session")
+    @GetMapping("/session")
     public GameplaySession showMyPontuation() {
         GameplaySession gameplaySession = gameplayService.getCurrentSession();
         System.out.println("A sessão atual de jogadores tem " + gameplaySession.getPlayerDTOList().size() + " usuários.");

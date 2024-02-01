@@ -33,4 +33,26 @@ public class GameplaySession {
                 "\nplayerList=" + playerDTOList;
     }
 
+
+    public static final class Builder {
+        private GameplaySession gameplaySession;
+
+        private Builder() {
+            gameplaySession = new GameplaySession();
+        }
+
+        public static Builder aGameplaySession() {
+            return new Builder();
+        }
+
+        public Builder playerDTOList(List<PlayerDTO> playerDTOList) {
+            gameplaySession.setPlayerDTOList(playerDTOList);
+            return this;
+        }
+
+        public GameplaySession build() {
+            return gameplaySession;
+        }
+    }
+
 }

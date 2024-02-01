@@ -10,8 +10,7 @@ import java.util.ArrayList;
 public class QuizDataBaseService {
 
     public ArrayList<Question> showAllQuestions(){
-        ArrayList<Question> questionsList = StaticDataBaseOnlyForTests.staticDataBaseWithHardcode();
-        return questionsList;
+        return StaticDataBaseOnlyForTests.staticDataBaseWithHardcode();
     }
 
     public ArrayList<Question> findByTheme(String theme){

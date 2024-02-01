@@ -72,5 +72,41 @@ public class QuestionAlternative {
                 "---> Alternative= " + alternative +
                 "---> isCorrect= " + itsCorrect;
     }
-    
+
+
+    public static final class Builder {
+        private QuestionAlternative questionAlternative;
+
+        private Builder() {
+            questionAlternative = new QuestionAlternative();
+        }
+
+        public static Builder aQuestionAlternative() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            questionAlternative.setId(id);
+            return this;
+        }
+
+        public Builder alternative(String alternative) {
+            questionAlternative.setAlternative(alternative);
+            return this;
+        }
+
+        public Builder itsCorrect(Boolean itsCorrect) {
+            questionAlternative.setItsCorrect(itsCorrect);
+            return this;
+        }
+
+        public Builder reference(String reference) {
+            questionAlternative.setReference(reference);
+            return this;
+        }
+
+        public QuestionAlternative build() {
+            return questionAlternative;
+        }
+    }
 }

@@ -38,7 +38,7 @@ public class GameplayService {
     public PlayerDTO startQuizGameplay(String nickName, String theme, UserDTO userDTO) {
         PlayerDTO playerDTO = new PlayerDTO(nickName, 0, theme, userDTO);
 
-        //No fuguro pegará do banco de dados então retorna model e não dto.
+        //No futuro pegará do banco de dados então retorna model e não dto.
         ArrayList<Question> questionsList = quizDataBaseService.showAllQuestions();
         ArrayList<Question> filteredQuestionsList = quizDataBaseService.findByTheme(questionsList, playerDTO.getTheme());
 
@@ -57,7 +57,8 @@ public class GameplayService {
         //Recuperando dados em suposto banco de dados que ainda está em memória.
         Question currentPlayerQuestion = quizDataBaseService.findQuestionById(playerSelectedQuestionID);
         //Adicionando a questão recuperada em banco de dados dentro do objeto currentPlayerQuestion do userDTO.
-        playerDTO.setCurrentPlayerQuestion(questionMapper.toDTO(currentPlayerQuestion));
+        QuestionDTO questionDTO = questionMapper.toDTO(currentPlayerQuestion);
+        playerDTO.setCurrentPlayerQuestionDTO(questionDTO);
 
         //Recuperando na base de dados todas as Questions por tema.
         List<Question> allPlayerQuestionsByTheme = quizDataBaseService.findByTheme(playerDTO.getTheme());

@@ -119,4 +119,61 @@ public class Player {
                 "\nCurrent Question: " + currentPlayerQuestion +
                 "\nSelectedQuestionAlternative: " + selectedQuestionAlternative;
     }
+
+
+    public static final class Builder {
+        private Player player;
+
+        private Builder() {
+            player = new Player();
+        }
+
+        public static Builder aPlayer() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            player.setId(id);
+            return this;
+        }
+
+        public Builder nickName(String nickName) {
+            player.setNickName(nickName);
+            return this;
+        }
+
+        public Builder score(Integer score) {
+            player.setScore(score);
+            return this;
+        }
+
+        public Builder theme(String theme) {
+            player.setTheme(theme);
+            return this;
+        }
+
+        public Builder user(User user) {
+            player.setUser(user);
+            return this;
+        }
+
+        public Builder currentPlayerQuestion(Question currentPlayerQuestion) {
+            player.setCurrentPlayerQuestion(currentPlayerQuestion);
+            return this;
+        }
+
+        public Builder playerQuestionsList(ArrayList<Question> playerQuestionsList) {
+            player.setPlayerQuestionsList(playerQuestionsList);
+            return this;
+        }
+
+        public Builder selectedQuestionAlternative(QuestionAlternative selectedQuestionAlternative) {
+            player.setSelectedQuestionAlternative(selectedQuestionAlternative);
+            return this;
+        }
+
+        public Player build() {
+            return player;
+        }
+    }
 }
