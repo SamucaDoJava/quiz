@@ -6,11 +6,8 @@ public class User {
     private Long id;
     private String name;
     private String fullName;
-
     private Integer age;
-
     private String email;
-
     private String password;
 
     public User() {

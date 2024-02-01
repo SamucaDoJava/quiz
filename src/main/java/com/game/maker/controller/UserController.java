@@ -1,7 +1,6 @@
 package com.game.maker.controller;
 
 import com.game.maker.dto.UserDTO;
-import com.game.maker.model.GameplaySession;
 import com.game.maker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +30,10 @@ public class UserController {
         return userService.findAll();
     }
 
+    @GetMapping("/{email}/{password}")
+    public List<UserDTO> findByEmailPassword(String email, String password) {
+        return userService.findAll();
+    }
 
 }
 
