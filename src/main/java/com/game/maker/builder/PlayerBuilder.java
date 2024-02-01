@@ -24,7 +24,4 @@ public class PlayerBuilder {
         return this.modelMapper.map(playerDTO, Player.class);
     }
 
-
-
-
 }

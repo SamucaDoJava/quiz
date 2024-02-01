@@ -1,9 +1,7 @@
-package com.game.maker.model;
+package com.game.maker.dto;
 
 
-import java.util.Objects;
-
-public class User {
+public class UserDTO {
 
     private Long id;
     private String name;
@@ -15,18 +13,17 @@ public class User {
 
     private String password;
 
+    public UserDTO() {
 
-    public User() {
-        System.out.println("Chamou contrutor vazio.");
     }
 
-    public User(String name, String fullName, Integer age) {
+    public UserDTO(String name, String fullName, Integer age) {
         this.name = name;
         this.fullName = fullName;
         this.age = age;
     }
 
-    public User(Long id, String name, String fullName, Integer age, String email, String password) {
+    public UserDTO(Long id, String name, String fullName, Integer age, String email, String password) {
         this.id = id;
         this.name = name;
         this.fullName = fullName;
@@ -84,19 +81,6 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
@@ -107,50 +91,50 @@ public class User {
                 '}';
     }
 
+
     public static final class Builder {
-        private User user;
+        private UserDTO userDTO;
 
         private Builder() {
-            user = new User();
+            userDTO = new UserDTO();
         }
 
-        public static Builder anUser() {
+        public static Builder anUserDTO() {
             return new Builder();
         }
 
         public Builder id(Long id) {
-            user.setId(id);
+            userDTO.setId(id);
             return this;
         }
 
         public Builder name(String name) {
-            user.setName(name);
+            userDTO.setName(name);
             return this;
         }
 
         public Builder fullName(String fullName) {
-            user.setFullName(fullName);
+            userDTO.setFullName(fullName);
             return this;
         }
 
         public Builder age(Integer age) {
-            user.setAge(age);
+            userDTO.setAge(age);
             return this;
         }
 
         public Builder email(String email) {
-            user.setEmail(email);
+            userDTO.setEmail(email);
             return this;
         }
 
         public Builder password(String password) {
-            user.setPassword(password);
+            userDTO.setPassword(password);
             return this;
         }
 
-        public User build() {
-            return user;
+        public UserDTO build() {
+            return userDTO;
         }
     }
-
 }

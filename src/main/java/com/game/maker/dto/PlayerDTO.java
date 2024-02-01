@@ -86,10 +86,10 @@ public class PlayerDTO {
 
     @Override
     public String toString() {
-        return "\n\nPlayerDTO - id: " + id +
-                "\nNickName='" + nickName +
-                "\nScore=" + score +
-                "\nUser=" + user +
-                "\nTheme=" + theme;
+        return "\n\nplayerDTO - id: " + id +
+                "\nnickName='" + nickName +
+                "\nscore=" + score +
+                "\nuser=" + user +
+                "\ntheme=" + theme;
     }
 }
