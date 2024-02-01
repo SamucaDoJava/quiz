@@ -4,9 +4,12 @@ import com.game.maker.dto.GameplaySessionDTO;
 import com.game.maker.dto.PlayerDTO;
 import com.game.maker.dto.QuestionDTO;
 import com.game.maker.model.GameplaySession;
+import com.game.maker.model.Question;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/gameplay")
@@ -22,9 +25,10 @@ public class GameplayController {
         return gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUserDTO());
     }
 
-    @PutMapping("/validate")
-    public PlayerDTO validateAlternative(@RequestBody PlayerDTO playerDTO){
-        return gameplayService.validateItPlayerQuestionIsCorrect(playerDTO);
+    //TODO Arrumar está com erro!
+    @GetMapping("/validate/{questionId}/{selectedQuestionAlternative}")
+    public String validateAlternative(@PathVariable Long questionId, @PathVariable String selectedQuestionAlternative) {
+        return gameplayService.validateItPlayerQuestionIsCorrect(questionId, selectedQuestionAlternative);
     }
 
     @GetMapping("/question/{id}")
@@ -32,13 +36,5 @@ public class GameplayController {
         return gameplayService.findPlayerQuestionAndAlternativesByQuestionId(id);
     }
 
-    @GetMapping("/session")
-    public GameplaySession showMyPontuation() {
-        GameplaySession gameplaySession = gameplayService.getCurrentSession();
-        System.out.println("A sessão atual de jogadores tem " + gameplaySession.getPlayerDTOList().size() + " usuários.");
-        return gameplaySession;
-    }
-
-
-}
+ }
 

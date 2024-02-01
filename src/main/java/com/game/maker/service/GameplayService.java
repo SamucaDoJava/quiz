@@ -1,29 +1,25 @@
 package com.game.maker.service;
 
-import com.game.maker.builder.PlayerMapper;
 import com.game.maker.builder.QuestionAlternativeMapper;
 import com.game.maker.builder.QuestionMapper;
 import com.game.maker.dto.PlayerDTO;
+import com.game.maker.dto.QuestionAlternativeDTO;
 import com.game.maker.dto.QuestionDTO;
 import com.game.maker.dto.UserDTO;
-import com.game.maker.model.GameplaySession;
 import com.game.maker.model.Question;
-import com.game.maker.model.QuestionAlternative;
+import com.game.maker.repository.temp.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class GameplayService {
 
     @Autowired
-    private QuizDataBaseService quizDataBaseService;
-
-    @Autowired
-    private PlayerMapper playerMapper;
+    private QuestionRepository questionRepository;
 
     @Autowired
     private QuestionMapper questionMapper;
@@ -31,98 +27,67 @@ public class GameplayService {
     @Autowired
     private QuestionAlternativeMapper questionAlternativeMapper;
 
-    private GameplaySession gameplaySession = new GameplaySession();
-
 
     /**Inicia a gameplay dando start o jogo Quiz para um usuário. */
     public PlayerDTO startQuizGameplay(String nickName, String theme, UserDTO userDTO) {
         PlayerDTO playerDTO = new PlayerDTO(nickName, 0, theme, userDTO);
 
-        //No futuro pegará do banco de dados então retorna model e não dto.
-        ArrayList<Question> questionsList = quizDataBaseService.showAllQuestions();
-        ArrayList<Question> filteredQuestionsList = quizDataBaseService.findByTheme(questionsList, playerDTO.getTheme());
+        System.out.println("Inicializando a busca na base de dados das questões com o tema: " + theme);
+        List<Question> filteredQuestionsList = questionRepository.findByTheme(playerDTO.getTheme());
 
+        System.out.println("Foram encontrados " + filteredQuestionsList.size() + " questões na base de dados para o tema: " + theme);
         playerDTO.setPlayerQuestionsDTOList(questionMapper.toListDTO(filteredQuestionsList));
         return playerDTO;
     }
 
     public QuestionDTO findPlayerQuestionAndAlternativesByQuestionId(Long questionID){
-        QuestionDTO questionDTO = questionMapper.toDTO(quizDataBaseService.findQuestionById(questionID));
-
-        List<QuestionAlternative> questionAlternativesList = quizDataBaseService.findQuestionAlternativesByQuestionId(questionID);
-        questionDTO.setQuestionAlternativeDTOArrayList(questionAlternativeMapper.toListDTO(questionAlternativesList));
-        return questionDTO;
+        return findQuestionByIdAndValidate(questionID);
     }
 
-    /** Valida se a resposta colocada pelo Player está correta, se sim! Remove a pergunta
-     * para que o usuário não possa ter a mesma pergunta repetida novamente.*/
-    public PlayerDTO validateItPlayerQuestionIsCorrect(PlayerDTO playerDTO) {
-        System.out.println("Quantidade atual de perguntas no quiz para o playerDTO: " + playerDTO.getPlayerQuestionsDTOList().size());
-        System.out.println("Usando o tema: " + playerDTO.getTheme());
+    private QuestionDTO findQuestionByIdAndValidate(Long questionID){
+        System.out.println("Iniciando busca na base de dados por uma questão com o Id: " + questionID);
+        Optional<Question> optionalQuestion = questionRepository.findQuestionById(questionID);
 
-        Long playerSelectedQuestionID = playerDTO.getCurrentQuestionID();
+        if (optionalQuestion.isPresent()) {
+            System.out.println("Foi encontrada uma questão com o id: " + questionID + " inicializando serialização, transformando Question em QuestionDTO");
+            QuestionDTO questionDTO = questionMapper.toDTO(optionalQuestion.get());
+            System.out.println("Question foi transformado em QuestionDTO com sucesso! questionDTO = " + questionDTO);
 
-        //Recuperando dados em suposto banco de dados que ainda está em memória.
-        Question currentPlayerQuestion = quizDataBaseService.findQuestionById(playerSelectedQuestionID);
-        //Adicionando a questão recuperada em banco de dados dentro do objeto currentPlayerQuestion do userDTO.
-        QuestionDTO questionDTO = questionMapper.toDTO(currentPlayerQuestion);
-        playerDTO.setCurrentPlayerQuestionDTO(questionDTO);
+            return questionDTO;
+        } else {
+            System.out.println("Não foi encontrado nada com o Id passado dentro da base de dados!");
+            return null;
+        }
+    }
 
-        //Recuperando na base de dados todas as Questions por tema.
-        List<Question> allPlayerQuestionsByTheme = quizDataBaseService.findByTheme(playerDTO.getTheme());
+    public String validateItPlayerQuestionIsCorrect(Long questionId, String selectedQuestionAlternative) {
+        System.out.println("Validação da pergunta enviada pelo jogador, o Id enviado foi: " + questionId + " iremos buscar esse QuestionDTO na base de dados usando esse id.");
+        System.out.println("A alternativa inserida pelo jogador foi: " + selectedQuestionAlternative + " Inicializando a busca na base de dados do objeto QuestionDTO.");
 
-        Iterator<QuestionDTO> questionsIntoPlayerIterator = questionMapper.toListDTO(allPlayerQuestionsByTheme).iterator();
+        QuestionDTO questionDTO = findPlayerQuestionByID(questionId);
+        System.out.println("Busca na base de dados concluída com sucesso! O QuestionDTO encontrado tem o valor de: " + questionDTO);
 
-        while (questionsIntoPlayerIterator.hasNext()) {
-            QuestionDTO currentQuestionIntoIterator = questionsIntoPlayerIterator.next();
-            Long questionsIntoPlayerIteratorId = currentQuestionIntoIterator.getId();
-
-            //
-            if (playerSelectedQuestionID.equals(questionsIntoPlayerIteratorId)) {
-                System.out.println("Encontramos o mesmo id em playerSelectedQuestionID........= " + playerSelectedQuestionID);
-                System.out.println("E encontramos o mesmo id em questionsIntoPlayerIteratorId = " + questionsIntoPlayerIteratorId);
-
-                // Recuperamos a partir da Question atual a lista das alternativas da Question.
-                List<QuestionAlternative> currentSelectedQuestionAlternativeList = quizDataBaseService.findQuestionAlternativesByQuestionId(playerSelectedQuestionID);
-
-                System.out.println("Achamos as seguintes anternativas: " + currentSelectedQuestionAlternativeList);
-                System.out.println("Quantidade de anternativas: " + currentSelectedQuestionAlternativeList.size());
-
-                //Inserindo lista de alternativas na atual Question do Player
-                playerDTO.getCurrentPlayerQuestionDTO().setQuestionAlternativeDTOArrayList(questionAlternativeMapper.toListDTO(currentSelectedQuestionAlternativeList));
-
-                System.out.println("Nosso player agora tem uma question e alternativas: " + playerDTO);
-
-                if(playerDTO.getSelectedQuestionAlternative().getItsCorrect()) {
-                    //Insere Score se a alternativa estiver correta;
-                    playerDTO.setScore(playerDTO.getScore() + 100);
+        System.out.println("Iniciando a busca em QuestionDTO encontrado, iniciando validação, será verificado se QuestionDTO contém uma alternativa com a letra passada pelo usuário em selectedQuestionAlternative: "  + selectedQuestionAlternative);
+        for(QuestionAlternativeDTO questionAlternativeDTO : questionDTO.getQuestionAlternativeDTOArrayList()) {
+            if(questionAlternativeDTO.getAlternative().equals(selectedQuestionAlternative)) {
+                System.out.println("Foi encontrada uma alternativa com a mesma letra passada pelo usuário! ");
+                System.out.println("Inicializando a verificação se é uma alternativa correta! Se for, o campo itsCorrect será true.");
+                if(questionAlternativeDTO.getItsCorrect()){
+                    System.out.println("A alternativa passada é correta e retornou o valor de: " + true + " para o atributo itsCorrect");
+                    return "Caro usuário, você acertou com sucesso a sua pergunta.";
                 }
+                System.out.println("A alternativa passada pelo usuário está incorreta! O usuário errou a alternativa.");
             }
         }
-        return playerDTO;
+        return "Caro usuário, você errou a alternativa que foi passada! Tente novamente!";
     }
 
-    /** Adiciona o usuário a sessão de jogo, a ideia é usar esse dados para criar outros
-     * jogos com vários jogadores na mesma sessão filtrados por tema. */
-    public GameplaySession addPlayerToSession(PlayerDTO playerDTO){
-        gameplaySession.getPlayerDTOList().add(playerDTO);
-        return gameplaySession;
-    }
-
-    /** Chama a sessão atual do jogo*/
-    public GameplaySession getCurrentSession(){
-        return gameplaySession;
-    }
-
-    /** Procura dentro do usuário uma unica Questão do quiz. */
-    public QuestionDTO findPlayerQuestionByID(PlayerDTO playerDTO, Long questionID){
-        List<QuestionDTO> questionDTOList = playerDTO.getPlayerQuestionsDTOList();
-        for(QuestionDTO questionDTO:questionDTOList){
-            if(questionID.equals(questionDTO.getId())){
-                return questionDTO;
-            }
-        }
-        return null;
+    public QuestionDTO findPlayerQuestionByID(Long questionID){
+        System.out.println("Inicializando a busca da questão na base de dados, a questão solicitada foi a do id =" + questionID);
+        return questionMapper.toDTO(
+                questionRepository.findQuestionById(questionID)
+                        .orElseThrow(() -> new NoSuchElementException("Pergunta não encontrada com o ID: " + questionID))
+        );
     }
 
 }
