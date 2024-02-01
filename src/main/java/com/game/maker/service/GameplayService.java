@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class GameplayService {
@@ -60,26 +61,21 @@ public class GameplayService {
         }
     }
 
-    public String validateItPlayerQuestionIsCorrect(Long questionId, String selectedQuestionAlternative) {
-        System.out.println("Validação da pergunta enviada pelo jogador, o Id enviado foi: " + questionId + " iremos buscar esse QuestionDTO na base de dados usando esse id.");
-        System.out.println("A alternativa inserida pelo jogador foi: " + selectedQuestionAlternative + " Inicializando a busca na base de dados do objeto QuestionDTO.");
+    public QuestionDTO generateQuestion(){
+        List<Question> questionList = questionRepository.findAll();
 
-        QuestionDTO questionDTO = findPlayerQuestionByID(questionId);
-        System.out.println("Busca na base de dados concluída com sucesso! O QuestionDTO encontrado tem o valor de: " + questionDTO);
-
-        System.out.println("Iniciando a busca em QuestionDTO encontrado, iniciando validação, será verificado se QuestionDTO contém uma alternativa com a letra passada pelo usuário em selectedQuestionAlternative: "  + selectedQuestionAlternative);
-        for(QuestionAlternativeDTO questionAlternativeDTO : questionDTO.getQuestionAlternativeDTOArrayList()) {
-            if(questionAlternativeDTO.getAlternative().equals(selectedQuestionAlternative)) {
-                System.out.println("Foi encontrada uma alternativa com a mesma letra passada pelo usuário! ");
-                System.out.println("Inicializando a verificação se é uma alternativa correta! Se for, o campo itsCorrect será true.");
-                if(questionAlternativeDTO.getItsCorrect()){
-                    System.out.println("A alternativa passada é correta e retornou o valor de: " + true + " para o atributo itsCorrect");
-                    return "Caro usuário, você acertou com sucesso a sua pergunta.";
-                }
-                System.out.println("A alternativa passada pelo usuário está incorreta! O usuário errou a alternativa.");
-            }
+        if (questionList.isEmpty()) {
+            return null;
         }
-        return "Caro usuário, você errou a alternativa que foi passada! Tente novamente!";
+
+        // Use Random para gerar um índice aleatório dentro dos limites da lista
+        Random random = new Random();
+        int randomIndex = random.nextInt(questionList.size());
+
+        Question randomQuestion = questionList.get(randomIndex);
+        QuestionDTO randomQuestionDTO = questionMapper.toDTO(randomQuestion);
+
+        return randomQuestionDTO;
     }
 
     public QuestionDTO findPlayerQuestionByID(Long questionID){

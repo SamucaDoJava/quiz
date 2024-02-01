@@ -13,7 +13,7 @@ public class QuestionAlternativeDTO {
 
     private Long id;
     private String alternative;
-    private Boolean itsCorrect;
+    //private Boolean itsCorrect;
     private String reference;
 
     @Override
@@ -21,8 +21,8 @@ public class QuestionAlternativeDTO {
         return "QuestionAlternative: " +
                 "---> id= " + id +
                 "---> Reference= " + reference +
-                "---> Alternative= " + alternative +
-                "---> isCorrect= " + itsCorrect;
+                //"---> isCorrect= " + itsCorrect +
+                "---> Alternative= " + alternative;
     }
     
 }

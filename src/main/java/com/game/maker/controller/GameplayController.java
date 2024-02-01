@@ -21,16 +21,16 @@ public class GameplayController {
         return gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUserDTO());
     }
 
-    //TODO Arrumar está com erro!
-    @GetMapping("/validate/{questionId}/{selectedQuestionAlternative}")
-    public String validateAlternative(@PathVariable Long questionId, @PathVariable String selectedQuestionAlternative) {
-        return gameplayService.validateItPlayerQuestionIsCorrect(questionId, selectedQuestionAlternative);
-    }
-
     @GetMapping("/question/{id}")
     public QuestionDTO findPlayerQuestionByID(@PathVariable Long id){
         return gameplayService.findPlayerQuestionAndAlternativesByQuestionId(id);
     }
+
+    @GetMapping("/generate-question")
+    public QuestionDTO generateQuestion(){
+        return gameplayService.generateQuestion();
+    }
+
 
  }
 
