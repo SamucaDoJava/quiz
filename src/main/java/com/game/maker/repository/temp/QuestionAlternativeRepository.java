@@ -1,6 +1,5 @@
 package com.game.maker.repository.temp;
 
-import com.game.maker.model.Question;
 import com.game.maker.model.QuestionAlternative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**TODO Use a mesma abordagem explicada na documentação de UserRepository.class para essa classe QuestionRepository.class
+/**TODO Use a mesma abordagem explicada na documentação de UserRepositoryB.class para essa classe QuestionRepository.class
  * Lembrando que quando implementarmos o banco de dados essas classes com esses comentários vão todas modificadas e muito!
  * */
 @Component
