@@ -16,9 +16,9 @@ public class QuestionDTO {
     private Long id;
     private String theme;
     private String question;
-    //private String response;
+    private String response;
     private Long correctQuestionAlternativeID;
-    private ArrayList<QuestionAlternativeDTO> questionAlternativeDTOArrayList;
+    private ArrayList<QuestionAlternativeDTO> questionAlternativeArrayList = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -26,8 +26,8 @@ public class QuestionDTO {
                 "\nid = " + id +
                 "\ntheme = " + theme +
                 "\nquestion = " + question +
-                //"\nresponse = " + response +
+                "\nresponse = " + response +
                 "\ncorrectQuestionAlternativeID = " + correctQuestionAlternativeID +
-                "\nquestionAlternativeDTOArrayList = " + questionAlternativeDTOArrayList;
+                "\nquestionAlternativeDTOArrayList = " + questionAlternativeArrayList;
     }
 }

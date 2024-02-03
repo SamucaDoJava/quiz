@@ -1,8 +1,10 @@
 package com.game.maker.service;
 
 import com.game.maker.builder.QuestionMapper;
+import com.game.maker.dto.QuestionAlternativeDTO;
 import com.game.maker.dto.QuestionDTO;
 import com.game.maker.model.Question;
+import com.game.maker.model.QuestionAlternative;
 import com.game.maker.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -37,6 +39,24 @@ public class QuestionService {
         }
     }
 
+    //TODO Ajustar o problema dos IDs no DTO filho questionAlternative não está fazendo por default o set question, foi colocado um teste da linha 46 a 49 remover apos ajustar o DTO.
+    public List<QuestionDTO> saveAll(List<QuestionDTO> questionList) {
+        try {
+            for(QuestionDTO questionDTO: questionList) {
+                for(QuestionAlternativeDTO questionAlternative: questionDTO.getQuestionAlternativeArrayList()){
+                    questionAlternative.setQuestion(questionDTO);
+                }
+            }
+
+            List<Question> questionListBefore = questionMapper.toList(questionList);
+            List<Question> savedAlternatives = questionRepository.saveAll(questionListBefore);
+
+            return questionMapper.toListDTO(savedAlternatives);
+        } catch (DataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, msgError("saveAll"), e);
+        }
+    }
+
     public QuestionDTO findById(Long id){
         try {
             Question question = questionRepository.findById(id)
@@ -50,5 +70,10 @@ public class QuestionService {
                     "Ocorreu um erro ao tentar recuperar a QuestionDTO na consulta findById", e);
         }
     }
+
+    private String msgError(String method){
+        return "Ocorreu um erro em QuestionAlternativeService ao tentar fazer a operação no método: "  + method;
+    }
+
 
 }

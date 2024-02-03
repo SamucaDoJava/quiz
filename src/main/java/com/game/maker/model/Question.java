@@ -1,16 +1,18 @@
 package com.game.maker.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 @Entity
 @Table(name = "tb_questao")
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "tema")
@@ -25,43 +27,15 @@ public class Question {
     @Column(name = "id_alternativa_correta")
     private Long correctQuestionAlternativeID;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<QuestionAlternative> questionAlternativeArrayList;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<QuestionAlternative> questionAlternativeArrayList = new ArrayList<>();
 
 
     public Question(){
 
     }
 
-    public Question(String theme, String question, String response) {
-        this.theme = theme;
-        this.question = question;
-        this.response = response;
-    }
 
-    public Question(String theme, String question, String response, List<QuestionAlternative> questionAlternativeArrayList) {
-        this.theme = theme;
-        this.question = question;
-        this.response = response;
-        this.questionAlternativeArrayList = questionAlternativeArrayList;
-    }
-
-    public Question(Long id, String theme, String question, String response, List<QuestionAlternative> questionAlternativeArrayList) {
-        this.id = id;
-        this.theme = theme;
-        this.question = question;
-        this.response = response;
-        this.questionAlternativeArrayList = questionAlternativeArrayList;
-    }
-
-    public Question(Long id, String theme, String question, String response, Long correctQuestionAlternativeID, List<QuestionAlternative> questionAlternativeArrayList) {
-        this.id = id;
-        this.theme = theme;
-        this.question = question;
-        this.response = response;
-        this.correctQuestionAlternativeID = correctQuestionAlternativeID;
-        this.questionAlternativeArrayList = questionAlternativeArrayList;
-    }
 
     public Long getId() {
         return id;

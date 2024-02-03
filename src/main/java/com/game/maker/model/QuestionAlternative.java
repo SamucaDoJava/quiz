@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class QuestionAlternative {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "alternativa")
@@ -19,7 +19,7 @@ public class QuestionAlternative {
     @Column(name = "referencia")
     private String reference;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_questao")
     private Question question;
 
@@ -79,6 +79,14 @@ public class QuestionAlternative {
         this.reference = reference;
     }
 
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
     @Override
     public String toString() {
         return "QuestionAlternative: " +
@@ -117,6 +125,11 @@ public class QuestionAlternative {
 
         public Builder reference(String reference) {
             questionAlternative.setReference(reference);
+            return this;
+        }
+
+        public Builder question(Question question) {
+            questionAlternative.setQuestion(question);
             return this;
         }
 

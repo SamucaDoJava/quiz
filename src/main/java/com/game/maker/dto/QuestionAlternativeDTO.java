@@ -1,5 +1,6 @@
 package com.game.maker.dto;
 
+import com.game.maker.model.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class QuestionAlternativeDTO {
     private String alternative;
     private Boolean itsCorrect;
     private String reference;
+    private QuestionDTO question;
 
     @Override
     public String toString() {
