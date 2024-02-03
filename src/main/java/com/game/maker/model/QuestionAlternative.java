@@ -1,21 +1,28 @@
 package com.game.maker.model;
 
-import com.game.maker.dto.QuestionAlternativeDTO;
+import jakarta.persistence.*;
 
-import java.util.ArrayList;
-
+@Entity
+@Table(name = "tb_alternativa")  // Nome da tabela em português
 public class QuestionAlternative {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "alternativa")
     private String alternative;
 
+    @Column(name = "correta")
     private Boolean itsCorrect;
+
+    @Column(name = "referencia")
     private String reference;
 
-    private Long questionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_questao")
+    private Question question;
 
-    private ArrayList<QuestionAlternativeDTO> questionAlternativeList;
 
     public QuestionAlternative(){
 
@@ -27,12 +34,11 @@ public class QuestionAlternative {
         this.reference = reference;
     }
 
-    public QuestionAlternative(Long id, String reference, String alternative, Boolean itsCorrect, Long questionId) {
+    public QuestionAlternative(Long id, String reference, String alternative, Boolean itsCorrect) {
         this.id = id;
         this.alternative = alternative;
         this.itsCorrect = itsCorrect;
         this.reference = reference;
-        this.questionId = questionId;
     }
 
 
@@ -73,30 +79,13 @@ public class QuestionAlternative {
         this.reference = reference;
     }
 
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
-    }
-
-    public ArrayList<QuestionAlternativeDTO> getQuestionAlternativeList() {
-        return questionAlternativeList;
-    }
-
-    public void setQuestionAlternativeList(ArrayList<QuestionAlternativeDTO> questionAlternativeList) {
-        this.questionAlternativeList = questionAlternativeList;
-    }
-
     @Override
     public String toString() {
         return "QuestionAlternative: " +
                 "---> id= " + id +
                 "---> Reference= " + reference +
                 "---> Alternative= " + alternative +
-                "---> isCorrect= " + itsCorrect +
-                "---> questionId= " + questionId;
+                "---> isCorrect= " + itsCorrect;
     }
 
 
@@ -128,16 +117,6 @@ public class QuestionAlternative {
 
         public Builder reference(String reference) {
             questionAlternative.setReference(reference);
-            return this;
-        }
-
-        public Builder questionId(Long questionId) {
-            questionAlternative.setQuestionId(questionId);
-            return this;
-        }
-
-        public Builder questionAlternativeList(ArrayList<QuestionAlternativeDTO> questionAlternativeList) {
-            questionAlternative.setQuestionAlternativeList(questionAlternativeList);
             return this;
         }
 

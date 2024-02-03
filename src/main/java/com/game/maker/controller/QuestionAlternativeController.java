@@ -1,15 +1,11 @@
 package com.game.maker.controller;
 
 import com.game.maker.dto.QuestionAlternativeDTO;
-import com.game.maker.dto.QuestionDTO;
+import com.game.maker.dto.ValidateAlternativeDTO;
 import com.game.maker.model.QuestionAlternative;
 import com.game.maker.service.QuestionAlternativeService;
-import com.game.maker.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,14 +27,24 @@ public class QuestionAlternativeController {
         return questionAlternativeService.findById(id);
     }
 
+    @PostMapping("save")
+    public QuestionAlternativeDTO save(@RequestBody QuestionAlternative questionAlternative){
+        return questionAlternativeService.save(questionAlternative);
+    }
+
+    @PostMapping("save/list")
+    public List<QuestionAlternativeDTO> save(@RequestBody List<QuestionAlternative> questionAlternativeList){
+        return questionAlternativeService.saveAll(questionAlternativeList);
+    }
+
     @GetMapping("/question-id/{id}")
     public List<QuestionAlternativeDTO> findQuestionAlternativesByQuestionId(@PathVariable Long id){
         return questionAlternativeService.findByQuestionId(id);
     }
 
-    @GetMapping("/{id}/status/{alternativeStatus}")
-    public QuestionAlternativeDTO findCorrectQuestionAlternativeOfQuestion(@PathVariable Long questionId, @PathVariable Boolean alternativeStatus){
-        return questionAlternativeService.findByQuestionIdAndItsCorrect(questionId, alternativeStatus);
+    @PostMapping("/validate-alternative")
+    public QuestionAlternativeDTO validateAlternative(ValidateAlternativeDTO validateAlternativeDTO){
+        return questionAlternativeService.findByQuestionIdAndItsCorrect(validateAlternativeDTO.getId(), validateAlternativeDTO.getAlternativeStatus());
     }
 
 }

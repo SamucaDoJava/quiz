@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class PlayerDTO {
 
     private Long selectedQuestionAlternativeID;
 
-    private ArrayList<QuestionDTO> playerQuestionsDTOList;
+    private List<QuestionDTO> playerQuestionsDTOList;
 
 
     public PlayerDTO(String nickName, Integer score, String theme, UserDTO userDTO) {

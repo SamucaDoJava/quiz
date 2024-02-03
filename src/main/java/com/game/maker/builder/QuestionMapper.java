@@ -26,12 +26,12 @@ public class QuestionMapper {
         return modelMapper.map(dto, Question.class);
     }
 
-    public ArrayList<QuestionDTO> toListDTO(List<Question> modelList) {
+    public List<QuestionDTO> toListDTO(List<Question> modelList) {
         return modelList.stream()
                 .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public ArrayList<Question> toList(List<QuestionDTO> dtosList) {
+    public List<Question> toList(List<QuestionDTO> dtosList) {
         return dtosList.stream()
                 .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
     }

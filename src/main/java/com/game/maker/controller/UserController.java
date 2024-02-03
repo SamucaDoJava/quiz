@@ -1,5 +1,6 @@
 package com.game.maker.controller;
 
+import com.game.maker.dto.LoginDTO;
 import com.game.maker.dto.UserDTO;
 import com.game.maker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-    @PostMapping
+    @PostMapping("save")
     public UserDTO save(@RequestBody UserDTO userDTO) {
         return userService.save(userDTO);
     }
@@ -30,10 +31,11 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/{email}/{password}")
-    public UserDTO findByEmailPassword(String email, String password) {
-        return userService.findByEmailAndPassword(email, password);
+    @PostMapping("login")
+    public UserDTO findByEmailPassword(@RequestBody LoginDTO loginDTO) {
+        return userService.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
     }
+
 
 }
 

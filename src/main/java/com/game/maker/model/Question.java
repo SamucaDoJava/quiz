@@ -1,19 +1,33 @@
 package com.game.maker.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "tb_questao")
 public class Question {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "tema")
     private String theme;
+
+    @Column(name = "pergunta")
     private String question;
+
+    @Column(name = "resposta")
     private String response;
 
+    @Column(name = "id_alternativa_correta")
     private Long correctQuestionAlternativeID;
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<QuestionAlternative> questionAlternativeArrayList;
+
 
     public Question(){
 

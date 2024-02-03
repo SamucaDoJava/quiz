@@ -3,11 +3,10 @@ package com.game.maker.service;
 import com.game.maker.builder.QuestionAlternativeMapper;
 import com.game.maker.builder.QuestionMapper;
 import com.game.maker.dto.PlayerDTO;
-import com.game.maker.dto.QuestionAlternativeDTO;
 import com.game.maker.dto.QuestionDTO;
 import com.game.maker.dto.UserDTO;
 import com.game.maker.model.Question;
-import com.game.maker.repository.temp.QuestionRepository;
+import com.game.maker.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +46,7 @@ public class GameplayService {
 
     private QuestionDTO findQuestionByIdAndValidate(Long questionID){
         System.out.println("Iniciando busca na base de dados por uma questão com o Id: " + questionID);
-        Optional<Question> optionalQuestion = questionRepository.findQuestionById(questionID);
+        Optional<Question> optionalQuestion = questionRepository.findById(questionID);
 
         if (optionalQuestion.isPresent()) {
             System.out.println("Foi encontrada uma questão com o id: " + questionID + " inicializando serialização, transformando Question em QuestionDTO");
@@ -81,7 +80,7 @@ public class GameplayService {
     public QuestionDTO findPlayerQuestionByID(Long questionID){
         System.out.println("Inicializando a busca da questão na base de dados, a questão solicitada foi a do id =" + questionID);
 
-        Question questionIntoDB = questionRepository.findQuestionById(questionID).
+        Question questionIntoDB = questionRepository.findById(questionID).
                 orElseThrow(() -> new NoSuchElementException("Pergunta não encontrada com Id: " + questionID));
 
         return (questionIntoDB != null) ? (questionMapper.toDTO(questionIntoDB)) : (null);
