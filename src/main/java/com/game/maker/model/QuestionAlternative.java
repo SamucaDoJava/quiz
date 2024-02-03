@@ -3,7 +3,7 @@ package com.game.maker.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_alternativa")  // Nome da tabela em português
+@Table(name = "tb_alternativa")
 public class QuestionAlternative {
 
     @Id
