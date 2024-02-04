@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_alternativa")
-public class QuestionAlternative {
+public class Alternative {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,25 +24,30 @@ public class QuestionAlternative {
     private Question question;
 
 
-    public QuestionAlternative(){
+    public Alternative(){
 
     }
 
-    public QuestionAlternative(String reference, String alternative, Boolean itsCorrect) {
+    public Alternative(String reference, String alternative, Boolean itsCorrect) {
         this.alternative = alternative;
         this.itsCorrect = itsCorrect;
         this.reference = reference;
     }
 
-    public QuestionAlternative(Long id, String reference, String alternative, Boolean itsCorrect) {
+    public Alternative(Long id, String reference, String alternative, Boolean itsCorrect) {
         this.id = id;
         this.alternative = alternative;
         this.itsCorrect = itsCorrect;
         this.reference = reference;
     }
 
-
-
+    public Alternative(Long id, String alternative, Boolean itsCorrect, String reference, Question question) {
+        this.id = id;
+        this.alternative = alternative;
+        this.itsCorrect = itsCorrect;
+        this.reference = reference;
+        this.question = question;
+    }
 
     public Long getId() {
         return id;
@@ -87,54 +92,54 @@ public class QuestionAlternative {
         this.question = question;
     }
 
+
     @Override
     public String toString() {
-        return "QuestionAlternative: " +
+        return "Alternative: " +
                 "---> id= " + id +
                 "---> Reference= " + reference +
-                "---> Alternative= " + alternative +
-                "---> isCorrect= " + itsCorrect;
+                "---> Alternative= " + alternative;
     }
 
 
     public static final class Builder {
-        private QuestionAlternative questionAlternative;
+        private Alternative alternativeBuilder;
 
         private Builder() {
-            questionAlternative = new QuestionAlternative();
+            alternativeBuilder = new Alternative();
         }
 
-        public static Builder aQuestionAlternative() {
+        public static Builder anAlternative() {
             return new Builder();
         }
 
         public Builder id(Long id) {
-            questionAlternative.setId(id);
+            alternativeBuilder.setId(id);
             return this;
         }
 
         public Builder alternative(String alternative) {
-            questionAlternative.setAlternative(alternative);
+            alternativeBuilder.setAlternative(alternative);
             return this;
         }
 
         public Builder itsCorrect(Boolean itsCorrect) {
-            questionAlternative.setItsCorrect(itsCorrect);
+            alternativeBuilder.setItsCorrect(itsCorrect);
             return this;
         }
 
         public Builder reference(String reference) {
-            questionAlternative.setReference(reference);
+            alternativeBuilder.setReference(reference);
             return this;
         }
 
         public Builder question(Question question) {
-            questionAlternative.setQuestion(question);
+            alternativeBuilder.setQuestion(question);
             return this;
         }
 
-        public QuestionAlternative build() {
-            return questionAlternative;
+        public Alternative build() {
+            return alternativeBuilder;
         }
     }
 }

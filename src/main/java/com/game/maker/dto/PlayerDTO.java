@@ -20,7 +20,7 @@ public class PlayerDTO {
     private UserDTO userDTO;
     private QuestionDTO currentPlayerQuestionDTO;
     private Long currentQuestionID;
-    private QuestionAlternativeDTO selectedQuestionAlternative;
+    private AlternativeDTO selectedQuestionAlternative;
 
     private Long selectedQuestionAlternativeID;
 

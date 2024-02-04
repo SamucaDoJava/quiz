@@ -1,6 +1,8 @@
 package com.game.maker.builder;
 
 import com.game.maker.dto.QuestionDTO;
+import com.game.maker.dto.QuestionDTO;
+import com.game.maker.model.Question;
 import com.game.maker.model.Question;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -26,14 +28,16 @@ public class QuestionMapper {
         return modelMapper.map(dto, Question.class);
     }
 
-    public List<QuestionDTO> toListDTO(List<Question> modelList) {
+
+    public ArrayList<QuestionDTO> toListDTO(List<Question> modelList) {
         return modelList.stream()
                 .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public List<Question> toList(List<QuestionDTO> dtosList) {
+    public ArrayList<Question> toList(List<QuestionDTO> dtosList) {
         return dtosList.stream()
                 .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
     }
+
 
 }

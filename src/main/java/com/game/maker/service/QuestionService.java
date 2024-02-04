@@ -1,15 +1,15 @@
 package com.game.maker.service;
 
 import com.game.maker.builder.QuestionMapper;
-import com.game.maker.dto.QuestionAlternativeDTO;
 import com.game.maker.dto.QuestionDTO;
 import com.game.maker.model.Question;
-import com.game.maker.model.QuestionAlternative;
+import com.game.maker.repository.AlternativeRepository;
 import com.game.maker.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -17,16 +17,14 @@ import java.util.NoSuchElementException;
 
 @Service
 public class QuestionService {
-    @Autowired
-    private QuestionRepository questionRepository;
 
-    @Autowired
-    private QuestionMapper questionMapper;
-
-
+    private @Autowired QuestionRepository questionRepository;
+    private @Autowired AlternativeRepository alternativeRepository;
+    private @Autowired QuestionMapper questionMapper;
     public List<QuestionDTO> findAll(){
         return questionMapper.toListDTO(questionRepository.findAll());
     }
+
 
     public QuestionDTO save(QuestionDTO questionDTO) {
         try {
@@ -39,21 +37,19 @@ public class QuestionService {
         }
     }
 
-    //TODO Ajustar o problema dos IDs no DTO filho questionAlternative não está fazendo por default o set question, foi colocado um teste da linha 46 a 49 remover apos ajustar o DTO.
-    public List<QuestionDTO> saveAll(List<QuestionDTO> questionList) {
+    @Transactional
+    public List<QuestionDTO> saveAll(List<QuestionDTO> questionDTOList) {
         try {
-            for(QuestionDTO questionDTO: questionList) {
-                for(QuestionAlternativeDTO questionAlternative: questionDTO.getQuestionAlternativeArrayList()){
-                    questionAlternative.setQuestion(questionDTO);
-                }
-            }
+            List<Question> questionsToSave = questionMapper.toList(questionDTOList);
+            List<Question> savedQuestions = questionRepository.saveAll(questionsToSave);
 
-            List<Question> questionListBefore = questionMapper.toList(questionList);
-            List<Question> savedAlternatives = questionRepository.saveAll(questionListBefore);
-
-            return questionMapper.toListDTO(savedAlternatives);
-        } catch (DataAccessException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, msgError("saveAll"), e);
+            savedQuestions.forEach(question -> {
+                question.getAlternativeList().forEach(alternative -> alternative.setQuestion(question));
+                alternativeRepository.saveAll(question.getAlternativeList());
+            });
+            return questionMapper.toListDTO(savedQuestions);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, msgError("saveAll"), ex);
         }
     }
 
@@ -72,7 +68,7 @@ public class QuestionService {
     }
 
     private String msgError(String method){
-        return "Ocorreu um erro em QuestionAlternativeService ao tentar fazer a operação no método: "  + method;
+        return "Ocorreu um erro em AlternativeService ao tentar fazer a operação no método: "  + method;
     }
 
 

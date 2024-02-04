@@ -24,11 +24,8 @@ public class Question {
     @Column(name = "resposta")
     private String response;
 
-    @Column(name = "id_alternativa_correta")
-    private Long correctQuestionAlternativeID;
-
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<QuestionAlternative> questionAlternativeArrayList = new ArrayList<>();
+    private List<Alternative> alternativeList = new ArrayList<>();
 
 
     public Question(){
@@ -70,21 +67,14 @@ public class Question {
         this.response = response;
     }
 
-    public Long getCorrectQuestionAlternativeID() {
-        return correctQuestionAlternativeID;
+    public List<Alternative> getAlternativeList() {
+        return alternativeList;
     }
 
-    public void setCorrectQuestionAlternativeID(Long correctQuestionAlternativeID) {
-        this.correctQuestionAlternativeID = correctQuestionAlternativeID;
+    public void setAlternativeList(List<Alternative> alternativeList) {
+        this.alternativeList = alternativeList;
     }
 
-    public List<QuestionAlternative> getQuestionAlternativeArrayList() {
-        return questionAlternativeArrayList;
-    }
-
-    public void setQuestionAlternativeArrayList(List<QuestionAlternative> questionAlternativeArrayList) {
-        this.questionAlternativeArrayList = questionAlternativeArrayList;
-    }
 
 
     @Override
@@ -94,8 +84,7 @@ public class Question {
                 ", theme='" + theme + '\'' +
                 ", question='" + question + '\'' +
                 ", response='" + response + '\'' +
-                ", correctQuestionAlternativeID=" + correctQuestionAlternativeID +
-                ", questionAlternativeArrayList=" + questionAlternativeArrayList +
+                ", alternativeArrayList=" + alternativeList +
                 '}';
     }
 
@@ -130,13 +119,8 @@ public class Question {
             return this;
         }
 
-        public Builder correctQuestionAlternativeID(Long correctQuestionAlternativeID) {
-            questionBuilder.setCorrectQuestionAlternativeID(correctQuestionAlternativeID);
-            return this;
-        }
-
-        public Builder questionAlternativeArrayList(ArrayList<QuestionAlternative> questionAlternativeArrayList) {
-            questionBuilder.setQuestionAlternativeArrayList(questionAlternativeArrayList);
+        public Builder questionAlternativeArrayList(ArrayList<Alternative> alternativeArrayList) {
+            questionBuilder.setAlternativeList(alternativeArrayList);
             return this;
         }
 

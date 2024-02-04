@@ -1,7 +1,7 @@
 package com.game.maker;
 
+import com.game.maker.model.Alternative;
 import com.game.maker.model.Question;
-import com.game.maker.model.QuestionAlternative;
 import com.game.maker.repository.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ class QuestionAlternativePersistenceTests {
     public void persistenceAlternatives() {
 
         Question question = createQuestionTest();
-        List<QuestionAlternative> questionAlternativeList = createQuestionAlternativeTest(question);
+        List<Alternative> alternativeList = createQuestionAlternativeTest(question);
 
-        question.setQuestionAlternativeArrayList(questionAlternativeList);
+        question.setAlternativeList(alternativeList);
         Question questionResponseDB = questionRepository.save(question);
 
         System.out.println("O nosso banco de dados retornou: " + questionResponseDB);
@@ -37,31 +37,31 @@ class QuestionAlternativePersistenceTests {
         return question;
     }
 
-    private List<QuestionAlternative> createQuestionAlternativeTest(Question question){
-        List<QuestionAlternative> alternativeList = new ArrayList<>();
+    private List<Alternative> createQuestionAlternativeTest(Question question){
+        List<Alternative> alternativeList = new ArrayList<>();
 
-        QuestionAlternative alternativeA = new QuestionAlternative();
+        Alternative alternativeA = new Alternative();
         alternativeA.setAlternative("A");
         alternativeA.setItsCorrect(true);
         alternativeA.setReference("O Senhor dos Anéis: O Retorno do Rei");
         alternativeA.setQuestion(question);
         alternativeList.add(alternativeA);
 
-        QuestionAlternative alternativeB = new QuestionAlternative();
+        Alternative alternativeB = new Alternative();
         alternativeB.setAlternative("B");
         alternativeB.setItsCorrect(false);
         alternativeB.setReference("Titanic");
         alternativeB.setQuestion(question);
         alternativeList.add(alternativeB);
 
-        QuestionAlternative alternativeC = new QuestionAlternative();
+        Alternative alternativeC = new Alternative();
         alternativeC.setAlternative("C");
         alternativeC.setItsCorrect(false);
         alternativeC.setReference("Ben-Hur");
         alternativeC.setQuestion(question);
         alternativeList.add(alternativeC);
 
-        QuestionAlternative alternativeD = new QuestionAlternative();
+        Alternative alternativeD = new Alternative();
         alternativeD.setAlternative("D");
         alternativeD.setItsCorrect(false);
         alternativeD.setReference("Gandhi");

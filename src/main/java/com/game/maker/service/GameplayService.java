@@ -1,6 +1,6 @@
 package com.game.maker.service;
 
-import com.game.maker.builder.QuestionAlternativeMapper;
+import com.game.maker.builder.AlternativeMapper;
 import com.game.maker.builder.QuestionMapper;
 import com.game.maker.dto.PlayerDTO;
 import com.game.maker.dto.QuestionDTO;
@@ -25,7 +25,7 @@ public class GameplayService {
     private QuestionMapper questionMapper;
 
     @Autowired
-    private QuestionAlternativeMapper questionAlternativeMapper;
+    private AlternativeMapper alternativeMapper;
 
 
     /**Inicia a gameplay dando start o jogo Quiz para um usuário. */

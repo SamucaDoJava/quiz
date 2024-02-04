@@ -1,5 +1,7 @@
 package com.game.maker.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +13,23 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class QuestionDTO {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("theme")
     private String theme;
+
+    @JsonProperty("question")
     private String question;
+
+    @JsonProperty("response")
     private String response;
-    private Long correctQuestionAlternativeID;
-    private ArrayList<QuestionAlternativeDTO> questionAlternativeArrayList = new ArrayList<>();
+
+    @JsonProperty("alternativeList")
+    private ArrayList<AlternativeDTO> alternativeList = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -27,7 +38,6 @@ public class QuestionDTO {
                 "\ntheme = " + theme +
                 "\nquestion = " + question +
                 "\nresponse = " + response +
-                "\ncorrectQuestionAlternativeID = " + correctQuestionAlternativeID +
-                "\nquestionAlternativeDTOArrayList = " + questionAlternativeArrayList;
+                "\nquestionAlternativeDTOArrayList = " + alternativeList;
     }
 }
