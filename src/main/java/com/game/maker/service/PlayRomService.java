@@ -106,8 +106,6 @@ public class PlayRomService {
             //Qualquer outra exception cai aqui!
             ex.printStackTrace();
         }
-
-
         return null;
     }
 
