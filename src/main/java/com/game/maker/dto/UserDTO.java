@@ -19,6 +19,14 @@ public class UserDTO {
     private String email;
     private String password;
 
+    public UserDTO(String name, String fullName, Integer age, String email, String password) {
+        this.name = name;
+        this.fullName = fullName;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "\n\nUser:" +

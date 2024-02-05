@@ -3,7 +3,7 @@ package com.game.maker.service;
 import com.game.maker.builder.UserMapper;
 import com.game.maker.dto.UserDTO;
 import com.game.maker.model.User;
-import com.game.maker.repository.temp.UserRepository;
+import com.game.maker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
