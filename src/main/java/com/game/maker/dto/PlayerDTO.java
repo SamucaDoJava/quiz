@@ -17,21 +17,15 @@ public class PlayerDTO {
     private String nickName;
     private Integer score;
     private String theme;
-    private UserDTO userDTO;
+    private Long userId;
     private QuestionDTO currentPlayerQuestionDTO;
-    private Long currentQuestionID;
-    private AlternativeDTO selectedQuestionAlternative;
-
     private Long selectedQuestionAlternativeID;
 
-    private List<QuestionDTO> playerQuestionsDTOList;
-
-
-    public PlayerDTO(String nickName, Integer score, String theme, UserDTO userDTO) {
+    public PlayerDTO(String nickName, Integer score, String theme, Long userId) {
         this.nickName = nickName;
         this.score = score;
         this.theme = theme;
-        this.userDTO = userDTO;
+        this.userId = userId;
     }
 
     @Override
@@ -39,11 +33,8 @@ public class PlayerDTO {
         return "\n\nPlayerDTO - id: " + id +
                 "\nNickName='" + nickName +
                 "\nScore=" + score +
-                "\nUserDTO=" + userDTO +
                 "\nTheme=" + theme +
                 "\nCurrent Question: " + currentPlayerQuestionDTO +
-                "\nSelectedQuestionAlternative: " + selectedQuestionAlternative +
-                "\ncurrentQuestionID: " + currentQuestionID +
                 "\nselectedQuestionAlternativeID = " + selectedQuestionAlternativeID;
     }
 }

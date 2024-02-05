@@ -19,7 +19,7 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public UserDTO findUserById(Long id){
+    public UserDTO findUserById(Long id) {
         User user = userRepository.findUserById(id).orElse(null);
         return (user != null) ? userMapper.toDTO(user) : null;
     }

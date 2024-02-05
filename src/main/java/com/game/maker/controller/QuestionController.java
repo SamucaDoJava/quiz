@@ -29,7 +29,7 @@ public class QuestionController {
         return questionService.saveAll(questionDTOList);
     }
 
-    @GetMapping
+    @GetMapping("find-all")
     public List<QuestionDTO> findAllQuestions() {
         return questionService.findAll();
     }

@@ -1,11 +1,13 @@
 package com.game.maker.controller;
 
 import com.game.maker.dto.GameplaySessionDTO;
-import com.game.maker.dto.PlayerDTO;
+import com.game.maker.dto.PlayerSessionDTO;
 import com.game.maker.dto.QuestionDTO;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/gameplay")
@@ -15,21 +17,29 @@ public class GameplayController {
     private GameplayService gameplayService;
 
 
-    @PostMapping("/start")
-    public PlayerDTO startGameplay(@RequestBody GameplaySessionDTO gameplayDTO) {
-        System.out.println("pause start gameplay");
-        return gameplayService.startQuizGameplay(gameplayDTO.getNickName(), gameplayDTO.getTheme(), gameplayDTO.getUserDTO());
+    @PostMapping("/add-player-to-rom-by-theme")
+    public GameplaySessionDTO addPlayerToRomTheme(@RequestBody PlayerSessionDTO playerSessionDTO){
+        return gameplayService.addPlayerToRomService(playerSessionDTO);
     }
 
-    @GetMapping("/question/{id}")
-    public QuestionDTO findPlayerQuestionByID(@PathVariable Long id){
-        return gameplayService.findPlayerQuestionAndAlternativesByQuestionId(id);
+    @GetMapping("/enter-rom-by-theme/{userId}/{theme}")
+    public void startGameplay(@PathVariable Long userId, @PathVariable String theme) {
+       gameplayService.enterRoomAndPlay(userId, theme);
     }
 
-    @GetMapping("/generate-question")
-    public QuestionDTO generateQuestion(){
-        return gameplayService.generateQuestion();
+    @GetMapping("/active-sessions")
+    public List<GameplaySessionDTO> activeSessions(){
+        return gameplayService.getActiveSessions();
     }
+
+    @GetMapping("/find-sessions-by/{theme}")
+    public List<GameplaySessionDTO> activeSessions(@PathVariable String theme) {
+        return gameplayService.getGameplaySessionByTheme(theme);
+    }
+
+
+
+
 
  }
 

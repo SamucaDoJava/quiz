@@ -3,12 +3,9 @@ package com.game.maker.model;
 public class Player {
 
     private Long id;
-
     private String nickName;
     private Integer score;
-
     private String theme;
-
     private User user;
 
 
@@ -106,13 +103,12 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", nickName='" + nickName + '\'' +
-                ", score=" + score +
-                ", theme='" + theme + '\'' +
-                ", user=" + user +
-                '}';
+        return "Player" +
+                "\nid=" + id +
+                "\nnickName='" + nickName +
+                "\nscore=" + score +
+                "\ntheme='" + theme +
+                "\nuser=" + user;
     }
 
 }

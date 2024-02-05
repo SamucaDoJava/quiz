@@ -71,6 +71,22 @@ public class QuestionService {
         }
     }
 
+    public List<QuestionDTO> findByTheme(String theme) {
+        try {
+            List<Question> questions = questionRepository.findByTheme(theme);
+
+            if (questions.isEmpty()) {
+                throw new NoSuchElementException("Nenhuma QuestionDTO encontrada para o tema: " + theme);
+            }
+            return questionMapper.toListDTO(questions);
+        } catch (DataAccessException ex) {
+            ex.printStackTrace(); // Logar a exceção de alguma maneira apropriada
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Ocorreu um erro ao tentar recuperar a QuestionDTO na consulta findByTheme", ex);
+        }
+    }
+
     private String msgError(String method){
         return "Ocorreu um erro em AlternativeService ao tentar fazer a operação no método: "  + method;
     }

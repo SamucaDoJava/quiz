@@ -27,6 +27,10 @@ public class User {
     @Column(name = "senha")
     private String password;
 
+    @Column(name = "apelido")
+    private String nickName;
+
+
     public User() {
 
     }
@@ -85,6 +89,13 @@ public class User {
         this.password = password;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public static final class Builder {
         private User user;
@@ -127,8 +138,25 @@ public class User {
             return this;
         }
 
+        public Builder nickName(String nickName) {
+            user.setNickName(nickName);
+            return this;
+        }
+
         public User build() {
             return user;
         }
     }
+
+    @Override
+    public String toString() {
+        return "\n\nUser:" +
+                "\nname= " + name +
+                "\nfullName= " + fullName +
+                "\nage= " + age +
+                "\nemail= " + email +
+                "\npassword= " + password +
+                "\nnickName= " + nickName;
+    }
+
 }
