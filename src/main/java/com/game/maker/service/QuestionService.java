@@ -30,10 +30,11 @@ public class QuestionService {
         try {
             Question questionEntity = questionRepository.save(questionMapper.toEntity(questionDTO));
             return questionMapper.toDTO(questionEntity);
-        } catch (DataAccessException e) {
+        } catch (DataAccessException ex) {
+            ex.getStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Ocorreu um erro ao tentar salvar a QuestionDTO",e);
+                    "Ocorreu um erro ao tentar salvar a QuestionDTO",ex);
         }
     }
 
@@ -43,12 +44,14 @@ public class QuestionService {
             List<Question> questionsToSave = questionMapper.toList(questionDTOList);
             List<Question> savedQuestions = questionRepository.saveAll(questionsToSave);
 
+            System.out.println("Iniciando leitura das alternativas de cada questão para em cada alternativa inserir a propria questão. Só assim o hibernate vai saber inserir os dados do id da questão em alternativa.");
             savedQuestions.forEach(question -> {
                 question.getAlternativeList().forEach(alternative -> alternative.setQuestion(question));
                 alternativeRepository.saveAll(question.getAlternativeList());
             });
             return questionMapper.toListDTO(savedQuestions);
         } catch (Exception ex) {
+            ex.getStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, msgError("saveAll"), ex);
         }
     }
@@ -60,10 +63,11 @@ public class QuestionService {
                             new NoSuchElementException(
                                     "A QuestionDTO com o ID fornecido não foi encontrada"));
             return questionMapper.toDTO(question);
-        } catch (DataAccessException e) {
+        } catch (DataAccessException ex) {
+            ex.getStackTrace();
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Ocorreu um erro ao tentar recuperar a QuestionDTO na consulta findById", e);
+                    "Ocorreu um erro ao tentar recuperar a QuestionDTO na consulta findById", ex);
         }
     }
 

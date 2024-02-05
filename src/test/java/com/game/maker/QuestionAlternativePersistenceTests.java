@@ -33,7 +33,6 @@ class QuestionAlternativePersistenceTests {
         Question question = new Question();
         question.setTheme("Cinema");
         question.setQuestion("Qual é o filme mais premiado da história do Oscar?");
-        question.setResponse("O Senhor dos Anéis: O Retorno do Rei");
         return question;
     }
 
@@ -43,28 +42,28 @@ class QuestionAlternativePersistenceTests {
         Alternative alternativeA = new Alternative();
         alternativeA.setAlternative("A");
         alternativeA.setItsCorrect(true);
-        alternativeA.setReference("O Senhor dos Anéis: O Retorno do Rei");
+        alternativeA.setReferenceLetter("O Senhor dos Anéis: O Retorno do Rei");
         alternativeA.setQuestion(question);
         alternativeList.add(alternativeA);
 
         Alternative alternativeB = new Alternative();
         alternativeB.setAlternative("B");
         alternativeB.setItsCorrect(false);
-        alternativeB.setReference("Titanic");
+        alternativeB.setReferenceLetter("Titanic");
         alternativeB.setQuestion(question);
         alternativeList.add(alternativeB);
 
         Alternative alternativeC = new Alternative();
         alternativeC.setAlternative("C");
         alternativeC.setItsCorrect(false);
-        alternativeC.setReference("Ben-Hur");
+        alternativeC.setReferenceLetter("Ben-Hur");
         alternativeC.setQuestion(question);
         alternativeList.add(alternativeC);
 
         Alternative alternativeD = new Alternative();
         alternativeD.setAlternative("D");
         alternativeD.setItsCorrect(false);
-        alternativeD.setReference("Gandhi");
+        alternativeD.setReferenceLetter("Gandhi");
         alternativeD.setQuestion(question);
         alternativeList.add(alternativeD);
 

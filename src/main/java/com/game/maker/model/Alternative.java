@@ -16,8 +16,8 @@ public class Alternative {
     @Column(name = "correta")
     private Boolean itsCorrect;
 
-    @Column(name = "referencia")
-    private String reference;
+    @Column(name = "letra-referencia")
+    private String referenceLetter;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_questao")
@@ -28,24 +28,24 @@ public class Alternative {
 
     }
 
-    public Alternative(String reference, String alternative, Boolean itsCorrect) {
+    public Alternative(String referenceLetter, String alternative, Boolean itsCorrect) {
         this.alternative = alternative;
         this.itsCorrect = itsCorrect;
-        this.reference = reference;
+        this.referenceLetter = referenceLetter;
     }
 
     public Alternative(Long id, String reference, String alternative, Boolean itsCorrect) {
         this.id = id;
         this.alternative = alternative;
         this.itsCorrect = itsCorrect;
-        this.reference = reference;
+        this.referenceLetter = referenceLetter;
     }
 
-    public Alternative(Long id, String alternative, Boolean itsCorrect, String reference, Question question) {
+    public Alternative(Long id, String alternative, Boolean itsCorrect, String referenceLetter, Question question) {
         this.id = id;
         this.alternative = alternative;
         this.itsCorrect = itsCorrect;
-        this.reference = reference;
+        this.referenceLetter = referenceLetter;
         this.question = question;
     }
 
@@ -76,12 +76,12 @@ public class Alternative {
     }
 
 
-    public String getReference() {
-        return reference;
+    public String getReferenceLetter() {
+        return referenceLetter;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setReferenceLetter(String referenceLetter) {
+        this.referenceLetter = referenceLetter;
     }
 
     public Question getQuestion() {
@@ -97,7 +97,7 @@ public class Alternative {
     public String toString() {
         return "Alternative: " +
                 "---> id= " + id +
-                "---> Reference= " + reference +
+                "---> ReferenceLetter= " + referenceLetter +
                 "---> Alternative= " + alternative;
     }
 
@@ -128,8 +128,8 @@ public class Alternative {
             return this;
         }
 
-        public Builder reference(String reference) {
-            alternativeBuilder.setReference(reference);
+        public Builder reference(String referenceLetter) {
+            alternativeBuilder.setReferenceLetter(referenceLetter);
             return this;
         }
 

@@ -25,9 +25,6 @@ public class QuestionDTO {
     @JsonProperty("question")
     private String question;
 
-    @JsonProperty("response")
-    private String response;
-
     @JsonProperty("alternativeList")
     private ArrayList<AlternativeDTO> alternativeList = new ArrayList<>();
 
@@ -37,7 +34,6 @@ public class QuestionDTO {
                 "\nid = " + id +
                 "\ntheme = " + theme +
                 "\nquestion = " + question +
-                "\nresponse = " + response +
                 "\nquestionAlternativeDTOArrayList = " + alternativeList;
     }
 }

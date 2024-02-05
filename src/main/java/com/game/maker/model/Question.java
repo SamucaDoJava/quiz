@@ -21,9 +21,6 @@ public class Question {
     @Column(name = "pergunta")
     private String question;
 
-    @Column(name = "resposta")
-    private String response;
-
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Alternative> alternativeList = new ArrayList<>();
 
@@ -59,14 +56,6 @@ public class Question {
         this.question = question;
     }
 
-    public String getResponse() {
-        return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
-    }
-
     public List<Alternative> getAlternativeList() {
         return alternativeList;
     }
@@ -83,7 +72,6 @@ public class Question {
                 "id=" + id +
                 ", theme='" + theme + '\'' +
                 ", question='" + question + '\'' +
-                ", response='" + response + '\'' +
                 ", alternativeArrayList=" + alternativeList +
                 '}';
     }
@@ -111,11 +99,6 @@ public class Question {
 
         public Builder question(String question) {
             questionBuilder.setQuestion(question);
-            return this;
-        }
-
-        public Builder response(String response) {
-            questionBuilder.setResponse(response);
             return this;
         }
 

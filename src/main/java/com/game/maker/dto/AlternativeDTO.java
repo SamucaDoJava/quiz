@@ -2,7 +2,6 @@ package com.game.maker.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,20 +23,20 @@ public class AlternativeDTO {
     @JsonProperty("itsCorrect")
     private Boolean itsCorrect;
 
-    @JsonProperty("reference")
-    private String reference;
+    @JsonProperty("referenceLetter")
+    private String referenceLetter;
 
-    @Column(name = "id_questao")
+    @JsonProperty("questionId")
     private Long questionId;
 
     @Override
     public String toString() {
         return "Alternative: " +
                 "---> id= " + id +
-                "---> Reference= " + reference +
+                "---> Reference= " + referenceLetter +
                 "---> isCorrect= " + itsCorrect +
                 "---> Alternative= " + alternative +
-                "---> Id questao=";
+                "---> Question Id= " + questionId;
     }
     
 }

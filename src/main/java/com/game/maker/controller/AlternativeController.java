@@ -2,7 +2,6 @@ package com.game.maker.controller;
 
 import com.game.maker.dto.AlternativeDTO;
 import com.game.maker.dto.ValidateAlternativeDTO;
-import com.game.maker.model.Alternative;
 import com.game.maker.service.AlternativeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/question-alternative")
+@RequestMapping("/alternative")
 public class AlternativeController {
 
     @Autowired
@@ -28,13 +27,13 @@ public class AlternativeController {
     }
 
     @PostMapping("save")
-    public AlternativeDTO save(@RequestBody Alternative alternative){
-        return alternativeService.save(alternative);
+    public AlternativeDTO save(@RequestBody AlternativeDTO alternativeDTO){
+        return alternativeService.save(alternativeDTO);
     }
 
     @PostMapping("save/list")
-    public List<AlternativeDTO> save(@RequestBody List<Alternative> alternativeList){
-        return alternativeService.saveAll(alternativeList);
+    public List<AlternativeDTO> save(@RequestBody List<AlternativeDTO> alternativeDTOList){
+        return alternativeService.saveAll(alternativeDTOList);
     }
 
     @GetMapping("/question-id/{id}")
