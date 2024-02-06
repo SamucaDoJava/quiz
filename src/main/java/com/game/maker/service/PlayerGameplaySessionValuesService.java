@@ -53,7 +53,6 @@ public class PlayerGameplaySessionValuesService {
             List<PlayerGameplaySessionValues> savedPlayerGameplaySessionValues = playerGameplaySessionValuesRepository.saveAll(playerGameplaySessionValuesToSave);
 
             // Lógica adicional conforme necessário
-
             return playerGameplaySessionValuesMapper.toListDTO(savedPlayerGameplaySessionValues);
         } catch (Exception ex) {
             ex.printStackTrace();

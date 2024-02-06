@@ -4,13 +4,18 @@ import com.game.maker.builder.UserMapper;
 import com.game.maker.dto.UserDTO;
 import com.game.maker.model.User;
 import com.game.maker.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class UserService {
+
+    private final Logger LOGGER = LogManager.getLogger(UserService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -20,6 +25,7 @@ public class UserService {
 
 
     public UserDTO findUserById(Long id) {
+        LOGGER.debug("Iniciando a busca por id do id: [{}] do usuário", id);
         User user = userRepository.findUserById(id).orElse(null);
         return (user != null) ? userMapper.toDTO(user) : null;
     }
