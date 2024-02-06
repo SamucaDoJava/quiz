@@ -1,5 +1,6 @@
 package com.game.maker.dto;
 
+import com.game.maker.model.GameplaySessionPlayerQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,8 @@ public class PlayerGameplaySessionValuesDTO {
 
     private Long score;
 
-    private Boolean sessionEnd;
+    private Boolean sessionActivated;
 
-    private List<Long> questionIdList = new ArrayList<>();
-
+    private List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestionList = new ArrayList<>();
 
 }

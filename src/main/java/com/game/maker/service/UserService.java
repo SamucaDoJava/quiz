@@ -25,7 +25,7 @@ public class UserService {
 
 
     public UserDTO findUserById(Long id) {
-        LOGGER.debug("Iniciando a busca por id do id: [{}] do usuário", id);
+        LOGGER.info("Iniciando a busca por id do id: [{}] do usuário", id);
         User user = userRepository.findUserById(id).orElse(null);
         return (user != null) ? userMapper.toDTO(user) : null;
     }

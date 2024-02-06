@@ -20,29 +20,19 @@ public class PlayerGameplaySessionValues {
     @Column(name = "pontuacao")
     private Long score;
 
-    @Column(name = "sessao_encerrada")
-    private Boolean sessionEnd;
+    @Column(name = "sessao_ativada")
+    private Boolean sessionActivated;
 
-    @ElementCollection
-    @CollectionTable(name = "tb_sessao_jogador_questao", joinColumns = @JoinColumn(name = "sessao_jogador_id"))
-    @Column(name = "questao_id")
-    private List<Long> questionIdList = new ArrayList<>();
+    @OneToMany(mappedBy = "playerGameplaySession", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestions = new ArrayList<>();
 
-    //@ManyToOne
-    //@JoinColumn(name = "questao_id", referencedColumnName = "id", insertable = false, updatable = false)
-    // private Question question;
+
 
     public PlayerGameplaySessionValues() {
 
     }
 
-    public PlayerGameplaySessionValues(Long id, Long userId, Long score, Boolean sessionEnd, List<Long> questionIdList) {
-        this.id = id;
-        this.userId = userId;
-        this.score = score;
-        this.sessionEnd = sessionEnd;
-        this.questionIdList = questionIdList;
-    }
+
 
     public Long getId() {
         return id;
@@ -68,31 +58,30 @@ public class PlayerGameplaySessionValues {
         this.score = score;
     }
 
-    public Boolean getSessionEnd() {
-        return sessionEnd;
+    public Boolean getSessionActivated() {
+        return sessionActivated;
     }
 
-    public void setSessionEnd(Boolean sessionEnd) {
-        this.sessionEnd = sessionEnd;
+    public void setSessionActivated(Boolean sessionActivated) {
+        this.sessionActivated = sessionActivated;
     }
 
-    public List<Long> getQuestionIdList() {
-        return questionIdList;
+    public List<GameplaySessionPlayerQuestion> getPlayerGameplaySessionQuestions() {
+        return gameplaySessionPlayerQuestions;
     }
 
-    public void setQuestionIdList(List<Long> questionIdList) {
-        this.questionIdList = questionIdList;
+    public void setPlayerGameplaySessionQuestions(List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestions) {
+        this.gameplaySessionPlayerQuestions = gameplaySessionPlayerQuestions;
     }
 
     @Override
     public String toString() {
-        return "PlayerGameplaySessionValues{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", score=" + score +
-                ", sessionEnd=" + sessionEnd +
-                ", questionIdList=" + questionIdList +
-                '}';
+        return "\nPlayerGameplaySessionValues{" +
+                "\nid=" + id +
+                "\nuserId=" + userId +
+                "\nscore=" + score +
+                "\nsessionActivated=" + sessionActivated +
+                "\ngameplaySessionPlayerQuestions= " + gameplaySessionPlayerQuestions;
     }
 
     public static final class Builder {
@@ -121,13 +110,13 @@ public class PlayerGameplaySessionValues {
             return this;
         }
 
-        public Builder sessionEnd(Boolean sessionEnd) {
-            playerGameplaySessionValues.setSessionEnd(sessionEnd);
+        public Builder sessionEnd(Boolean sessionActivated) {
+            playerGameplaySessionValues.setSessionActivated(sessionActivated);
             return this;
         }
 
-        public Builder questionIdList(List<Long> questionIdList) {
-            playerGameplaySessionValues.setQuestionIdList(questionIdList);
+        public Builder playerGameplaySessionQuestions(List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestions) {
+            playerGameplaySessionValues.setPlayerGameplaySessionQuestions(gameplaySessionPlayerQuestions);
             return this;
         }
 

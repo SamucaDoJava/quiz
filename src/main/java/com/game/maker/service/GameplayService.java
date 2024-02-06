@@ -11,25 +11,35 @@ import java.util.List;
 public class GameplayService {
 
     @Autowired
-    private PlayRomService playRomService;
+    private PlayRoomService playRoomService;
 
 
     /**Anter de jogar a gameplay, é necessário adicionar o jogador em uma sala, especifique o tema!*/
     public GameplaySessionDTO addPlayerToRomService(PlayerSessionDTO playerSessionDTO) {
-        return playRomService.addPlayerToRoomService(playerSessionDTO);
+        return playRoomService.addPlayerToRoomService(playerSessionDTO);
     }
 
-    /**Agora com o nosso usuário já inserido na sala, vamos de fato jogar, entrando na sala e obtendo uma questão filtrada pelo tema da sala*/
-    public void enterRoomAndPlay(Long userId, String theme) {
-        playRomService.enterRomAndPlay(userId, theme);
+    /**Agora com o nosso usuário já inserido na sala, vamos gerar uma sessão com questões vinculadas ao seu id de usuário
+     * score e outros atributos, é aqui que o jogo está sendo montado. */
+    public InGameSessionDTO generateSessionQuestionsForPlayer(Long userId, String theme) {
+       return playRoomService.generateSessionQuestionsForPlayer(userId, theme);
     }
 
     public List<GameplaySessionDTO> getActiveSessions() {
-        return playRomService.getAllGameplaySession();
+        return playRoomService.getAllGameplaySession();
     }
 
     public List<GameplaySessionDTO> getGameplaySessionByTheme(String theme) {
-        GameplaySessionDTO session = playRomService.getGameplaySessionByTheme(theme).orElse(null);
+        GameplaySessionDTO session = playRoomService.getGameplaySessionByTheme(theme).orElse(null);
         return session != null ? Collections.singletonList(session) : Collections.emptyList();
     }
+
+    public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(InGameSessionDTO inGameSessionDTO){
+        return playRoomService.findRandomQuestionActiveInPlayerSession(inGameSessionDTO);
+    }
+
+    public InGameAlternativeResponse validateAlternativeSession(Long gameplaySessionId, String selectedAlternative){
+        return playRoomService.validatePLayerQuestionAlternative(gameplaySessionId, selectedAlternative);
+    }
+
 }

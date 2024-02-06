@@ -1,8 +1,6 @@
 package com.game.maker.controller;
 
-import com.game.maker.dto.GameplaySessionDTO;
-import com.game.maker.dto.PlayerSessionDTO;
-import com.game.maker.dto.QuestionDTO;
+import com.game.maker.dto.*;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +20,9 @@ public class GameplayController {
         return gameplayService.addPlayerToRomService(playerSessionDTO);
     }
 
-    @GetMapping("/enter-rom-by-theme/{userId}/{theme}")
-    public void startGameplay(@PathVariable Long userId, @PathVariable String theme) {
-       gameplayService.enterRoomAndPlay(userId, theme);
+    @GetMapping("/load-player-questions-into-room-by-theme/{userId}/{theme}")
+    public InGameSessionDTO loadPlayerQuestionIntoRoomByTheme(@PathVariable Long userId, @PathVariable String theme) {
+       return gameplayService.generateSessionQuestionsForPlayer(userId, theme);
     }
 
     @GetMapping("/active-sessions")
@@ -37,9 +35,15 @@ public class GameplayController {
         return gameplayService.getGameplaySessionByTheme(theme);
     }
 
+    @PostMapping("/find-random-question-active-in-player-session")
+    public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(@RequestBody InGameSessionDTO inGameSessionDTO) {
+        return gameplayService.findRandomQuestionActiveInPlayerSession(inGameSessionDTO);
+    }
 
-
-
+    @GetMapping("/validate-question-its-correct/{gameplaySessionId}/{selectedAlternative}")
+    public InGameAlternativeResponse validateSessionAlternative(@PathVariable Long gameplaySessionId, @PathVariable String selectedAlternative) {
+        return gameplayService.validateAlternativeSession(gameplaySessionId, selectedAlternative);
+    }
 
  }
 
