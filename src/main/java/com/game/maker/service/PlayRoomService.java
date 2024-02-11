@@ -150,36 +150,39 @@ public class PlayRoomService {
         } else {
             LOGGER.info("Foi encontrada um id válido de sessão para o usuário, a sessão encontrada foi: [{}] Iniciando filtro de alternativas", gameplaySessionPlayerQuestion);
             currentSessionAlternativeList = gameplaySessionPlayerQuestion.getQuestion().getAlternativeList();
+            Optional<Alternative> correctSessionAlternative = getCorrectSessionAlternative(currentSessionAlternativeList);
 
+            if (correctSessionAlternative.isPresent()) {
+                if (isCorrectAlternative(correctSessionAlternative, selectedAlternative)) {
+                    inGameAlternativeResponse.setPlayerPunctuation(100L);
+                    gameplaySessionPlayerQuestion.setPlayerWin(true);
+                    LOGGER.info("O jogador venceu! E ganhou pontos na sua sessão! Alternativa selecionada: [{}]", selectedAlternative);
+                    inGameAlternativeResponse.setPlayerMessage("O jogador venceu! E ganhou pontos na sua sessão!");
+                } else {
+                    inGameAlternativeResponse.setPlayerPunctuation(0L);
+                    gameplaySessionPlayerQuestion.setPlayerWin(false);
+                    LOGGER.info("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+                    inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+                }
+                inGameAlternativeResponse.setCorrectAlternative(correctSessionAlternative.get().getAlternative() + " - " + correctSessionAlternative.get().getReferenceLetter());
+                inGameAlternativeResponse.setSelectedAlternative(selectedAlternative);
 
-            // Caso a alternativa passada pelo usuário seja correta, será retornado uma posição com a alternativa correta se a alternativa for errada retorna lista vazia.
-            Optional<Alternative> correctSessionAlternative = currentSessionAlternativeList.stream()
-                    .filter(Alternative::getItsCorrect)
-                    .findFirst();
-
-            if (isCorrectAlternative(correctSessionAlternative, selectedAlternative)) {
-                inGameAlternativeResponse.setPlayerPunctuation(100L);
-                gameplaySessionPlayerQuestion.setPlayerWin(true);
-                LOGGER.info("O jogador venceu! E ganhou pontos na sua sessão!");
-                inGameAlternativeResponse.setPlayerMessage("O jogador venceu! E ganhou pontos na sua sessão!");
-            } else {
-                inGameAlternativeResponse.setPlayerPunctuation(0L);
-                gameplaySessionPlayerQuestion.setPlayerWin(false);
-                LOGGER.info("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
-                inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+                gameplaySessionPlayerQuestion.setQuestionIsActive(false);
+                gameplaySessionPlayerQuestion.setWasPlayed(true);
+                this.gameplaySessionPlayerQuestionService.save(gameplaySessionPlayerQuestion);
             }
-            inGameAlternativeResponse.setCorrectAlternative();
-            inGameAlternativeResponse.setSelectedAlternative(selectedAlternative);
-
-            gameplaySessionPlayerQuestion.setQuestionIsActive(false);
-            gameplaySessionPlayerQuestion.setWasPlayed(true);
-            this.gameplaySessionPlayerQuestionService.save(gameplaySessionPlayerQuestion);
         }
         return inGameAlternativeResponse;
     }
 
-    /***/
+    private Optional<Alternative> getCorrectSessionAlternative(List<Alternative> currentSessionAlternativeList){
+        return currentSessionAlternativeList.stream()
+                .filter(Alternative::getItsCorrect)
+                .findFirst();
+    }
+
     private boolean isCorrectAlternative(Optional<Alternative> correctSessionAlternative, String selectedAlternative) {
+        LOGGER.info("Foi encontrada uma alvernativa para a sessão, agora será validada se a alternativa condiz com a alternative selecionada que é [{}] ", selectedAlternative);
         return correctSessionAlternative.map(alternative -> alternative.getAlternative().equals(selectedAlternative)).orElse(false);
     }
 
@@ -193,8 +196,7 @@ public class PlayRoomService {
         return playerGameplaySessionValuesDTO;
     }
 
-    private static void addValuesIntoInGameQuestionAndAlternativesDTO(
-            com.game.maker.model.GameplaySessionPlayerQuestion gameplaySessionPlayerQuestion, InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO) {
+    private static void addValuesIntoInGameQuestionAndAlternativesDTO(GameplaySessionPlayerQuestion gameplaySessionPlayerQuestion, InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO) {
 
         List<Alternative> alternativesListedIntoOneQuestionOfSession = gameplaySessionPlayerQuestion.getQuestion().getAlternativeList();
         List<InGameAlternativeDTO> inGameAlternativeDTOList = new ArrayList<>();
