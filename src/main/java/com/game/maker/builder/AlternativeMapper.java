@@ -27,14 +27,14 @@ public class AlternativeMapper {
     }
 
 
-    public ArrayList<AlternativeDTO> toListDTO(List<Alternative> modelList) {
+    public List<AlternativeDTO> toListDTO(List<Alternative> modelList) {
         return modelList.stream()
-                .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
+                .map(this::toDTO).collect(Collectors.toList());
     }
 
-    public ArrayList<Alternative> toList(List<AlternativeDTO> dtosList) {
+    public List<Alternative> toList(List<AlternativeDTO> dtosList) {
         return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
+                .map(this::toEntity).collect(Collectors.toList());
     }
 
 }

@@ -26,12 +26,12 @@ public class UserMapper {
         return modelMapper.map(dto, User.class);
     }
 
-    public ArrayList<UserDTO> toListDTO(List<User> modelList) {
+    public List<UserDTO> toListDTO(List<User> modelList) {
         return modelList.stream()
                 .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public ArrayList<User> toList(List<UserDTO> dtosList) {
+    public List<User> toList(List<UserDTO> dtosList) {
         return dtosList.stream()
                 .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
     }
