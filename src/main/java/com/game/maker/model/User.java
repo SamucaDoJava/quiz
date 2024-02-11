@@ -3,12 +3,13 @@ package com.game.maker.model;
 
 import jakarta.persistence.*;
 
+@SequenceGenerator(name = "tb_usuario_seq", allocationSize = 1)
 @Entity
 @Table(name = "tb_usuario")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_usuario_seq")
     @Column(name = "id")
     private Long id;
 

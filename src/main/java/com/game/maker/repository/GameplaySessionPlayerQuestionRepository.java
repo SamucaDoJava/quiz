@@ -19,7 +19,7 @@ public interface GameplaySessionPlayerQuestionRepository extends JpaRepository<G
     @Query("SELECT pq FROM GameplaySessionPlayerQuestion pq " +
             "WHERE pq.wasPlayed = false " +
             "AND pq.questionIsActive = true " +
-             "AND pq.playerGameplaySession.id = :sessionId")
+            "AND pq.playerGameplaySession.id = :sessionId")
     GameplaySessionPlayerQuestion findActiveQuestion(@Param("sessionId") Long sessionId);
 
 }

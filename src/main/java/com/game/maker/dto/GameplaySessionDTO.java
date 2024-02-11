@@ -24,7 +24,7 @@ public class GameplaySessionDTO {
     @Schema(hidden = true)
     private List<PlayerDTO> playerDTOList = new ArrayList<>();
 
-    public GameplaySessionDTO(String nickName, String theme, PlayerDTO playerDTO) {
+    public GameplaySessionDTO(String theme, PlayerDTO playerDTO) {
         this.theme = theme;
         this.playerDTOList.add(playerDTO);
     }

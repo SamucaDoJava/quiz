@@ -2,12 +2,13 @@ package com.game.maker.model;
 
 import jakarta.persistence.*;
 
+@SequenceGenerator(name = "tb_sessao_jogador_questao_seq", allocationSize = 1)
 @Entity
 @Table(name = "tb_sessao_jogador_questao")
 public class GameplaySessionPlayerQuestion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_jogador_questao_seq")
     private Long id;
 
     @ManyToOne

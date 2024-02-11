@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SequenceGenerator(name = "tb_sessao_jogador_seq", allocationSize = 1)
 @Entity
 @Table(name = "tb_sessao_jogador")
 public class PlayerGameplaySessionValues {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_jogador_seq")
     private Long id;
 
     @Column(name = "usuario_id")

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PlayRoomService {
@@ -39,9 +38,11 @@ public class PlayRoomService {
 
     private @Autowired AlternativeService alternativeService;
 
-    /**Adiciona o Player a uma sala filtrada pelo tema escolhido, caso o tema escolhido não tenha
+    /**
+     * Adiciona o Player a uma sala filtrada pelo tema escolhido, caso o tema escolhido não tenha
      * ninguém na sala, uma sala será criada e guardada em memória com o player adicionado, mas só
-     * ser o usuário e tema escolhido for válido! userId  e theme */
+     * ser o usuário e tema escolhido for válido! userId  e theme
+     */
     public GameplaySessionDTO addPlayerToRoomService(PlayerSessionDTO playerSessionDTO) throws UserNotFoundException {
         String theme = playerSessionDTO.getTheme();
         Long userId = playerSessionDTO.getUserId();
@@ -57,29 +58,31 @@ public class PlayRoomService {
         Optional<GameplaySessionDTO> filteredGameplaySession = getGameplaySessionByTheme(theme);
 
         //Se existir gameplay já presente apenas adiciona o PlayerDTO ao tema que ele escolheu!
-        if(filteredGameplaySession.isPresent()){
+        if (filteredGameplaySession.isPresent()) {
             filteredGameplaySession.get().getPlayerDTOList().add(playerDTO);
         } else {
             //Se não existir que dizer que ele escolheu um tema de sala vazia! Então o sistema cria a sala.
-            filteredGameplaySession = Optional.of(new GameplaySessionDTO(nickName, theme, playerDTO));
+            filteredGameplaySession = Optional.of(new GameplaySessionDTO(theme, playerDTO));
             gameplaySessionList.add(filteredGameplaySession.get());
         }
         return filteredGameplaySession.get();
     }
 
-    /**Valida se o user id já está em uma sala com o tema referenciado e caso esteja cria para o
+    /**
+     * Valida se o user id já está em uma sala com o tema referenciado e caso esteja cria para o
      * usuário uma sessão com questões filtradas pelo tema que ele escolheu. Para o usuário poder
      * usar essa chamada ele precisa está já dentro de uma sala para isso chamar o método addPlayerToRoomService
      * e após sair desse método ele terá uma sessão com questões carregadas pelo tema escolhido por ele. o método
      * retorna um valor de questionGameplaySessionId que é o id da sessão criada, isso é necessário para recuperar as questões
-     * vinculadas ao player e para acessar os dados da gameplay gerada! */
+     * vinculadas ao player e para acessar os dados da gameplay gerada!
+     */
     public InGameSessionDTO generateSessionQuestionsForPlayer(Long userId, String theme) {
         List<QuestionDTO> questionDTOList = null;
         Optional<GameplaySessionDTO> gameplaySessionDTO = getGameplaySessionByTheme(theme);
         InGameSessionDTO inGameSessionDTO = null;
         try {
             questionDTOList = validateIfUserIntoRoom(gameplaySessionDTO, userId, theme);
-            if(Objects.isNull(questionDTOList)) {
+            if (Objects.isNull(questionDTOList)) {
                 throw new QuestionNotFoundException(userNotHaveActiveQuestionsMessage());
             }
             inGameSessionDTO = saveQuestionsOfSessionIntoDataBase(questionDTOList, userId);
@@ -94,9 +97,11 @@ public class PlayRoomService {
         return inGameSessionDTO;
     }
 
-    /**Busca uma pergunta randomica dentro da sessão do usuário, lembrando que essa pergunta precisa estar com a coluna
-     * isActivated como true se não ela já foi respondida e não será acessada na busca randomica. */
-    public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(InGameSessionDTO inGameSessionDTO){
+    /**
+     * Busca uma pergunta randomica dentro da sessão do usuário, lembrando que essa pergunta precisa estar com a coluna
+     * isActivated como true se não ela já foi respondida e não será acessada na busca randomica.
+     */
+    public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(InGameSessionDTO inGameSessionDTO) {
         Long playerGameSessionRoomId = inGameSessionDTO.getPlayerSessionQuestionId();
         InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = new InGameQuestionAndAlternativesDTO();
         PlayerGameplaySessionValuesDTO playerGameplaySessionValuesDTO = getSession(playerGameSessionRoomId);
@@ -105,7 +110,7 @@ public class PlayRoomService {
         GameplaySessionPlayerQuestion gameplaySessionPlayerQuestionIntoDataBase = gameplaySessionPlayerQuestionService.findActiveQuestion(playerGameSessionRoomId);
         LOGGER.info("A busca por questões ativas na sessão do usuário pelo id [{}] retornou o valor: [{}]", playerGameSessionRoomId, gameplaySessionPlayerQuestionIntoDataBase);
 
-        if(Objects.nonNull(gameplaySessionPlayerQuestionIntoDataBase)) {
+        if (Objects.nonNull(gameplaySessionPlayerQuestionIntoDataBase)) {
             LOGGER.info("Foi encontrada uma sessão ativa com [{}] ", gameplaySessionPlayerQuestionIntoDataBase);
             addValuesIntoInGameQuestionAndAlternativesDTO(gameplaySessionPlayerQuestionIntoDataBase, inGameQuestionAndAlternativesDTO);
             inGameQuestionAndAlternativesDTO.setUserMessage("Você já tem uma questão ativa na sua sessão, termine o jogo atual antes de solicitar uma nova pergunta!");
@@ -134,40 +139,54 @@ public class PlayRoomService {
     }
 
     //TODO Inserir logica de guardar a pontuação na sessão e ajudar a logica de validação da questão.
-    public InGameAlternativeResponse validatePLayerQuestionAlternative(Long gameplaySessionId, String selectedAlternative){
-       GameplaySessionPlayerQuestion gameplaySessionPlayerQuestion = gameplaySessionPlayerQuestionService.findActiveQuestion(gameplaySessionId);
-       List<Alternative> alternativeList = gameplaySessionPlayerQuestion.getQuestion().getAlternativeList();
-       InGameAlternativeResponse inGameAlternativeResponse = new InGameAlternativeResponse();
+    public InGameAlternativeResponse validatePLayerQuestionAlternative(Long gameplaySessionId, String selectedAlternative) {
+        GameplaySessionPlayerQuestion gameplaySessionPlayerQuestion = gameplaySessionPlayerQuestionService.findActiveQuestion(gameplaySessionId);
+        InGameAlternativeResponse inGameAlternativeResponse = new InGameAlternativeResponse();
+        List<Alternative> currentSessionAlternativeList = null;
 
-        // Filtra as alternativas corretas que correspondem à alternativa selecionada
-        List<Alternative> correctAlternatives = alternativeList.stream()
-                .filter(Alternative::getItsCorrect)
-                .filter(alternative -> alternative.getAlternative().equals(selectedAlternative))
-                .toList();
-
-        if (!correctAlternatives.isEmpty()) {
-            inGameAlternativeResponse.setPlayerPunctuation(100L);
-            gameplaySessionPlayerQuestion.setPlayerWin(true);
-            LOGGER.info("O jogador venceu! E ganhou pontos na sua sessão!");
-            inGameAlternativeResponse.setPlayerMessage("O jogador venceu! E ganhou pontos na sua sessão!");
+        if (Objects.isNull(gameplaySessionPlayerQuestion)) {
+            inGameAlternativeResponse.setPlayerMessage(userIdNotExistErrorMessage() + gameplaySessionId);
+            LOGGER.warn(userIdNotExistErrorMessage(), gameplaySessionId);
         } else {
-            inGameAlternativeResponse.setPlayerPunctuation(0L);
-            gameplaySessionPlayerQuestion.setPlayerWin(false);
-            LOGGER.info("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
-            inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+            LOGGER.info("Foi encontrada um id válido de sessão para o usuário, a sessão encontrada foi: [{}] Iniciando filtro de alternativas", gameplaySessionPlayerQuestion);
+            currentSessionAlternativeList = gameplaySessionPlayerQuestion.getQuestion().getAlternativeList();
+
+
+            // Caso a alternativa passada pelo usuário seja correta, será retornado uma posição com a alternativa correta se a alternativa for errada retorna lista vazia.
+            Optional<Alternative> correctSessionAlternative = currentSessionAlternativeList.stream()
+                    .filter(Alternative::getItsCorrect)
+                    .findFirst();
+
+            if (isCorrectAlternative(correctSessionAlternative, selectedAlternative)) {
+                inGameAlternativeResponse.setPlayerPunctuation(100L);
+                gameplaySessionPlayerQuestion.setPlayerWin(true);
+                LOGGER.info("O jogador venceu! E ganhou pontos na sua sessão!");
+                inGameAlternativeResponse.setPlayerMessage("O jogador venceu! E ganhou pontos na sua sessão!");
+            } else {
+                inGameAlternativeResponse.setPlayerPunctuation(0L);
+                gameplaySessionPlayerQuestion.setPlayerWin(false);
+                LOGGER.info("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+                inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+            }
+            inGameAlternativeResponse.setCorrectAlternative();
+            inGameAlternativeResponse.setSelectedAlternative(selectedAlternative);
+
+            gameplaySessionPlayerQuestion.setQuestionIsActive(false);
+            gameplaySessionPlayerQuestion.setWasPlayed(true);
+            this.gameplaySessionPlayerQuestionService.save(gameplaySessionPlayerQuestion);
         }
-        inGameAlternativeResponse.setCorrectAlternative(correctAlternatives.getFirst().getReferenceLetter() + " - " + correctAlternatives.getFirst().getAlternative());
-        inGameAlternativeResponse.setSelectedAlternative(selectedAlternative);
-
-        gameplaySessionPlayerQuestion.setQuestionIsActive(false);
-        gameplaySessionPlayerQuestion.setWasPlayed(true);
-        this.gameplaySessionPlayerQuestionService.save(gameplaySessionPlayerQuestion);
-
         return inGameAlternativeResponse;
     }
 
-    /**Se o id passado do player achar uma sessão ativa, ele retorna true, se não false*/
-    private PlayerGameplaySessionValuesDTO getSession(Long playerGameplaySessionId){
+    /***/
+    private boolean isCorrectAlternative(Optional<Alternative> correctSessionAlternative, String selectedAlternative) {
+        return correctSessionAlternative.map(alternative -> alternative.getAlternative().equals(selectedAlternative)).orElse(false);
+    }
+
+    /**
+     * Se o id passado do player achar uma sessão ativa, ele retorna true, se não false
+     */
+    private PlayerGameplaySessionValuesDTO getSession(Long playerGameplaySessionId) {
         LOGGER.info("Iniciando busca por sessão ativa playerGameplaySessionId = [{}]", playerGameplaySessionId);
         PlayerGameplaySessionValuesDTO playerGameplaySessionValuesDTO = playerGameplaySessionValuesService.findById(playerGameplaySessionId);
         LOGGER.info("Busca por sessão ativa terminada com sucesso! playerGameplaySessionValueDTO: [{}]", playerGameplaySessionValuesDTO);
@@ -183,7 +202,7 @@ public class PlayRoomService {
         inGameQuestionAndAlternativesDTO.setQuestion(gameplaySessionPlayerQuestion.getQuestion().getQuestion());
         inGameQuestionAndAlternativesDTO.setQuestionId(gameplaySessionPlayerQuestion.getQuestion().getId());
 
-        for(Alternative alternative: alternativesListedIntoOneQuestionOfSession) {
+        for (Alternative alternative : alternativesListedIntoOneQuestionOfSession) {
             InGameAlternativeDTO inGameAlternativeDTO = new InGameAlternativeDTO();
             inGameAlternativeDTO.setId(alternative.getId());
             inGameAlternativeDTO.setAlternative(alternative.getAlternative());
@@ -193,8 +212,10 @@ public class PlayRoomService {
         inGameQuestionAndAlternativesDTO.setInGameAlternativeDTO(inGameAlternativeDTOList);
     }
 
-    /**Percorre sessoes de gameplay atuais para saber se já existe alguma gameplay com esse tema do filtro
-     * Se sim retorna a GameplaySessionDTO e todos os jogadores que estão jogando, se não retorna vazio. */
+    /**
+     * Percorre sessoes de gameplay atuais para saber se já existe alguma gameplay com esse tema do filtro
+     * Se sim retorna a GameplaySessionDTO e todos os jogadores que estão jogando, se não retorna vazio.
+     */
     public Optional<GameplaySessionDTO> getGameplaySessionByTheme(String theme) {
         return gameplaySessionList.stream()
                 .filter(session -> session.getTheme().equals(theme))
@@ -205,11 +226,13 @@ public class PlayRoomService {
         return gameplaySessionList;
     }
 
-    /**Valida se o usuário existe dentro da sala se sim retorna uma lista com questões referentes ao tema da sala.*/
-    private List<QuestionDTO> validateIfUserIntoRoom(Optional<GameplaySessionDTO> gameplaySessionDTO, Long userId, String theme){
-        if(gameplaySessionDTO.isPresent()) {
-            for(PlayerDTO playerDTO:gameplaySessionDTO.get().getPlayerDTOList()){
-                if(playerDTO.getUserId().equals(userId)){
+    /**
+     * Valida se o usuário existe dentro da sala se sim retorna uma lista com questões referentes ao tema da sala.
+     */
+    private List<QuestionDTO> validateIfUserIntoRoom(Optional<GameplaySessionDTO> gameplaySessionDTO, Long userId, String theme) {
+        if (gameplaySessionDTO.isPresent()) {
+            for (PlayerDTO playerDTO : gameplaySessionDTO.get().getPlayerDTOList()) {
+                if (playerDTO.getUserId().equals(userId)) {
                     return questionService.findByTheme(theme);
                 }
             }
@@ -217,16 +240,18 @@ public class PlayRoomService {
         return null;
     }
 
-    /**Salva as questões dentro da base de dados de sessão, ou seja, pega a lista de questões padrão cadastradas no sistema e insere uma lista
+    /**
+     * Salva as questões dentro da base de dados de sessão, ou seja, pega a lista de questões padrão cadastradas no sistema e insere uma lista
      * de referencia delas na sessão do usuário que é criada com essa lista de referencia de questões filtradas pela sala que ele entrou
-     * ou seja filtrada pelo tema que ele escolheu. */
+     * ou seja filtrada pelo tema que ele escolheu.
+     */
     private InGameSessionDTO saveQuestionsOfSessionIntoDataBase(List<QuestionDTO> enterRoomQuestionList, Long userId) {
         List<com.game.maker.model.GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestionList = new ArrayList<>();
         PlayerGameplaySessionValues playerGameplaySessionValues = new PlayerGameplaySessionValues();
 
         //Cria a lista de questões da sessão do usuário pegando como base o id de questões previamente cadastradas no sistema.
         //Aqui só chega questões que já foram filtradas e estão dentro de uma sala especifica, por exemplo Sala Cinema!
-        for(QuestionDTO questionDTO: enterRoomQuestionList) {
+        for (QuestionDTO questionDTO : enterRoomQuestionList) {
             Question enterRoomQuestion = questionMapper.toEntity(questionDTO);
             gameplaySessionPlayerQuestionList.add(new com.game.maker.model.GameplaySessionPlayerQuestion(enterRoomQuestion, playerGameplaySessionValues, Boolean.FALSE));
         }
@@ -248,11 +273,13 @@ public class PlayRoomService {
         return inGameSessionDTO;
     }
 
-    /** Busca o usuário e valida se ele existe na base de dados e só deixa passar se caso exista mesmo! */
-    private UserDTO findUserById(Long userId){
+    /**
+     * Busca o usuário e valida se ele existe na base de dados e só deixa passar se caso exista mesmo!
+     */
+    private UserDTO findUserById(Long userId) {
         Optional<UserDTO> userDTO = Optional.ofNullable(userService.findUserById(userId));
         try {
-            if(userDTO.isEmpty()) {
+            if (userDTO.isEmpty()) {
                 throw new UserNotFoundException(userNotFoundMessage(userId));
             }
         } catch (UserNotFoundException ex) {
@@ -266,7 +293,7 @@ public class PlayRoomService {
         return userDTO.orElse(null);
     }
 
-    private String userNotFoundMessage(Long userId){
+    private String userNotFoundMessage(Long userId) {
         return "O usuário com id: " + userId + " não foi encontrado";
     }
 
@@ -274,8 +301,12 @@ public class PlayRoomService {
         return "Ocorreu um erro ao tentar recuperar o usuário da sessão, retorno do erro: ";
     }
 
-    private String userNotHaveActiveQuestionsMessage(){
+    private String userNotHaveActiveQuestionsMessage() {
         return "O id do usuário enviado não está dentro de nenhuma sala válida, crie uma sala com um id de usuário válido antes de iniciar um jogo";
+    }
+
+    private String userIdNotExistErrorMessage(){
+        return "A sessão solicitada pelo requisitante não existe, não foi encontrado id de sessão válido para o valor informado id: ";
     }
 
 }

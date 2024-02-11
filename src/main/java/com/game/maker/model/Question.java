@@ -1,18 +1,17 @@
 package com.game.maker.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
+@SequenceGenerator(name = "tb_questao_seq", allocationSize = 1)
 @Entity
 @Table(name = "tb_questao")
 public class Question {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_questao_seq")
     private Long id;
 
     @Column(name = "tema")
@@ -29,7 +28,12 @@ public class Question {
 
     }
 
-
+    public Question(Long id, String theme, String question, List<Alternative> alternativeList) {
+        this.id = id;
+        this.theme = theme;
+        this.question = question;
+        this.alternativeList = alternativeList;
+    }
 
     public Long getId() {
         return id;
