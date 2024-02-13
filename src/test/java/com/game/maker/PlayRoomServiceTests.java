@@ -21,7 +21,7 @@ class PlayRoomServiceTests {
 	private static final String THEME = "CINEMA";
 	private static final Long USER_ID = 1L;
 	private static final String SELECTED_ALTERNATIVE = "A";
-	private static final String LEVEL = "FACIL";
+	private static final String LEVEL = "Dificil";
 
 	@Test
 	void startFullGameplay() {
@@ -33,7 +33,7 @@ class PlayRoomServiceTests {
 		LOGGER.info("\n\nUnplayedQuestions: [{}] no primeiro ciclo.", unplayedQuestions);
 
 		//Demais ciclos respondendo sempre com a mesma alternativa.
-		for(Long i = 1L; unplayedQuestions >= i;){
+		for(Long i = 1L; unplayedQuestions > i;){
 			if(unplayedQuestions == 0){
 				LOGGER.info("Acabou as questões da gameplay! unplayedQuestions [{}]", unplayedQuestions);
 			} else {
