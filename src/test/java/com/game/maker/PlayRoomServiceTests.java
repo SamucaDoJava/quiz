@@ -3,7 +3,6 @@ package com.game.maker;
 import com.game.maker.dto.InGameAlternativeResponse;
 import com.game.maker.dto.InGameQuestionAndAlternativesDTO;
 import com.game.maker.dto.InGameSessionDTO;
-import com.game.maker.dto.PlayerSessionDTO;
 import com.game.maker.service.PlayRoomService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,29 +24,23 @@ class PlayRoomServiceTests {
 
 	@Test
 	void startFullGameplay() {
-		InGameSessionDTO inGameSessionDTO = loadValidPlayerWithQuestionsSession();
-
-		//Primeiro ciclo respostas
+		InGameSessionDTO inGameSessionDTO = loadValidPlayerWithQuestionSession();
 		Long unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
+
 		respondQuestionIntoSession(inGameSessionDTO);
-		LOGGER.info("\n\nUnplayedQuestions: [{}] no primeiro ciclo.", unplayedQuestions);
+		LOGGER.info("UnplayedQuestions: [{}] no primeiro ciclo.", unplayedQuestions);
 
 		//Demais ciclos respondendo sempre com a mesma alternativa.
 		for(Long i = 1L; unplayedQuestions > i;){
-			if(unplayedQuestions == 0){
-				LOGGER.info("Acabou as questões da gameplay! unplayedQuestions [{}]", unplayedQuestions);
-			} else {
-				LOGGER.info("\n\nUnplayedQuestions: [{}] dentro do for.", unplayedQuestions);
+
+				LOGGER.info("UnplayedQuestions: [{}] dentro do for.", unplayedQuestions);
 				unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
 				respondQuestionIntoSession(inGameSessionDTO);
-			}
+
 		}
 	}
 
-	InGameSessionDTO loadValidPlayerWithQuestionsSession(){
-		PlayerSessionDTO playerSessionDTO = new PlayerSessionDTO(THEME, USER_ID);
-
-		LOGGER.info("Iniciando o carregamento de dados para a sessão do usuário id: [{}]", USER_ID);
+	InGameSessionDTO loadValidPlayerWithQuestionSession(){
 		InGameSessionDTO inGameSessionDTO = playRoomService.createSessionAndGeneratedQuestions(USER_ID, THEME, LEVEL);
 		LOGGER.info("O Usuário de id: [{}] foi carregado com questões ativas para o tema [{}] e foi gerada a sessão de id: [{}]", USER_ID, THEME, inGameSessionDTO.getPlayerSessionQuestionId());
 		return inGameSessionDTO;
@@ -61,7 +54,9 @@ class PlayRoomServiceTests {
 
 	void respondQuestionIntoSession(InGameSessionDTO inGameSessionDTO){
 		LOGGER.info("id da sessão antes de salvar alternativa escolhida: [{}]", inGameSessionDTO.getPlayerSessionQuestionId());
-		InGameAlternativeResponse inGameAlternativeResponse = playRoomService.validatePLayerQuestionAlternative(inGameSessionDTO.getPlayerSessionQuestionId(), SELECTED_ALTERNATIVE);
+		InGameAlternativeResponse inGameAlternativeResponse = playRoomService.
+				validatePLayerQuestionAlternative(inGameSessionDTO.getPlayerSessionQuestionId(), SELECTED_ALTERNATIVE);
+
 		LOGGER.info("\nStatus da alternativa pós a resposta! final do ciclo de uma alternativa! [{}]\n", inGameAlternativeResponse.getPlayerMessage());
 	}
 

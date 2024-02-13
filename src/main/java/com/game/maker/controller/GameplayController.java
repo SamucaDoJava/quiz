@@ -1,11 +1,11 @@
 package com.game.maker.controller;
 
-import com.game.maker.dto.*;
+import com.game.maker.dto.InGameAlternativeResponse;
+import com.game.maker.dto.InGameQuestionAndAlternativesDTO;
+import com.game.maker.dto.InGameSessionDTO;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/gameplay")
@@ -15,18 +15,18 @@ public class GameplayController {
     private GameplayService gameplayService;
 
 
-    @GetMapping("/load-player-questions-into-room-by-theme/{userId}/{theme}/{level}")
-    public InGameSessionDTO loadPlayerQuestionIntoRoomByTheme(@PathVariable Long userId, @PathVariable String theme, @PathVariable String level) {
+    @GetMapping("/start-gameplay/{userId}/{theme}/{level}")
+    public InGameSessionDTO startGameplay(@PathVariable Long userId, @PathVariable String theme, @PathVariable String level) {
        return gameplayService.generateSessionQuestionsForPlayer(userId, theme, level);
     }
 
-    @PostMapping("/find-random-question-active-in-player-session")
-    public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(@RequestBody InGameSessionDTO inGameSessionDTO) {
+    @PostMapping("/find-question-in-session")
+    public InGameQuestionAndAlternativesDTO findQuestionInSession(@RequestBody InGameSessionDTO inGameSessionDTO) {
         return gameplayService.findRandomQuestionActiveInPlayerSession(inGameSessionDTO);
     }
 
-    @GetMapping("/validate-question-its-correct/{gameplaySessionId}/{selectedAlternative}")
-    public InGameAlternativeResponse validateSessionAlternative(@PathVariable Long gameplaySessionId, @PathVariable String selectedAlternative) {
+    @GetMapping("/validate-question-selected-alternative/{gameplaySessionId}/{selectedAlternative}")
+    public InGameAlternativeResponse validateQuestionAlternative(@PathVariable Long gameplaySessionId, @PathVariable String selectedAlternative) {
         return gameplayService.validateAlternativeSession(gameplaySessionId, selectedAlternative);
     }
 
