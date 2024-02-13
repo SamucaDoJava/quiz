@@ -24,18 +24,12 @@ import java.util.Optional;
 public class PlayRoomService {
 
     private final Logger LOGGER = LogManager.getLogger(PlayRoomService.class);
-
     private final List<GameplaySessionDTO> gameplaySessionList = new ArrayList<>();
     private @Autowired UserService userService;
-
     private @Autowired QuestionService questionService;
-
     private @Autowired PlayerGameplaySessionService playerGameplaySessionService;
-
     private @Autowired QuestionMapper questionMapper;
-
     private @Autowired PlayerQuestionSessionService playerQuestionSessionService;
-
     private @Autowired AlternativeService alternativeService;
 
     /**
