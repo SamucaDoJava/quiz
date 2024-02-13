@@ -2,13 +2,13 @@ package com.game.maker.model;
 
 import jakarta.persistence.*;
 
-@SequenceGenerator(name = "tb_sessao_jogador_questao_seq", allocationSize = 1)
+@SequenceGenerator(name = "tb_sessao_questao_seq", allocationSize = 1)
 @Entity
-@Table(name = "tb_sessao_jogador_questao")
-public class GameplaySessionPlayerQuestion {
+@Table(name = "tb_sessao_questao")
+public class PlayerQuestionSession {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_jogador_questao_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_questao_seq")
     private Long id;
 
     @ManyToOne
@@ -26,19 +26,19 @@ public class GameplaySessionPlayerQuestion {
 
     @ManyToOne
     @JoinColumn(name = "sessao_jogador_id")
-    private PlayerGameplaySessionValues playerGameplaySession;
+    private PlayerGameplaySession playerGameplaySession;
 
-    public GameplaySessionPlayerQuestion() {
+    public PlayerQuestionSession() {
     }
 
-    public GameplaySessionPlayerQuestion(Long id, Question question, Boolean wasPlayed, PlayerGameplaySessionValues playerGameplaySession) {
+    public PlayerQuestionSession(Long id, Question question, Boolean wasPlayed, PlayerGameplaySession playerGameplaySession) {
         this.id = id;
         this.question = question;
         this.wasPlayed = wasPlayed;
         this.playerGameplaySession = playerGameplaySession;
     }
 
-    public GameplaySessionPlayerQuestion(Question question, PlayerGameplaySessionValues playerGameplaySession, Boolean wasPlayed) {
+    public PlayerQuestionSession(Question question, PlayerGameplaySession playerGameplaySession, Boolean wasPlayed) {
         this.question = question;
         this.playerGameplaySession = playerGameplaySession;
         this.wasPlayed = wasPlayed;
@@ -68,11 +68,11 @@ public class GameplaySessionPlayerQuestion {
         this.wasPlayed = wasPlayed;
     }
 
-    public PlayerGameplaySessionValues getPlayerGameplaySession() {
+    public PlayerGameplaySession getPlayerGameplaySession() {
         return playerGameplaySession;
     }
 
-    public void setPlayerGameplaySession(PlayerGameplaySessionValues playerGameplaySession) {
+    public void setPlayerGameplaySession(PlayerGameplaySession playerGameplaySession) {
         this.playerGameplaySession = playerGameplaySession;
     }
 
@@ -94,7 +94,7 @@ public class GameplaySessionPlayerQuestion {
 
     @Override
     public String toString() {
-        return "\nGameplaySessionPlayerQuestionService{" +
+        return "\nPlayerQuestionSessionService{" +
                 "\nid=" + id +
                 "\nquestion=" + question +
                 "\nalreadyUsed=" + wasPlayed +
@@ -105,10 +105,10 @@ public class GameplaySessionPlayerQuestion {
 
 
     public static final class Builder {
-        private GameplaySessionPlayerQuestion gameplaySessionPlayerQuestion;
+        private PlayerQuestionSession playerQuestionSession;
 
         private Builder() {
-            gameplaySessionPlayerQuestion = new GameplaySessionPlayerQuestion();
+            playerQuestionSession = new PlayerQuestionSession();
         }
 
         public static Builder aPlayerGameplaySessionQuestion() {
@@ -116,37 +116,37 @@ public class GameplaySessionPlayerQuestion {
         }
 
         public Builder id(Long id) {
-            gameplaySessionPlayerQuestion.setId(id);
+            playerQuestionSession.setId(id);
             return this;
         }
 
         public Builder question(Question question) {
-            gameplaySessionPlayerQuestion.setQuestion(question);
+            playerQuestionSession.setQuestion(question);
             return this;
         }
 
         public Builder alreadyUsed(Boolean alreadyUsed) {
-            gameplaySessionPlayerQuestion.setWasPlayed(alreadyUsed);
+            playerQuestionSession.setWasPlayed(alreadyUsed);
             return this;
         }
 
-        public Builder playerGameplaySession(PlayerGameplaySessionValues playerGameplaySession) {
-            gameplaySessionPlayerQuestion.setPlayerGameplaySession(playerGameplaySession);
+        public Builder playerGameplaySession(PlayerGameplaySession playerGameplaySession) {
+            playerQuestionSession.setPlayerGameplaySession(playerGameplaySession);
             return this;
         }
 
         public Builder playerWin(Boolean playerWin) {
-            gameplaySessionPlayerQuestion.setPlayerWin(playerWin);
+            playerQuestionSession.setPlayerWin(playerWin);
             return this;
         }
 
         public Builder questionIsActive(Boolean questionIsActive) {
-            gameplaySessionPlayerQuestion.setQuestionIsActive(questionIsActive);
+            playerQuestionSession.setQuestionIsActive(questionIsActive);
             return this;
         }
 
-        public GameplaySessionPlayerQuestion build() {
-            return gameplaySessionPlayerQuestion;
+        public PlayerQuestionSession build() {
+            return playerQuestionSession;
         }
     }
 

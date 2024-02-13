@@ -73,7 +73,7 @@ public class QuestionService {
 
     public List<QuestionDTO> findByTheme(String theme) {
         try {
-            List<Question> questions = questionRepository.findByTheme(theme);
+            List<Question> questions = questionRepository.findByThemeIgnoreCase(theme);
 
             if (questions.isEmpty()) {
                 throw new NoSuchElementException("Nenhuma QuestionDTO encontrada para o tema: " + theme);

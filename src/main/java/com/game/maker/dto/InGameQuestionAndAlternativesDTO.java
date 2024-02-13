@@ -30,6 +30,8 @@ public class InGameQuestionAndAlternativesDTO {
     @JsonProperty("userMessage")
     private String userMessage;
 
+    @JsonProperty("unplayedQuestions")
+    private Long unplayedQuestions;
 
     @Override
     public String toString() {
@@ -37,7 +39,8 @@ public class InGameQuestionAndAlternativesDTO {
                 "\nquestion=" + question +
                 "\ninGameAlternativeDTO Tamanho da lista=" + inGameAlternativeDTO.size() +
                 "\nactualScore=" + actualScore +
-                "\nuserMessage= " + userMessage;
+                "\nuserMessage= " + userMessage +
+                "\nunplayedQuestions= " + unplayedQuestions;
     }
 
 }

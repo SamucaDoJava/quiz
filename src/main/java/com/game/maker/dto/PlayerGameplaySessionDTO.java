@@ -1,6 +1,6 @@
 package com.game.maker.dto;
 
-import com.game.maker.model.GameplaySessionPlayerQuestion;
+import com.game.maker.model.PlayerQuestionSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayerGameplaySessionValuesDTO {
+public class PlayerGameplaySessionDTO {
 
     private Long id;
 
@@ -21,6 +21,6 @@ public class PlayerGameplaySessionValuesDTO {
 
     private Boolean sessionActivated;
 
-    private List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestionList = new ArrayList<>();
+    private List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
 
 }

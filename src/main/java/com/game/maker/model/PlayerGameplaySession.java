@@ -8,7 +8,7 @@ import java.util.List;
 @SequenceGenerator(name = "tb_sessao_jogador_seq", allocationSize = 1)
 @Entity
 @Table(name = "tb_sessao_jogador")
-public class PlayerGameplaySessionValues {
+public class PlayerGameplaySession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_jogador_seq")
@@ -24,11 +24,11 @@ public class PlayerGameplaySessionValues {
     private Boolean sessionActivated;
 
     @OneToMany(mappedBy = "playerGameplaySession", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestions = new ArrayList<>();
+    private List<PlayerQuestionSession> playerQuestionSessions = new ArrayList<>();
 
 
 
-    public PlayerGameplaySessionValues() {
+    public PlayerGameplaySession() {
 
     }
 
@@ -66,29 +66,28 @@ public class PlayerGameplaySessionValues {
         this.sessionActivated = sessionActivated;
     }
 
-    public List<GameplaySessionPlayerQuestion> getPlayerGameplaySessionQuestions() {
-        return gameplaySessionPlayerQuestions;
+    public List<PlayerQuestionSession> getPlayerGameplaySessionQuestions() {
+        return playerQuestionSessions;
     }
 
-    public void setPlayerGameplaySessionQuestions(List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestions) {
-        this.gameplaySessionPlayerQuestions = gameplaySessionPlayerQuestions;
+    public void setPlayerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
+        this.playerQuestionSessions = playerQuestionSessions;
     }
 
     @Override
     public String toString() {
-        return "\nPlayerGameplaySessionValues{" +
+        return "\nPlayerGameplaySession{" +
                 "\nid=" + id +
                 "\nuserId=" + userId +
                 "\nscore=" + score +
-                "\nsessionActivated=" + sessionActivated +
-                "\ngameplaySessionPlayerQuestions= " + gameplaySessionPlayerQuestions;
+                "\nsessionActivated=" + sessionActivated;
     }
 
     public static final class Builder {
-        private PlayerGameplaySessionValues playerGameplaySessionValues;
+        private PlayerGameplaySession playerGameplaySession;
 
         private Builder() {
-            playerGameplaySessionValues = new PlayerGameplaySessionValues();
+            playerGameplaySession = new PlayerGameplaySession();
         }
 
         public static Builder aPlayerSession() {
@@ -96,32 +95,32 @@ public class PlayerGameplaySessionValues {
         }
 
         public Builder id(Long id) {
-            playerGameplaySessionValues.setId(id);
+            playerGameplaySession.setId(id);
             return this;
         }
 
         public Builder userId(Long userId) {
-            playerGameplaySessionValues.setUserId(userId);
+            playerGameplaySession.setUserId(userId);
             return this;
         }
 
         public Builder score(Long score) {
-            playerGameplaySessionValues.setScore(score);
+            playerGameplaySession.setScore(score);
             return this;
         }
 
         public Builder sessionEnd(Boolean sessionActivated) {
-            playerGameplaySessionValues.setSessionActivated(sessionActivated);
+            playerGameplaySession.setSessionActivated(sessionActivated);
             return this;
         }
 
-        public Builder playerGameplaySessionQuestions(List<GameplaySessionPlayerQuestion> gameplaySessionPlayerQuestions) {
-            playerGameplaySessionValues.setPlayerGameplaySessionQuestions(gameplaySessionPlayerQuestions);
+        public Builder playerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
+            playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessions);
             return this;
         }
 
-        public PlayerGameplaySessionValues build() {
-            return playerGameplaySessionValues;
+        public PlayerGameplaySession build() {
+            return playerGameplaySession;
         }
     }
 
