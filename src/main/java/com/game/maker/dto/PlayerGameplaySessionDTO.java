@@ -21,6 +21,8 @@ public class PlayerGameplaySessionDTO {
 
     private Boolean sessionActivated;
 
+    private String level;
+
     private List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
 
 }

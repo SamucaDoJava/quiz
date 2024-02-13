@@ -21,13 +21,10 @@ import java.util.NoSuchElementException;
 public class PlayerGameplaySessionService {
 
     private final Logger LOGGER = LogManager.getLogger(PlayerGameplaySessionService.class);
-
     @Autowired
     private PlayerGameplaySessionRepository playerGameplaySessionRepository;
-
     @Autowired
     private QuestionRepository questionRepository;
-
     @Autowired
     private PlayerGameplaySessionMapper playerGameplaySessionMapper;
 
@@ -48,9 +45,7 @@ public class PlayerGameplaySessionService {
             return playerGameplaySessionRepository.save(playerGameplaySession);
         } catch (DataAccessException ex) {
             LOGGER.error("Ocorreu um erro no método save, erro: ", ex);
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Ocorreu um erro ao tentar salvar a PlayerGameplaySessionDTO", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro ao tentar salvar a PlayerGameplaySessionDTO", ex);
         }
     }
 
@@ -76,9 +71,53 @@ public class PlayerGameplaySessionService {
             return playerGameplaySessionMapper.toDTO(playerGameplaySession);
         } catch (DataAccessException ex) {
             LOGGER.error("Ocorreu um erro no método findById, erro: ", ex);
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findById", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findById", ex);
+        }
+    }
+
+    public List<PlayerGameplaySessionDTO> findByLevel(String level) {
+        try {
+            List<PlayerGameplaySession> playerGameplaySession = playerGameplaySessionRepository.findByLevelIgnoreCase(level);
+            return playerGameplaySessionMapper.toListDTO(playerGameplaySession);
+        } catch (DataAccessException ex) {
+            LOGGER.error("Ocorreu um erro no método findByLevel, erro: ", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findByLevel", ex);
+        }
+    }
+
+    public List<PlayerGameplaySessionDTO> findByActiveGameplaySessionByLevelAndUserId(String level, Long userId) {
+        try {
+            List<PlayerGameplaySession> playerGameplaySession = playerGameplaySessionRepository.findByActiveGameplaySessionByLevelAndUserId(level, userId);
+            return playerGameplaySessionMapper.toListDTO(playerGameplaySession);
+        } catch (DataAccessException ex) {
+            LOGGER.error("Ocorreu um erro no método findByLevel, erro: ", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findByLevel", ex);
+        }
+    }
+
+    public PlayerGameplaySessionDTO findBySessionActivatedAndId(boolean sessionIsActive, Long gameplaySessionId) {
+        try {
+            PlayerGameplaySession playerGameplaySession = playerGameplaySessionRepository.findBySessionActivatedAndId(sessionIsActive, gameplaySessionId)
+                    .orElseThrow(() ->
+                            new NoSuchElementException(
+                                    "A PlayerGameplaySessionDTO com o sessionIsActive igual true não foi encontrada"));
+            return playerGameplaySessionMapper.toDTO(playerGameplaySession);
+        } catch (DataAccessException ex) {
+            LOGGER.error("Ocorreu um erro no método findBySessionActive, erro: ", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findBySessionActive", ex);
+        }
+    }
+
+    public PlayerGameplaySessionDTO findByUserId(Long id) {
+        try {
+            PlayerGameplaySession playerGameplaySession = playerGameplaySessionRepository.findByUserId(id)
+                    .orElseThrow(() ->
+                            new NoSuchElementException(
+                                    "Não existe um id na base para esse user id, método findByUserId"));
+            return playerGameplaySessionMapper.toDTO(playerGameplaySession);
+        } catch (DataAccessException ex) {
+            LOGGER.error("Ocorreu um erro no método findByUserId, erro: ", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findByUserId", ex);
         }
     }
 

@@ -94,7 +94,7 @@ public class PlayerQuestionSession {
 
     @Override
     public String toString() {
-        return "\nPlayerQuestionSessionService{" +
+        return "\nQuestionSessionService{" +
                 "\nid=" + id +
                 "\nquestion=" + question +
                 "\nalreadyUsed=" + wasPlayed +

@@ -15,24 +15,9 @@ public class GameplayController {
     private GameplayService gameplayService;
 
 
-    @PostMapping("/add-player-to-rom-by-theme")
-    public GameplaySessionDTO addPlayerToRomTheme(@RequestBody PlayerSessionDTO playerSessionDTO){
-        return gameplayService.addPlayerToRomService(playerSessionDTO);
-    }
-
-    @GetMapping("/load-player-questions-into-room-by-theme/{userId}/{theme}")
-    public InGameSessionDTO loadPlayerQuestionIntoRoomByTheme(@PathVariable Long userId, @PathVariable String theme) {
-       return gameplayService.generateSessionQuestionsForPlayer(userId, theme);
-    }
-
-    @GetMapping("/active-sessions")
-    public List<GameplaySessionDTO> activeSessions(){
-        return gameplayService.getActiveSessions();
-    }
-
-    @GetMapping("/find-sessions-by/{theme}")
-    public List<GameplaySessionDTO> activeSessions(@PathVariable String theme) {
-        return gameplayService.getGameplaySessionByTheme(theme);
+    @GetMapping("/load-player-questions-into-room-by-theme/{userId}/{theme}/{level}")
+    public InGameSessionDTO loadPlayerQuestionIntoRoomByTheme(@PathVariable Long userId, @PathVariable String theme, @PathVariable String level) {
+       return gameplayService.generateSessionQuestionsForPlayer(userId, theme, level);
     }
 
     @PostMapping("/find-random-question-active-in-player-session")

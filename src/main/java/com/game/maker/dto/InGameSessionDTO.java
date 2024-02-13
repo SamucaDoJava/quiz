@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class InGameSessionDTO {
 
     private Long playerSessionQuestionId;
+    private String responseMessage;
 
 }

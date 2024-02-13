@@ -21,6 +21,7 @@ class PlayRoomServiceTests {
 	private static final String THEME = "CINEMA";
 	private static final Long USER_ID = 1L;
 	private static final String SELECTED_ALTERNATIVE = "A";
+	private static final String LEVEL = "FACIL";
 
 	@Test
 	void startFullGameplay() {
@@ -46,11 +47,8 @@ class PlayRoomServiceTests {
 	InGameSessionDTO loadValidPlayerWithQuestionsSession(){
 		PlayerSessionDTO playerSessionDTO = new PlayerSessionDTO(THEME, USER_ID);
 
-		LOGGER.info("Adicionando o player na sala de jogo para o tema, [{}]", THEME);
-		playRoomService.addPlayerToRoomService(playerSessionDTO);
-
 		LOGGER.info("Iniciando o carregamento de dados para a sessão do usuário id: [{}]", USER_ID);
-		InGameSessionDTO inGameSessionDTO = playRoomService.generateSessionQuestionsForPlayer(USER_ID, THEME);
+		InGameSessionDTO inGameSessionDTO = playRoomService.createSessionAndGeneratedQuestions(USER_ID, THEME, LEVEL);
 		LOGGER.info("O Usuário de id: [{}] foi carregado com questões ativas para o tema [{}] e foi gerada a sessão de id: [{}]", USER_ID, THEME, inGameSessionDTO.getPlayerSessionQuestionId());
 		return inGameSessionDTO;
 	}

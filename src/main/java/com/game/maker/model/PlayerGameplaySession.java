@@ -23,6 +23,9 @@ public class PlayerGameplaySession {
     @Column(name = "sessao_ativada")
     private Boolean sessionActivated;
 
+    @Column(name = "level")
+    private String level;
+
     @OneToMany(mappedBy = "playerGameplaySession", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PlayerQuestionSession> playerQuestionSessions = new ArrayList<>();
 
@@ -74,13 +77,22 @@ public class PlayerGameplaySession {
         this.playerQuestionSessions = playerQuestionSessions;
     }
 
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
     @Override
     public String toString() {
         return "\nPlayerGameplaySession{" +
                 "\nid=" + id +
                 "\nuserId=" + userId +
                 "\nscore=" + score +
-                "\nsessionActivated=" + sessionActivated;
+                "\nsessionActivated=" + sessionActivated +
+                "\nlevel=" + level;
     }
 
     public static final class Builder {
@@ -116,6 +128,11 @@ public class PlayerGameplaySession {
 
         public Builder playerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
             playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessions);
+            return this;
+        }
+
+        public Builder level(String level) {
+            playerGameplaySession.setLevel(level);
             return this;
         }
 

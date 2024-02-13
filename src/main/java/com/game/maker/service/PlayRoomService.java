@@ -2,15 +2,14 @@ package com.game.maker.service;
 
 import com.game.maker.builder.QuestionMapper;
 import com.game.maker.dto.*;
-import com.game.maker.exception.QuestionNotFoundException;
 import com.game.maker.exception.UserNotFoundException;
 import com.game.maker.model.Alternative;
-import com.game.maker.model.PlayerQuestionSession;
 import com.game.maker.model.PlayerGameplaySession;
+import com.game.maker.model.PlayerQuestionSession;
 import com.game.maker.model.Question;
+import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,74 +20,61 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class PlayRoomService {
 
     private final Logger LOGGER = LogManager.getLogger(PlayRoomService.class);
-    private final List<GameplaySessionDTO> gameplaySessionList = new ArrayList<>();
-    private @Autowired UserService userService;
-    private @Autowired QuestionService questionService;
-    private @Autowired PlayerGameplaySessionService playerGameplaySessionService;
-    private @Autowired QuestionMapper questionMapper;
-    private @Autowired PlayerQuestionSessionService playerQuestionSessionService;
-    private @Autowired AlternativeService alternativeService;
+    private final UserService userService;
+    private final QuestionService questionService;
+    private final PlayerGameplaySessionService playerGameplaySessionService;
+    private final QuestionMapper questionMapper;
+    private final QuestionSessionService questionSessionService;
+    private final GameConfigurationService gameConfigurationService;
 
-    /**
-     * Adiciona o Player a uma sala filtrada pelo tema escolhido, caso o tema escolhido não tenha
-     * ninguém na sala, uma sala será criada e guardada em memória com o player adicionado, mas só
-     * ser o usuário e tema escolhido for válido! userId  e theme
-     */
-    public GameplaySessionDTO addPlayerToRoomService(PlayerSessionDTO playerSessionDTO) throws UserNotFoundException {
-        String theme = playerSessionDTO.getTheme();
-        Long userId = playerSessionDTO.getUserId();
-        UserDTO userIntoDataBase = findUserById(userId);
-        String nickName = null;
 
-        Optional<UserDTO> userDTO = Optional.ofNullable(userService.findUserById(userId));
-        if (userDTO.isPresent()) {
-            nickName = userDTO.get().getNickName();
-        }
-
-        PlayerDTO playerDTO = new PlayerDTO(nickName, 0, theme, userIntoDataBase.getId());
-        Optional<GameplaySessionDTO> filteredGameplaySession = getGameplaySessionByTheme(theme);
-
-        //Se existir gameplay já presente apenas adiciona o PlayerDTO ao tema que ele escolheu!
-        if (filteredGameplaySession.isPresent()) {
-            filteredGameplaySession.get().getPlayerDTOList().add(playerDTO);
-        } else {
-            //Se não existir que dizer que ele escolheu um tema de sala vazia! Então o sistema cria a sala.
-            filteredGameplaySession = Optional.of(new GameplaySessionDTO(theme, playerDTO));
-            gameplaySessionList.add(filteredGameplaySession.get());
-        }
-        return filteredGameplaySession.get();
-    }
-
-    /**
-     * Valida se o user id já está em uma sala com o tema referenciado e caso esteja cria para o
-     * usuário uma sessão com questões filtradas pelo tema que ele escolheu. Para o usuário poder
-     * usar essa chamada ele precisa está já dentro de uma sala para isso chamar o método addPlayerToRoomService
-     * e após sair desse método ele terá uma sessão com questões carregadas pelo tema escolhido por ele. o método
-     * retorna um valor de questionGameplaySessionId que é o id da sessão criada, isso é necessário para recuperar as questões
-     * vinculadas ao player e para acessar os dados da gameplay gerada!
-     */
-    public InGameSessionDTO generateSessionQuestionsForPlayer(Long userId, String theme) {
+    public InGameSessionDTO createSessionAndGeneratedQuestions(Long userId, String theme, String level) {
         List<QuestionDTO> questionDTOList = null;
-        Optional<GameplaySessionDTO> gameplaySessionDTO = getGameplaySessionByTheme(theme);
-        InGameSessionDTO inGameSessionDTO = null;
+        List<PlayerGameplaySessionDTO> playerGameplaySessionDTOList = getActiveGameplaySessionByUserIdAndLevel(userId, level);
+        InGameSessionDTO inGameSessionDTO = new InGameSessionDTO();
         try {
-            questionDTOList = validateIfUserIntoRoom(gameplaySessionDTO, userId, theme);
-            if (Objects.isNull(questionDTOList)) {
-                throw new QuestionNotFoundException(userNotHaveActiveQuestionsMessage());
+            if (activeUserSessionInDataBase(playerGameplaySessionDTOList)) {
+                inGameSessionDTO.setPlayerSessionQuestionId(playerGameplaySessionDTOList.getFirst().getId());
+                inGameSessionDTO.setResponseMessage("Existe uma sessão carregada para o usuário, você precisa primeoro terminar a sessão atual para começar outra.");
+                LOGGER.warn("Já existe uma sessão carregada para userId [{}]", userId);
+            } else {
+                inGameSessionDTO.setResponseMessage("Bem vindo ao jogo quiz! As perguntas para o seu tema e level foram carregadas com sucesso!");
+                Long playerGameplaySessionId = createPlayerSessionWithQuestionsByTheme(level, theme, userId);
+                inGameSessionDTO.setPlayerSessionQuestionId(playerGameplaySessionId);
             }
-            inGameSessionDTO = saveQuestionsOfSessionIntoDataBase(questionDTOList, userId);
-        } catch (QuestionNotFoundException ex) {
-            //Uma exception por que não achou o usuário cai aqui!
-            LOGGER.error("Ocorreu um erro em generatedSessionForPlayer: ", ex);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, userNotFoundExternalMessage(), ex);
         } catch (Exception ex) {
-            //Qualquer outra exception cai aqui!
             LOGGER.error("Ocorreu um erro em generatedSessionForPlayer: ", ex);
         }
         return inGameSessionDTO;
+    }
+
+    private Long createPlayerSessionWithQuestionsByTheme(String level, String theme, Long userId){
+        List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
+
+        PlayerGameplaySession playerGameplaySession = new PlayerGameplaySession();
+        playerGameplaySession.setLevel(level);
+        playerGameplaySession.setSessionActivated(true);
+        playerGameplaySession.setScore(0L);
+        playerGameplaySession.setUserId(userId);
+
+        List<QuestionDTO> questionList = questionService.findByTheme(theme);
+
+        for (QuestionDTO questionDTO : questionList) {
+            Question enterRoomQuestion = questionMapper.toEntity(questionDTO);
+            playerQuestionSessionList.add(new PlayerQuestionSession(enterRoomQuestion, playerGameplaySession, false));
+        }
+        playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessionList);
+        Long playerGameplaySessionId = playerGameplaySessionService.save(playerGameplaySession).getId();
+        LOGGER.info("playerGameplaySession foi salva na base de dados o valor salvo foi: [{}] ", playerGameplaySession);
+        return playerGameplaySessionId;
+    }
+
+    private boolean activeUserSessionInDataBase(List<PlayerGameplaySessionDTO> playerGameplaySessionDTOList){
+        return (!playerGameplaySessionDTOList.isEmpty()) ;
     }
 
     /**
@@ -100,12 +86,12 @@ public class PlayRoomService {
         InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = new InGameQuestionAndAlternativesDTO();
         PlayerGameplaySessionDTO playerGameplaySessionDTO = getSession(playerGameSessionRoomId);
 
-        Long unplayedQuestions = playerQuestionSessionService.countUnplayedQuestions(playerGameSessionRoomId);
+        Long unplayedQuestions = questionSessionService.countUnplayedQuestions(playerGameSessionRoomId);
         inGameQuestionAndAlternativesDTO.setUnplayedQuestions(unplayedQuestions);
         LOGGER.info("Quantidade de questões ainda não usadasa: [{}]", unplayedQuestions);
 
         LOGGER.info("Iniciando busca de questões ativas na sessão, a busca vai ser na base de dados, caso a sessão exista, não será criada outra! id da busca [{}]", playerGameSessionRoomId);
-        PlayerQuestionSession playerQuestionSessionIntoDataBase = playerQuestionSessionService.findActiveQuestionInSession(playerGameSessionRoomId);
+        PlayerQuestionSession playerQuestionSessionIntoDataBase = questionSessionService.findActiveQuestionInSession(playerGameSessionRoomId);
         LOGGER.info("A busca por questões ativas na sessão do usuário pelo id [{}] retornou o valor: [{}]", playerGameSessionRoomId, playerQuestionSessionIntoDataBase);
 
         if (Objects.nonNull(playerQuestionSessionIntoDataBase)) {
@@ -117,11 +103,11 @@ public class PlayRoomService {
             if (playerGameplaySessionDTO.getSessionActivated()) {
                 LOGGER.info("A sessão da gameplay está ativa! sessionActivated =[{}] Iniciando geração de questão randomica.", true);
                 try {
-                    PlayerQuestionSession playerQuestionSession = this.playerQuestionSessionService.getRandomNotUsedQuestion();
+                    PlayerQuestionSession playerQuestionSession = this.questionSessionService.getRandomNotUsedQuestion();
                     playerQuestionSession.setQuestionIsActive(true);
                     LOGGER.info("A questão [{}] será inserida e retornada para o usuário como ativa.", playerQuestionSession);
 
-                    this.playerQuestionSessionService.save(playerQuestionSession);
+                    this.questionSessionService.save(playerQuestionSession);
                     LOGGER.info("A questão foi atualizada na base de dados. [{}]", playerQuestionSession);
 
                     addValuesIntoInGameQuestionAndAlternativesDTO(playerQuestionSession, inGameQuestionAndAlternativesDTO);
@@ -140,7 +126,7 @@ public class PlayRoomService {
 
     //TODO Inserir logica de guardar a pontuação na sessão e ajudar a logica de validação da questão.
     public InGameAlternativeResponse validatePLayerQuestionAlternative(Long gameplaySessionId, String selectedAlternative) {
-        PlayerQuestionSession activeQuestionInSession = playerQuestionSessionService.findActiveQuestionInSession(gameplaySessionId);
+        PlayerQuestionSession activeQuestionInSession = questionSessionService.findActiveQuestionInSession(gameplaySessionId);
         InGameAlternativeResponse inGameAlternativeResponse = new InGameAlternativeResponse();
         List<Alternative> currentSessionAlternativeList = null;
 
@@ -151,12 +137,14 @@ public class PlayRoomService {
             LOGGER.info("Foi encontrada um id válido de sessão para o usuário, a sessão encontrada foi: [{}] Iniciando filtro de alternativas", activeQuestionInSession);
             currentSessionAlternativeList = activeQuestionInSession.getQuestion().getAlternativeList();
             Optional<Alternative> correctSessionAlternative = getCorrectSessionAlternative(currentSessionAlternativeList);
-            Long unplayedQuestions = playerQuestionSessionService.countUnplayedQuestions(gameplaySessionId);
 
             if (correctSessionAlternative.isPresent()) {
                 if (isCorrectAlternative(correctSessionAlternative, selectedAlternative)) {
-                    inGameAlternativeResponse.setPlayerPunctuation(100L);
+                    Long currentScoreWinPerSessionLevel = getWinScoreBySessionGamingLevel(gameplaySessionId);
+                    inGameAlternativeResponse.setPlayerPunctuation(currentScoreWinPerSessionLevel);
                     activeQuestionInSession.setPlayerWin(true);
+
+                    updateScorePlayerIntoSession(gameplaySessionId, currentScoreWinPerSessionLevel);
                     LOGGER.info("O jogador venceu! E ganhou pontos na sua sessão! Alternativa selecionada: [{}]", selectedAlternative);
                     inGameAlternativeResponse.setPlayerMessage("O jogador venceu! E ganhou pontos na sua sessão!");
                 } else {
@@ -171,20 +159,42 @@ public class PlayRoomService {
 
                 activeQuestionInSession.setQuestionIsActive(false);
                 activeQuestionInSession.setWasPlayed(true);
-                this.playerQuestionSessionService.save(activeQuestionInSession);
+                this.questionSessionService.save(activeQuestionInSession);
 
-                if(unplayedQuestions == 1) {
-                    inGameAlternativeResponse.setSessionOver(true);
-                    inGameAlternativeResponse.setSessionOverMessage("A Sessão chegou ao seu fim!");
-
-                    disableGameplaySession(gameplaySessionId);
-                    LOGGER.info("Chegou na ultima alternativa válida do sistema. unplayedQuestions: [{}] ", unplayedQuestions);
+                if(isTheEndUserSession(gameplaySessionId)) {
+                    setValuesToDisablePlayerSession(inGameAlternativeResponse, gameplaySessionId);
                 }
             } else {
                 LOGGER.error("A base de dados está inconsistente e tem alternativas cadastradas com nenhuma alternativa correta! O que impede o jogador de jogar corrtamente! verifique na lista de alternativas: [{}]", currentSessionAlternativeList);
             }
         }
         return inGameAlternativeResponse;
+    }
+
+    //TODO Ajustar apra tirar o cascate das chamadas que tem filho como lista, e ajustar os lugares que precisam disso para funcionar!
+    //TODO problema de apagar o filho quando não passa a lista, está resolvido mas fica muito pesado assim!
+    private void updateScorePlayerIntoSession(Long gameplaySessionId, Long currentScoreWinPerSessionLevel){
+        PlayerGameplaySessionDTO playerGameplaySessionDTO = playerGameplaySessionService.findById(gameplaySessionId);
+        playerGameplaySessionDTO.setScore(playerGameplaySessionDTO.getScore() + currentScoreWinPerSessionLevel);
+        playerGameplaySessionService.save(playerGameplaySessionDTO);
+    }
+
+    private boolean isTheEndUserSession(Long gameplaySessionId){
+        Long unplayedQuestions = questionSessionService.countUnplayedQuestions(gameplaySessionId);
+        return unplayedQuestions == 1;
+    }
+
+    private void setValuesToDisablePlayerSession(InGameAlternativeResponse inGameAlternativeResponse, Long gameplaySessionId){
+        inGameAlternativeResponse.setSessionOver(true);
+        inGameAlternativeResponse.setSessionOverMessage("A Sessão chegou ao seu fim!");
+        disableGameplaySession(gameplaySessionId);
+        LOGGER.info("Chegou na ultima alternativa válida do sistema.");
+    }
+
+    private Long getWinScoreBySessionGamingLevel(Long gameplaySessionId){
+        PlayerGameplaySessionDTO playerGameplaySessionDTO = playerGameplaySessionService.findBySessionActivatedAndId(true, gameplaySessionId);
+        GameConfigurationDTO gameConfigurationDTO = gameConfigurationService.findByLevel(playerGameplaySessionDTO.getLevel());
+        return gameConfigurationDTO.getScorePerHit();
     }
 
     /**Desativa a sessão atual buscando o id e colocando ela com o status false para a coluna sesstion activated */
@@ -233,65 +243,8 @@ public class PlayRoomService {
         inGameQuestionAndAlternativesDTO.setInGameAlternativeDTO(inGameAlternativeDTOList);
     }
 
-    /**
-     * Percorre sessoes de gameplay atuais para saber se já existe alguma gameplay com esse tema do filtro
-     * Se sim retorna a GameplaySessionDTO e todos os jogadores que estão jogando, se não retorna vazio.
-     */
-    public Optional<GameplaySessionDTO> getGameplaySessionByTheme(String theme) {
-        return gameplaySessionList.stream()
-                .filter(session -> session.getTheme().equalsIgnoreCase(theme))
-                .findFirst();
-    }
-
-    public List<GameplaySessionDTO> getAllGameplaySession() {
-        return gameplaySessionList;
-    }
-
-    /**
-     * Valida se o usuário existe dentro da sala se sim retorna uma lista com questões referentes ao tema da sala.
-     */
-    private List<QuestionDTO> validateIfUserIntoRoom(Optional<GameplaySessionDTO> gameplaySessionDTO, Long userId, String theme) {
-        if (gameplaySessionDTO.isPresent()) {
-            for (PlayerDTO playerDTO : gameplaySessionDTO.get().getPlayerDTOList()) {
-                if (playerDTO.getUserId().equals(userId)) {
-                    return questionService.findByTheme(theme);
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Salva as questões dentro da base de dados de sessão, ou seja, pega a lista de questões padrão cadastradas no sistema e insere uma lista
-     * de referencia delas na sessão do usuário que é criada com essa lista de referencia de questões filtradas pela sala que ele entrou
-     * ou seja filtrada pelo tema que ele escolheu.
-     */
-    private InGameSessionDTO saveQuestionsOfSessionIntoDataBase(List<QuestionDTO> enterRoomQuestionList, Long userId) {
-        List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
-        PlayerGameplaySession playerGameplaySession = new PlayerGameplaySession();
-
-        //Cria a lista de questões da sessão do usuário pegando como base o id de questões previamente cadastradas no sistema.
-        //Aqui só chega questões que já foram filtradas e estão dentro de uma sala especifica, por exemplo Sala Cinema!
-        for (QuestionDTO questionDTO : enterRoomQuestionList) {
-            Question enterRoomQuestion = questionMapper.toEntity(questionDTO);
-            playerQuestionSessionList.add(new PlayerQuestionSession(enterRoomQuestion, playerGameplaySession, false));
-        }
-
-        //Como é o inicio da gameplay a sessão começa com questões ainda sem uso e score 0 e a sessaõ está ativa e tem uma referencia ao id do usuário.
-        playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessionList);
-        playerGameplaySession.setUserId(userId);
-        playerGameplaySession.setScore(0L);
-        playerGameplaySession.setSessionActivated(true);
-
-        Long playerGameplaySessionId = playerGameplaySessionService.save(playerGameplaySession).getId();
-        LOGGER.info("playerGameplaySession foi salva na base de dados o valor salvo foi: [{}] ", playerGameplaySession);
-
-        //Retorna objeto resumido para a controller apenas com dados importantes para a continuação da gameplay, o mais importante aqui é o questionGameplaySessionId
-        //Para podermos buscar sempre a partida e atualizar ela conforme o jogar forjogando e acertando ou errando questões da sessão!
-        InGameSessionDTO inGameSessionDTO = new InGameSessionDTO();
-        inGameSessionDTO.setPlayerSessionQuestionId(playerGameplaySessionId);
-
-        return inGameSessionDTO;
+    public List<PlayerGameplaySessionDTO> getActiveGameplaySessionByUserIdAndLevel(Long userId, String level) {
+        return playerGameplaySessionService.findByActiveGameplaySessionByLevelAndUserId(level, userId);
     }
 
     /**
