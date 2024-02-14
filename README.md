@@ -15,7 +15,7 @@ irá criar 3 usuários válidos para o Sistema com ids 1, 2 e 3
 Após isso rode o comando:
 
 ```
-mvn clan install
+mvn clean install
 ```
 
 para instalar as dependencias.
