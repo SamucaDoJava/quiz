@@ -4,7 +4,7 @@
 ### Criando base de dados
 
 vá até o banco de dados postgresSQL e crie uma base de dados de nome quiz_db vazia
-em sequiga abra o prompt comando DOS/CMD na raiz do projeto e execute o comando:
+em sequida abra o prompt comando DOS/CMD na raiz do projeto e execute o comando:
 
 ```
 mvn flyway:migrate
