@@ -2,6 +2,7 @@ package com.game.maker;
 
 import com.game.maker.model.Alternative;
 import com.game.maker.model.Question;
+import com.game.maker.model.Theme;
 import com.game.maker.repository.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class QuestionAlternativePersistenceTests {
 
     private Question createQuestionTest(){
         Question question = new Question();
-        question.setTheme("Cinema");
+        question.setTheme(new Theme("Cinema")); //TODO ajustar com novo objeto do tipo objeto theme.
         question.setQuestion("Qual é o filme mais premiado da história do Oscar?");
         return question;
     }

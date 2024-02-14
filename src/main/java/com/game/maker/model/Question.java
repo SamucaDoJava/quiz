@@ -14,26 +14,28 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_questao_seq")
     private Long id;
 
-    @Column(name = "tema")
-    private String theme;
-
     @Column(name = "pergunta")
     private String question;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Alternative> alternativeList = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "id_tema")
+    private Theme theme;
+
 
     public Question(){
 
     }
 
-    public Question(Long id, String theme, String question, List<Alternative> alternativeList) {
+    public Question(Long id, String question, List<Alternative> alternativeList, Theme theme) {
         this.id = id;
-        this.theme = theme;
         this.question = question;
         this.alternativeList = alternativeList;
+        this.theme = theme;
     }
+
 
     public Long getId() {
         return id;
@@ -41,15 +43,6 @@ public class Question {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
     }
 
     public String getQuestion() {
@@ -68,23 +61,30 @@ public class Question {
         this.alternativeList = alternativeList;
     }
 
+    public Theme getTheme() {
+        return theme;
+    }
 
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+    }
 
     @Override
     public String toString() {
         return "Question{" +
                 "id=" + id +
-                ", theme='" + theme + '\'' +
                 ", question='" + question + '\'' +
-                ", alternativeArrayList=" + alternativeList +
+                ", alternativeList=" + alternativeList +
+                ", theme=" + theme +
                 '}';
     }
 
+
     public static final class Builder {
-        private Question questionBuilder;
+        private Question question;
 
         private Builder() {
-            questionBuilder = new Question();
+            question = new Question();
         }
 
         public static Builder aQuestion() {
@@ -92,29 +92,22 @@ public class Question {
         }
 
         public Builder id(Long id) {
-            questionBuilder.setId(id);
+            question.setId(id);
             return this;
         }
 
-        public Builder theme(String theme) {
-            questionBuilder.setTheme(theme);
+        public Builder alternativeList(List<Alternative> alternativeList) {
+            question.setAlternativeList(alternativeList);
             return this;
         }
 
-        public Builder question(String question) {
-            questionBuilder.setQuestion(question);
-            return this;
-        }
-
-        public Builder questionAlternativeArrayList(ArrayList<Alternative> alternativeArrayList) {
-            questionBuilder.setAlternativeList(alternativeArrayList);
+        public Builder theme(Theme theme) {
+            question.setTheme(theme);
             return this;
         }
 
         public Question build() {
-            return questionBuilder;
+            return question;
         }
     }
-
-
 }

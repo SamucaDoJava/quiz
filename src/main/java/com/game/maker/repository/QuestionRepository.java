@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    List<Question> findByThemeIgnoreCase(String theme);
+    @Query("SELECT q FROM Question q JOIN q.theme t WHERE LOWER(t.theme) LIKE LOWER(CONCAT('%', :theme, '%'))")
+    List<Question> findByThemeIgnoreCase(@Param("theme") String theme);
     Optional<Question> findById(Long id);
 
 }

@@ -1,34 +1,40 @@
+-- Inserção dos temas na tabela tb_tema
+INSERT INTO public.tb_tema (id, theme) VALUES
+(1, 'Cinema'),
+(2, 'Filme Terror'); -- Adicione mais temas conforme necessário
+
 -- Inserção das perguntas na tabela tb_questao
-INSERT INTO public.tb_questao (id, pergunta, tema) VALUES
-(1, 'Qual é o filme mais premiado da história do Oscar?', 'Cinema'),
-(2, 'Qual filme venceu o Oscar de Melhor Filme em 2020?', 'Cinema'),
-(3, 'Qual filme foi dirigido por Quentin Tarantino?', 'Cinema'),
-(4, 'Quem ganhou o Oscar de Melhor Ator em 2021?', 'Cinema'),
-(5, 'Qual é o filme mais longo da história?', 'Cinema'),
-(6, 'Quem dirigiu o filme ''Interestelar''?', 'Cinema'),
-(7, 'Qual é o filme de animação mais bem avaliado no IMDb?', 'Cinema'),
-(8, 'Qual ator interpretou o papel principal em ''Clube da Luta''?', 'Cinema'),
-(9, 'Qual é o filme brasileiro mais premiado internacionalmente?', 'Cinema'),
-(10, 'Qual filme ganhou o Oscar de Melhor Animação em 2019?', 'Cinema'),
-(11, 'Quem interpretou o Coringa no filme de 2019?', 'Cinema'),
-(12, 'Qual é o filme mais lucrativo de todos os tempos?', 'Cinema'),
-(13, 'Qual é o nome do diretor de ''O Labirinto do Fauno''?', 'Cinema'),
-(14, 'Qual é o nome do personagem interpretado por Keanu Reeves na trilogia ''Matrix''?', 'Cinema'),
-(15, 'Qual filme ganhou o Oscar de Melhor Direção em 2021?', 'Cinema'),
-(16, 'Qual ator interpretou o personagem Hannibal Lecter em ''O Silêncio dos Inocentes''?', 'Cinema'),
-(17, 'Qual é o nome do robô em ''Ex-Machina''?', 'Cinema'),
-(18, 'Qual filme é conhecido por popularizar o formato found footage em filmes de terror?', 'Cinema'),
-(19, 'Qual é o primeiro filme da trilogia ''O Poderoso Chefão''?', 'Cinema'),
-(20, 'Qual filme ganhou o Oscar de Melhor Fotografia em 2018?', 'Cinema'),
-(21, 'Qual filme dirigido por Quentin Tarantino apresenta uma trama não linear?', 'Cinema'),
-(22, 'Qual ator interpretou James Bond no filme ''Skyfall''?', 'Cinema'),
-(23, 'Qual é o nome do robô em ''Blade Runner''?', 'Cinema'),
-(24, 'Qual filme recebeu o apelido ''Cavalo de Tróia'' durante as filmagens?', 'Cinema'),
-(25, 'Qual filme ganhou o Oscar de Melhor Direção em 2019?', 'Cinema'),
-(26, 'Quem dirigiu o filme ''Os Suspeitos''?', 'Cinema'),
-(27, 'Qual é o nome do personagem interpretado por Johnny Depp em ''Piratas do Caribe''?', 'Cinema'),
-(28, 'Quem interpretou a Rainha Elizabeth II em ''A Rainha''?', 'Cinema'),
-(29, 'Qual filme é conhecido por ter o diálogo ''You cant handle the truth!''?', 'Cinema' );
+INSERT INTO public.tb_questao (id, pergunta, id_tema) VALUES
+(1, 'Qual é o filme mais premiado da história do Oscar?', 1),
+(2, 'Qual filme venceu o Oscar de Melhor Filme em 2020?', 1),
+(3, 'Qual filme foi dirigido por Quentin Tarantino?', 1),
+(4, 'Quem ganhou o Oscar de Melhor Ator em 2021?', 1),
+(5, 'Qual é o filme mais longo da história?', 1),
+(6, 'Quem dirigiu o filme ''Interestelar''?', 1),
+(7, 'Qual é o filme de animação mais bem avaliado no IMDb?', 1),
+(8, 'Qual ator interpretou o papel principal em ''Clube da Luta''?', 1),
+(9, 'Qual é o filme brasileiro mais premiado internacionalmente?', 1),
+(10, 'Qual filme ganhou o Oscar de Melhor Animação em 2019?', 1),
+(11, 'Quem interpretou o Coringa no filme de 2019?', 1),
+(12, 'Qual é o filme mais lucrativo de todos os tempos?', 1),
+(13, 'Qual é o nome do diretor de ''O Labirinto do Fauno''?', 1),
+(14, 'Qual é o nome do personagem interpretado por Keanu Reeves na trilogia ''Matrix''?', 1),
+(15, 'Qual filme ganhou o Oscar de Melhor Direção em 2021?', 1),
+(16, 'Qual ator interpretou o personagem Hannibal Lecter em ''O Silêncio dos Inocentes''?', 1),
+(17, 'Qual é o nome do robô em ''Ex-Machina''?', 1),
+(18, 'Qual filme é conhecido por popularizar o formato found footage em filmes de terror?', 1),
+(19, 'Qual é o primeiro filme da trilogia ''O Poderoso Chefão''?', 1),
+(20, 'Qual filme ganhou o Oscar de Melhor Fotografia em 2018?', 1),
+(21, 'Qual filme dirigido por Quentin Tarantino apresenta uma trama não linear?', 1),
+(22, 'Qual ator interpretou James Bond no filme ''Skyfall''?', 1),
+(23, 'Qual é o nome do robô em ''Blade Runner''?', 1),
+(24, 'Qual filme recebeu o apelido ''Cavalo de Tróia'' durante as filmagens?', 1),
+(25, 'Qual filme ganhou o Oscar de Melhor Direção em 2019?', 1),
+(26, 'Quem dirigiu o filme ''Os Suspeitos''?', 1),
+(27, 'Qual é o nome do personagem interpretado por Johnny Depp em ''Piratas do Caribe''?', 1),
+(28, 'Quem interpretou a Rainha Elizabeth II em ''A Rainha''?', 1),
+(29, 'Qual filme é conhecido por ter o diálogo ''You cant handle the truth!''?', 1);
+
 
 -- Inserção das alternativas na tabela tb_alternativa
 INSERT INTO public.tb_alternativa (correta, id, id_questao, alternativa, "letra-referencia") VALUES
@@ -195,22 +201,23 @@ VALUES(3, 25000, 4500, 'Difícil');
 
 -- Comecando carga de filmes de terror.
 -- Insercao das perguntas na tabela tb_questao
-INSERT INTO public.tb_questao (id, pergunta, tema) VALUES
-(30, 'Qual é o filme de terror mais icônico de todos os tempos?', 'Filmes Terror'),
-(31, 'Em qual filme de terror uma família é aterrorizada por espíritos em sua casa?', 'Filmes Terror'),
-(32, 'Quem é o diretor famoso por criar o universo dos monstros da Universal Pictures nos filmes de terror clássicos?', 'Filmes Terror'),
-(33, 'Qual filme de terror popularizou o subgênero "slasher" na década de 70, apresentando um assassino mascarado?', 'Filmes Terror'),
-(34, 'Qual é o nome do hotel assombrado no filme de terror baseado no livro de Stephen King?', 'Filmes Terror'),
-(35, 'Quem dirigiu o clássico filme de terror "Psicose"?', 'Filmes Terror'),
-(36, 'Qual filme de terror japonês de 1998 envolve uma fita de vídeo amaldiçoada que causa a morte de quem a assiste em sete dias?', 'Filmes Terror'),
-(37, 'Qual é o título do filme de terror sobre um palhaço demoníaco que aterroriza uma pequena cidade?', 'Filmes Terror'),
-(38, 'Qual filme de terror acompanha um grupo de amigos enfrentando atividades paranormais após brincar com uma tábua Ouija?', 'Filmes Terror'),
-(39, 'Em qual filme de terror uma entidade demoníaca possuí uma boneca?', 'Filmes Terror'),
-(40, 'Qual é o filme de terror que se passa em uma casa onde eventos paranormais são investigados por uma equipe de caça-fantasmas?', 'Filmes Terror'),
-(41, 'Quem é o diretor de "O Iluminado", uma adaptação cinematográfica de uma obra de Stephen King?', 'Filmes Terror'),
-(42, 'Em qual filme de terror uma família é atormentada por uma maldição relacionada a um tabuleiro de jogo?', 'Filmes Terror'),
-(43, 'Qual é o filme de terror ambientado em uma floresta onde um grupo enfrenta entidades sobrenaturais?', 'Filmes Terror'),
-(44, 'Quem dirigiu o filme de terror "A Bruxa" lançado em 2015?', 'Filmes Terror');
+-- Inserção das perguntas na tabela tb_questao
+INSERT INTO public.tb_questao (id, pergunta, id_tema) VALUES
+(30, 'Qual é o filme de terror mais icônico de todos os tempos?', 2),
+(31, 'Em qual filme de terror uma família é aterrorizada por espíritos em sua casa?', 2),
+(32, 'Quem é o diretor famoso por criar o universo dos monstros da Universal Pictures nos filmes de terror clássicos?', 2),
+(33, 'Qual filme de terror popularizou o subgênero "slasher" na década de 70, apresentando um assassino mascarado?', 2),
+(34, 'Qual é o nome do hotel assombrado no filme de terror baseado no livro de Stephen King?', 2),
+(35, 'Quem dirigiu o clássico filme de terror "Psicose"?', 2),
+(36, 'Qual filme de terror japonês de 1998 envolve uma fita de vídeo amaldiçoada que causa a morte de quem a assiste em sete dias?', 2),
+(37, 'Qual é o título do filme de terror sobre um palhaço demoníaco que aterroriza uma pequena cidade?', 2),
+(38, 'Qual filme de terror acompanha um grupo de amigos enfrentando atividades paranormais após brincar com uma tábua Ouija?', 2),
+(39, 'Em qual filme de terror uma entidade demoníaca possuí uma boneca?', 2),
+(40, 'Qual é o filme de terror que se passa em uma casa onde eventos paranormais são investigados por uma equipe de caça-fantasmas?', 2),
+(41, 'Quem é o diretor de "O Iluminado", uma adaptação cinematográfica de uma obra de Stephen King?', 2),
+(42, 'Em qual filme de terror uma família é atormentada por uma maldição relacionada a um tabuleiro de jogo?', 2),
+(43, 'Qual é o filme de terror ambientado em uma floresta onde um grupo enfrenta entidades sobrenaturais?', 2),
+(44, 'Quem dirigiu o filme de terror "A Bruxa" lançado em 2015?', 2);
 
 
 -- Inserção das alternativas na tabela tb_alternativa
