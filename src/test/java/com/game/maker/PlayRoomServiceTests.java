@@ -19,7 +19,7 @@ class PlayRoomServiceTests {
 	private PlayRoomService playRoomService;
 	private static final String THEME = "CINEMA";
 	private static final Long USER_ID = 1L;
-	private static final String SELECTED_ALTERNATIVE = "A";
+	private static final String SELECTED_ALTERNATIVE = "D";
 	private static final String LEVEL = "Dificil";
 
 	@Test
@@ -32,10 +32,13 @@ class PlayRoomServiceTests {
 
 		//Demais ciclos respondendo sempre com a mesma alternativa.
 		for(Long i = 1L; unplayedQuestions > i;){
-
-				LOGGER.info("UnplayedQuestions: [{}] dentro do for.", unplayedQuestions);
-				unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
-				respondQuestionIntoSession(inGameSessionDTO);
+			if(i == unplayedQuestions) {
+				LOGGER.info("Chegou na ultima passagem:");
+				LOGGER.info("Pause.");
+			}
+			LOGGER.info("UnplayedQuestions: [{}] dentro do for.", unplayedQuestions);
+			unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
+			respondQuestionIntoSession(inGameSessionDTO);
 
 		}
 	}

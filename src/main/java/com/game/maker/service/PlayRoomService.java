@@ -212,7 +212,7 @@ public class PlayRoomService {
 
     private boolean isCorrectAlternative(Optional<Alternative> correctSessionAlternative, String selectedAlternative) {
         LOGGER.info("Foi encontrada uma alvernativa para a sessão, agora será validada se a alternativa condiz com a alternative selecionada que é [{}] ", selectedAlternative);
-        return correctSessionAlternative.map(alternative -> alternative.getAlternative().equals(selectedAlternative)).orElse(false);
+        return correctSessionAlternative.map(alternative -> alternative.getReferenceLetter().equals(selectedAlternative)).orElse(false);
     }
 
     /**
