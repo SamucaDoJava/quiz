@@ -39,7 +39,6 @@ class PlayRoomServiceTests {
 			LOGGER.info("UnplayedQuestions: [{}] dentro do for.", unplayedQuestions);
 			unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
 			respondQuestionIntoSession(inGameSessionDTO);
-
 		}
 	}
 
