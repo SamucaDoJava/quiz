@@ -17,7 +17,7 @@ class PlayRoomServiceTests {
 
 	@Autowired
 	private PlayRoomService playRoomService;
-	private static final String THEME = "CINEMA";
+	private static final String THEME = "Filme Terror";
 	private static final Long USER_ID = 1L;
 	private static final String SELECTED_ALTERNATIVE = "D";
 	private static final String LEVEL = "Dificil";
@@ -31,7 +31,7 @@ class PlayRoomServiceTests {
 		LOGGER.info("UnplayedQuestions: [{}] no primeiro ciclo.", unplayedQuestions);
 
 		//Demais ciclos respondendo sempre com a mesma alternativa.
-		for(Long i = 1L; unplayedQuestions > i;){
+		for(Long i = 1L; unplayedQuestions > 1;){
 			if(i == unplayedQuestions) {
 				LOGGER.info("Chegou na ultima passagem:");
 				LOGGER.info("Pause.");

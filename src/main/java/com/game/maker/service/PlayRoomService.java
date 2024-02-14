@@ -124,7 +124,6 @@ public class PlayRoomService {
         }
     }
 
-    //TODO Inserir logica de guardar a pontuação na sessão e ajudar a logica de validação da questão.
     public InGameAlternativeResponse validatePLayerQuestionAlternative(Long gameplaySessionId, String selectedAlternative) {
         PlayerQuestionSession activeQuestionInSession = questionSessionService.findActiveQuestionInSession(gameplaySessionId);
         InGameAlternativeResponse inGameAlternativeResponse = new InGameAlternativeResponse();
@@ -150,7 +149,7 @@ public class PlayRoomService {
                 } else {
                     inGameAlternativeResponse.setPlayerPunctuation(0L);
                     activeQuestionInSession.setPlayerWin(false);
-                    LOGGER.info("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+                    LOGGER.info("O jogador perdeu! E não recebeu pontos na sessão até o momento!");
                     inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
                 }
 
@@ -181,7 +180,7 @@ public class PlayRoomService {
 
     private boolean isTheEndUserSession(Long gameplaySessionId){
         Long unplayedQuestions = questionSessionService.countUnplayedQuestions(gameplaySessionId);
-        return unplayedQuestions == 1;
+        return unplayedQuestions < 1;
     }
 
     private void setValuesToDisablePlayerSession(InGameAlternativeResponse inGameAlternativeResponse, Long gameplaySessionId){
