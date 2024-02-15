@@ -31,7 +31,6 @@ class PlayRoomServiceTests {
 		StartGameResponse startGameResponse = loadValidPlayerWithQuestionSession();
 		boolean callWorkflow = true;
 
-
 		//Respondendo demais alternativas da sessão até que o retorno de unplayedQuestions seja 0 ou seja, não exista mais nenhuma alternativa sem responder na sessão.
 		for(boolean i = true; i == callWorkflow;){
 
