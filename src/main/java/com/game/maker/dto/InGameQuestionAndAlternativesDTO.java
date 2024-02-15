@@ -24,9 +24,6 @@ public class InGameQuestionAndAlternativesDTO {
     @JsonProperty("inGameAlternativeDTO")
     private List<InGameAlternativeDTO> inGameAlternativeDTO = new ArrayList<>();
 
-    @JsonProperty("actualScore")
-    private Long actualScore;
-
     @JsonProperty("userMessage")
     private String userMessage;
 
@@ -38,7 +35,6 @@ public class InGameQuestionAndAlternativesDTO {
         return "\nInGameQuestionAndAlternativesDTO" +
                 "\nquestion=" + question +
                 "\ninGameAlternativeDTO Tamanho da lista=" + inGameAlternativeDTO.size() +
-                "\nactualScore=" + actualScore +
                 "\nuserMessage= " + userMessage +
                 "\nunplayedQuestions= " + unplayedQuestions;
     }

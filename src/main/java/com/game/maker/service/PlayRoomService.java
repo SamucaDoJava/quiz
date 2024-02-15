@@ -52,35 +52,8 @@ public class PlayRoomService {
         return inGameSessionDTO;
     }
 
-    private Long createPlayerSessionWithQuestionsByTheme(String level, String theme, Long userId){
-        List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
-
-        PlayerGameplaySession playerGameplaySession = new PlayerGameplaySession();
-        playerGameplaySession.setLevel(level);
-        playerGameplaySession.setSessionActivated(true);
-        playerGameplaySession.setScore(0L);
-        playerGameplaySession.setUserId(userId);
-
-        List<QuestionDTO> questionList = questionService.findByTheme(theme);
-
-        for (QuestionDTO questionDTO : questionList) {
-            Question enterRoomQuestion = questionMapper.toEntity(questionDTO);
-            playerQuestionSessionList.add(new PlayerQuestionSession(enterRoomQuestion, playerGameplaySession, false));
-        }
-        playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessionList);
-        Long playerGameplaySessionId = playerGameplaySessionService.save(playerGameplaySession).getId();
-        LOGGER.info("playerGameplaySession foi salva na base de dados o valor salvo foi: [{}] ", playerGameplaySession);
-        return playerGameplaySessionId;
-    }
-
-    private boolean activeUserSessionInDataBase(List<PlayerGameplaySessionDTO> playerGameplaySessionDTOList){
-        return (!playerGameplaySessionDTOList.isEmpty()) ;
-    }
-
-    /**
-     * Busca uma pergunta randomica dentro da sessão do usuário, lembrando que essa pergunta precisa estar com a coluna
-     * isActivated como true se não ela já foi respondida e não será acessada na busca randomica.
-     */
+    /** Busca uma pergunta randomica dentro da sessão do usuário, lembrando que essa pergunta precisa estar com a coluna
+     * isActivated como true se não ela já foi respondida e não será acessada na busca randomica. */
     public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(InGameSessionDTO inGameSessionDTO) {
         Long playerGameSessionRoomId = inGameSessionDTO.getPlayerSessionQuestionId();
         InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = new InGameQuestionAndAlternativesDTO();
@@ -170,6 +143,31 @@ public class PlayRoomService {
         return inGameAlternativeResponse;
     }
 
+    private Long createPlayerSessionWithQuestionsByTheme(String level, String theme, Long userId){
+        List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
+
+        PlayerGameplaySession playerGameplaySession = new PlayerGameplaySession();
+        playerGameplaySession.setLevel(level);
+        playerGameplaySession.setSessionActivated(true);
+        playerGameplaySession.setScore(0L);
+        playerGameplaySession.setUserId(userId);
+
+        List<QuestionDTO> questionList = questionService.findByTheme(theme);
+
+        for (QuestionDTO questionDTO : questionList) {
+            Question enterRoomQuestion = questionMapper.toEntity(questionDTO);
+            playerQuestionSessionList.add(new PlayerQuestionSession(enterRoomQuestion, playerGameplaySession, false));
+        }
+        playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessionList);
+        Long playerGameplaySessionId = playerGameplaySessionService.save(playerGameplaySession).getId();
+        LOGGER.info("playerGameplaySession foi salva na base de dados o valor salvo foi: [{}] ", playerGameplaySession);
+        return playerGameplaySessionId;
+    }
+
+    private boolean activeUserSessionInDataBase(List<PlayerGameplaySessionDTO> playerGameplaySessionDTOList){
+        return (!playerGameplaySessionDTOList.isEmpty()) ;
+    }
+
     //TODO Ajustar apra tirar o cascate das chamadas que tem filho como lista, e ajustar os lugares que precisam disso para funcionar!
     //TODO problema de apagar o filho quando não passa a lista, está resolvido mas fica muito pesado assim!
     private void updateScorePlayerIntoSession(Long gameplaySessionId, Long currentScoreWinPerSessionLevel){
@@ -195,8 +193,7 @@ public class PlayRoomService {
         GameConfigurationDTO gameConfigurationDTO = gameConfigurationService.findByLevel(playerGameplaySessionDTO.getLevel());
         return gameConfigurationDTO.getScorePerHit();
     }
-
-    /**Desativa a sessão atual buscando o id e colocando ela com o status false para a coluna sesstion activated */
+    
     private void disableGameplaySession(Long gameplaySessionId){
         PlayerGameplaySessionDTO playerGameplaySessionDTO = playerGameplaySessionService.findById(gameplaySessionId);
         playerGameplaySessionDTO.setSessionActivated(false);
@@ -214,9 +211,6 @@ public class PlayRoomService {
         return correctSessionAlternative.map(alternative -> alternative.getReferenceLetter().equals(selectedAlternative)).orElse(false);
     }
 
-    /**
-     * Se o id passado do player achar uma sessão ativa, ele retorna true, se não false
-     */
     private PlayerGameplaySessionDTO getSession(Long playerGameplaySessionId) {
         LOGGER.info("Iniciando busca por sessão ativa playerGameplaySessionId = [{}]", playerGameplaySessionId);
         PlayerGameplaySessionDTO playerGameplaySessionDTO = playerGameplaySessionService.findById(playerGameplaySessionId);
@@ -246,9 +240,7 @@ public class PlayRoomService {
         return playerGameplaySessionService.findByActiveGameplaySessionByLevelAndUserId(level, userId);
     }
 
-    /**
-     * Busca o usuário e valida se ele existe na base de dados e só deixa passar se caso exista mesmo!
-     */
+    /** Busca o usuário e valida se ele existe na base de dados e só deixa passar se caso exista mesmo! */
     private UserDTO findUserById(Long userId) {
         Optional<UserDTO> userDTO = Optional.ofNullable(userService.findUserById(userId));
         try {
