@@ -13,53 +13,80 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PlayRoomServiceTests {
 
-	private final Logger LOGGER = LogManager.getLogger(PlayRoomServiceTests.class);
+    private final Logger LOGGER = LogManager.getLogger(PlayRoomServiceTests.class);
 
-	@Autowired
-	private PlayRoomService playRoomService;
-	private static final String THEME = "Filme Terror";
-	private static final Long USER_ID = 1L;
-	private static final String SELECTED_ALTERNATIVE = "D";
-	private static final String LEVEL = "Dificil";
-	private static Long currentQuestionPosition = null;
+    @Autowired
+    private PlayRoomService playRoomService;
+    private static final String THEME = "Filme Terror";
+    private static final Long USER_ID = 1L;
+    private static final String SELECTED_ALTERNATIVE = "D";
+    private static final String LEVEL = "Dificil";
 
-	private InGameAlternativeResponse inGameAlternativeResponse;
+    @Test
+    void startFullGameplay() {
+        //Carregando partidas.
+        StartGameResponse startGameplayPlayerOne = loadValidPlayerWithQuestionSession(1L);
+        //StartGameResponse startGameplayPlayerTwo = loadValidPlayerWithQuestionSession(2L);
 
-	@Test
-	void startFullGameplay() {
-		//Carregando partida.
-		StartGameResponse startGameResponse = loadValidPlayerWithQuestionSession();
-		boolean callWorkflow = true;
+        //callAllWorkflowFotTwoPlayer(1L, startGameplayPlayerOne.getGameplaySessionId(), 2L, startGameplayPlayerTwo.getGameplaySessionId());
+        callAllWorkflowForOneSessionPlayer(1L, startGameplayPlayerOne.getGameplaySessionId());
+    }
 
-		//Respondendo demais alternativas da sessão até que o retorno de unplayedQuestions seja 0 ou seja, não exista mais nenhuma alternativa sem responder na sessão.
-		for(boolean i = true; i == callWorkflow;){
+    private void callAllWorkflowFotTwoPlayer(Long userIdPlayerOne, Long sessionIdPlayerOne, Long userIdPlayerTwo, Long sessionIdPlayerTwo) {
+        InGameAlternativeResponse inGameAlternativeResponsePlaterOne;
+        InGameAlternativeResponse inGameAlternativeResponsePlayerTwo;
+        Long currentQuestionPositionPlayerOne = null;
+        Long currentQuestionPositionPlayerTwo = null;
 
-			findRandoQuestionIntoSession(USER_ID, startGameResponse.getGameplaySessionId());
-			respondQuestionIntoSession(USER_ID, startGameResponse.getGameplaySessionId(), SELECTED_ALTERNATIVE);
-			showLogInfo(currentQuestionPosition);
+        boolean callWorkflow = true;
 
-			if(currentQuestionPosition == 1) {
-				callWorkflow = false;
-			}
-		}
-	}
+        for (boolean i = true; i == callWorkflow; ) {
+            findRandoQuestionIntoSession(userIdPlayerOne, sessionIdPlayerOne);
+            findRandoQuestionIntoSession(userIdPlayerTwo, sessionIdPlayerTwo);
 
-	private void showLogInfo(Long currentQuestionPosition){
-		LOGGER.info("CurrentQuestionPosition: [{}] dentro do for. currentSessionScore: [{}] playerPontuation: [{}]", currentQuestionPosition, inGameAlternativeResponse.getCurrentSessionScore(), inGameAlternativeResponse.getQuestionScore());
-	}
+            inGameAlternativeResponsePlaterOne = respondQuestionIntoSession(userIdPlayerOne, sessionIdPlayerOne, SELECTED_ALTERNATIVE);
+            inGameAlternativeResponsePlayerTwo = respondQuestionIntoSession(userIdPlayerTwo, sessionIdPlayerTwo, SELECTED_ALTERNATIVE);
 
-	StartGameResponse loadValidPlayerWithQuestionSession(){
-		StartGameResponse startGameResponse = playRoomService.createSessionAndGeneratedQuestions(USER_ID, THEME, LEVEL);
-		return startGameResponse;
-	}
+            currentQuestionPositionPlayerOne = inGameAlternativeResponsePlaterOne.getCurrentQuestionPosition();
+            currentQuestionPositionPlayerTwo = inGameAlternativeResponsePlayerTwo.getCurrentQuestionPosition();
 
-	void findRandoQuestionIntoSession(Long userId, Long gameplaySessionId){
-		InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = playRoomService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
-	}
+            if (currentQuestionPositionPlayerOne == 1 && currentQuestionPositionPlayerTwo == 1) {
+                callWorkflow = false;
+                LOGGER.info("Os dois jogadores tem chegaram ao fim do jogo! currentQuestionPositionPlayerOne [{}] currentQuestionPositionPlayerTwo [{}]", currentQuestionPositionPlayerOne, currentQuestionPositionPlayerTwo);
+            }
+        }
+    }
 
-	void respondQuestionIntoSession(Long userId, Long gameplaySessionId, String selectedAlternative){
-		this.inGameAlternativeResponse = playRoomService.validatePLayerQuestionAlternative(userId, gameplaySessionId, selectedAlternative);
-		currentQuestionPosition = this.inGameAlternativeResponse.getCurrentQuestionPosition();
-	}
+    private void callAllWorkflowForOneSessionPlayer(Long userId, Long sessionId) {
+        InGameAlternativeResponse inGameAlternativeResponse;
+        Long currentQuestionPosition = null;
+        boolean callWorkflow = true;
+
+        for (boolean i = true; i == callWorkflow; ) {
+            findRandoQuestionIntoSession(USER_ID, sessionId);
+            inGameAlternativeResponse = respondQuestionIntoSession(USER_ID, sessionId, SELECTED_ALTERNATIVE);
+
+            currentQuestionPosition = inGameAlternativeResponse.getCurrentQuestionPosition();
+
+            if (currentQuestionPosition == 1) {
+                callWorkflow = false;
+            }
+            LOGGER.info("inGameAlternativeResponse: [{}]", inGameAlternativeResponse);
+        }
+    }
+
+    StartGameResponse loadValidPlayerWithQuestionSession(Long userId) {
+        StartGameResponse startGameResponse = playRoomService.createSessionAndGeneratedQuestions(userId, THEME, LEVEL);
+        return startGameResponse;
+    }
+
+    void findRandoQuestionIntoSession(Long userId, Long gameplaySessionId) {
+        InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = playRoomService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
+    }
+
+    InGameAlternativeResponse respondQuestionIntoSession(Long userId, Long gameplaySessionId, String selectedAlternative) {
+        InGameAlternativeResponse inGameAlternativeResponse = playRoomService.validatePLayerQuestionAlternative(userId, gameplaySessionId, selectedAlternative);
+        return inGameAlternativeResponse;
+    }
 
 }
