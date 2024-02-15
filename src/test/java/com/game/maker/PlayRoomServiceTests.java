@@ -40,7 +40,7 @@ class PlayRoomServiceTests {
 
         boolean callWorkflow = true;
 
-        for (boolean i = true; i == callWorkflow; ) {
+        for (boolean i = true; i == callWorkflow;) {
             findRandoQuestionIntoSession(userIdPlayerOne, sessionIdPlayerOne);
             findRandoQuestionIntoSession(userIdPlayerTwo, sessionIdPlayerTwo);
 
