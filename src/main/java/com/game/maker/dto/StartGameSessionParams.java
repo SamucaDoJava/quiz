@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class InGameSessionDTO {
+@AllArgsConstructor
+public class StartGameSessionParams {
 
-    private Long playerSessionQuestionId;
-    private String responseMessage;
+    private Long userId;
+    private String theme;
+    private String level;
 
 }

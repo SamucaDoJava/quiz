@@ -30,6 +30,8 @@ public interface PlayerGameplaySessionRepository extends JpaRepository<PlayerGam
             "AND pgs.level = :level " +
             "AND pgs.userId = :userId ")
     List<PlayerGameplaySession> findByActiveGameplaySessionByLevelAndUserId(@Param("level") String level, @Param("userId") Long userId);
+
+
     Optional<PlayerGameplaySession> findBySessionActivatedAndId(boolean isActive, Long gameplaySessionId);
 
 }

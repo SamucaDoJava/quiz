@@ -2,7 +2,7 @@ package com.game.maker;
 
 import com.game.maker.dto.InGameAlternativeResponse;
 import com.game.maker.dto.InGameQuestionAndAlternativesDTO;
-import com.game.maker.dto.InGameSessionDTO;
+import com.game.maker.dto.StartGameResponse;
 import com.game.maker.service.PlayRoomService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,45 +21,46 @@ class PlayRoomServiceTests {
 	private static final Long USER_ID = 1L;
 	private static final String SELECTED_ALTERNATIVE = "D";
 	private static final String LEVEL = "Dificil";
+	private static Long currentQuestionPosition = null;
+
+	private InGameAlternativeResponse inGameAlternativeResponse;
 
 	@Test
 	void startFullGameplay() {
-		InGameSessionDTO inGameSessionDTO = loadValidPlayerWithQuestionSession();
-		Long unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
+		//Carregando partida.
+		StartGameResponse startGameResponse = loadValidPlayerWithQuestionSession();
+		boolean callWorkflow = true;
 
-		respondQuestionIntoSession(inGameSessionDTO);
-		LOGGER.info("UnplayedQuestions: [{}] no primeiro ciclo.", unplayedQuestions);
 
-		//Demais ciclos respondendo sempre com a mesma alternativa.
-		for(Long i = 1L; unplayedQuestions > 1;){
-			if(i == unplayedQuestions) {
-				LOGGER.info("Chegou na ultima passagem:");
-				LOGGER.info("Pause.");
+		//Respondendo demais alternativas da sessão até que o retorno de unplayedQuestions seja 0 ou seja, não exista mais nenhuma alternativa sem responder na sessão.
+		for(boolean i = true; i == callWorkflow;){
+
+			findRandoQuestionIntoSession(USER_ID, startGameResponse.getGameplaySessionId());
+			respondQuestionIntoSession(USER_ID, startGameResponse.getGameplaySessionId(), SELECTED_ALTERNATIVE);
+			showLogInfo(currentQuestionPosition);
+
+			if(currentQuestionPosition == 1) {
+				callWorkflow = false;
 			}
-			LOGGER.info("UnplayedQuestions: [{}] dentro do for.", unplayedQuestions);
-			unplayedQuestions = findRandoQuestionIntoSession(inGameSessionDTO);
-			respondQuestionIntoSession(inGameSessionDTO);
 		}
 	}
 
-	InGameSessionDTO loadValidPlayerWithQuestionSession(){
-		InGameSessionDTO inGameSessionDTO = playRoomService.createSessionAndGeneratedQuestions(USER_ID, THEME, LEVEL);
-		LOGGER.info("O Usuário de id: [{}] foi carregado com questões ativas para o tema [{}] e foi gerada a sessão de id: [{}]", USER_ID, THEME, inGameSessionDTO.getPlayerSessionQuestionId());
-		return inGameSessionDTO;
+	private void showLogInfo(Long currentQuestionPosition){
+		LOGGER.info("CurrentQuestionPosition: [{}] dentro do for. currentSessionScore: [{}] playerPontuation: [{}]", currentQuestionPosition, inGameAlternativeResponse.getCurrentSessionScore(), inGameAlternativeResponse.getQuestionScore());
 	}
 
-	Long findRandoQuestionIntoSession(InGameSessionDTO inGameSessionDTO){
-		InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = playRoomService.findRandomQuestionActiveInPlayerSession(inGameSessionDTO);
-		LOGGER.info("Status atual da alternativa a ser respondida antes de responder: [{}]", inGameQuestionAndAlternativesDTO.getUserMessage());
-		return inGameQuestionAndAlternativesDTO.getUnplayedQuestions();
+	StartGameResponse loadValidPlayerWithQuestionSession(){
+		StartGameResponse startGameResponse = playRoomService.createSessionAndGeneratedQuestions(USER_ID, THEME, LEVEL);
+		return startGameResponse;
 	}
 
-	void respondQuestionIntoSession(InGameSessionDTO inGameSessionDTO){
-		LOGGER.info("id da sessão antes de salvar alternativa escolhida: [{}]", inGameSessionDTO.getPlayerSessionQuestionId());
-		InGameAlternativeResponse inGameAlternativeResponse = playRoomService.
-				validatePLayerQuestionAlternative(inGameSessionDTO.getPlayerSessionQuestionId(), SELECTED_ALTERNATIVE);
+	void findRandoQuestionIntoSession(Long userId, Long gameplaySessionId){
+		InGameQuestionAndAlternativesDTO inGameQuestionAndAlternativesDTO = playRoomService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
+	}
 
-		LOGGER.info("\nStatus da alternativa pós a resposta! final do ciclo de uma alternativa! [{}]\n", inGameAlternativeResponse.getPlayerMessage());
+	void respondQuestionIntoSession(Long userId, Long gameplaySessionId, String selectedAlternative){
+		this.inGameAlternativeResponse = playRoomService.validatePLayerQuestionAlternative(userId, gameplaySessionId, selectedAlternative);
+		currentQuestionPosition = this.inGameAlternativeResponse.getCurrentQuestionPosition();
 	}
 
 }

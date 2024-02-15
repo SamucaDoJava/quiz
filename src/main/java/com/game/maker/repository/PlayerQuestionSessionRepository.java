@@ -20,12 +20,20 @@ public interface PlayerQuestionSessionRepository extends JpaRepository<PlayerQue
             "WHERE (pq.wasPlayed = false OR pq.wasPlayed IS NULL) " +
             "AND pq.playerGameplaySession.sessionActivated = true " +
             "AND pq.questionIsActive = true " +
-            "AND pq.playerGameplaySession.id = :sessionId")
-    PlayerQuestionSession findActiveQuestionInSession(@Param("sessionId") Long sessionId);
+            "AND pq.playerGameplaySession.userId = :userId " +
+            "AND pq.playerGameplaySession.id = :sessionId ")
+    PlayerQuestionSession findActiveUnansweredQuestionsInSession(@Param("sessionId") Long sessionId, @Param("userId") Long userId);
 
     @Query("SELECT COUNT(pq) FROM PlayerQuestionSession pq " +
             "WHERE (pq.wasPlayed = false OR pq.wasPlayed IS NULL) " +
             "AND pq.playerGameplaySession.id = :sessionId")
     Long countUnplayedQuestions(@Param("sessionId") Long sessionId);
+
+
+    @Query("SELECT SUM(pq.score) FROM PlayerQuestionSession pq " +
+            "WHERE pq.wasPlayed = true " +
+            "AND pq.playerWin = true " +
+            "AND pq.playerGameplaySession.id = :sessionId")
+    Long sumScoreForCurrentSessionUntilNow(@Param("sessionId") Long sessionId);
 
 }

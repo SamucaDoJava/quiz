@@ -1,13 +1,8 @@
 package com.game.maker.controller;
 
 import com.game.maker.dto.GameConfigurationDTO;
-import com.game.maker.dto.InGameAlternativeResponse;
-import com.game.maker.dto.InGameQuestionAndAlternativesDTO;
-import com.game.maker.dto.InGameSessionDTO;
 import com.game.maker.service.GameConfigurationService;
-import com.game.maker.service.GameplayService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

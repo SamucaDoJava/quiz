@@ -24,6 +24,9 @@ public class PlayerQuestionSession {
     @Column(name = "questao_ativa")
     private Boolean questionIsActive;
 
+    @Column(name = "pontuacao")
+    private Long score;
+
     @ManyToOne
     @JoinColumn(name = "sessao_jogador_id")
     private PlayerGameplaySession playerGameplaySession;
@@ -42,6 +45,16 @@ public class PlayerQuestionSession {
         this.question = question;
         this.playerGameplaySession = playerGameplaySession;
         this.wasPlayed = wasPlayed;
+    }
+
+    public PlayerQuestionSession(Long id, Question question, Boolean wasPlayed, Boolean playerWin, Boolean questionIsActive, Long score, PlayerGameplaySession playerGameplaySession) {
+        this.id = id;
+        this.question = question;
+        this.wasPlayed = wasPlayed;
+        this.playerWin = playerWin;
+        this.questionIsActive = questionIsActive;
+        this.score = score;
+        this.playerGameplaySession = playerGameplaySession;
     }
 
     public Long getId() {
@@ -92,6 +105,14 @@ public class PlayerQuestionSession {
         this.questionIsActive = questionIsActive;
     }
 
+    public Long getScore() {
+        return score;
+    }
+
+    public void setScore(Long score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
         return "\nQuestionSessionService{" +
@@ -100,7 +121,8 @@ public class PlayerQuestionSession {
                 "\nalreadyUsed=" + wasPlayed +
                 "\nplayerGameplaySession=" + playerGameplaySession +
                 "\njogadorVenceu=" + playerWin +
-                "\nquestionIsActive= " + questionIsActive;
+                "\nquestionIsActive= " + questionIsActive +
+                "\nscore= " + score;
     }
 
 
@@ -142,6 +164,11 @@ public class PlayerQuestionSession {
 
         public Builder questionIsActive(Boolean questionIsActive) {
             playerQuestionSession.setQuestionIsActive(questionIsActive);
+            return this;
+        }
+
+        public Builder score(Long score) {
+            playerQuestionSession.setScore(score);
             return this;
         }
 

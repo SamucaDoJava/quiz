@@ -17,11 +17,11 @@ public class QuestionSessionService {
     }
 
     public PlayerQuestionSession findByQuestionIdAndNotPlayedAndQuestionIsActive(Long questionId) {
-       return playerQuestionSessionRepository.findByQuestionIdAndNotPlayedAndQuestionIsActive(questionId);
+        return playerQuestionSessionRepository.findByQuestionIdAndNotPlayedAndQuestionIsActive(questionId);
     }
 
-    public PlayerQuestionSession findActiveQuestionInSession(Long sessionId) {
-        return playerQuestionSessionRepository.findActiveQuestionInSession(sessionId);
+    public PlayerQuestionSession findActiveUnansweredQuestionsInSession(Long sessionId, Long userId) {
+        return playerQuestionSessionRepository.findActiveUnansweredQuestionsInSession(sessionId, userId);
     }
 
     public PlayerQuestionSession save(PlayerQuestionSession playerQuestionSession) {
@@ -30,6 +30,10 @@ public class QuestionSessionService {
 
     public Long countUnplayedQuestions(Long sessionId) {
         return playerQuestionSessionRepository.countUnplayedQuestions(sessionId);
-                    }
+    }
+
+    public Long sumScoreForCurrentSessionUntilNow(Long userId){
+        return playerQuestionSessionRepository.sumScoreForCurrentSessionUntilNow(userId);
+    }
 
 }

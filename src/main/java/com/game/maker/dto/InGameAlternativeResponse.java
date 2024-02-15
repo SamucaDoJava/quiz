@@ -16,8 +16,8 @@ public class InGameAlternativeResponse {
     @JsonProperty("playerMessage")
     private String playerMessage;
 
-    @JsonProperty("playerPunctuation")
-    private Long playerPunctuation;
+    @JsonProperty("questionScore")
+    private Long questionScore;
 
     @JsonProperty("selectedAlternative")
     private String selectedAlternative;
@@ -33,5 +33,8 @@ public class InGameAlternativeResponse {
 
     @JsonProperty("sessionOverMessage")
     private String sessionOverMessage;
+
+    @JsonProperty("currentQuestionPosition")
+    private Long currentQuestionPosition;
 
 }

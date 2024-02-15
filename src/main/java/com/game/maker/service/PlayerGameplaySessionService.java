@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class PlayerGameplaySessionService {
@@ -95,13 +96,9 @@ public class PlayerGameplaySessionService {
         }
     }
 
-    public PlayerGameplaySessionDTO findBySessionActivatedAndId(boolean sessionIsActive, Long gameplaySessionId) {
+    public Optional<PlayerGameplaySessionDTO> findBySessionActivatedAndId(boolean sessionIsActive, Long gameplaySessionId) {
         try {
-            PlayerGameplaySession playerGameplaySession = playerGameplaySessionRepository.findBySessionActivatedAndId(sessionIsActive, gameplaySessionId)
-                    .orElseThrow(() ->
-                            new NoSuchElementException(
-                                    "A PlayerGameplaySessionDTO com o sessionIsActive igual true não foi encontrada"));
-            return playerGameplaySessionMapper.toDTO(playerGameplaySession);
+            return playerGameplaySessionRepository.findBySessionActivatedAndId(sessionIsActive, gameplaySessionId).map(playerGameplaySessionMapper::toDTO);
         } catch (DataAccessException ex) {
             LOGGER.error("Ocorreu um erro no método findBySessionActive, erro: ", ex);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro ao tentar recuperar a PlayerGameplaySessionDTO na consulta findBySessionActive", ex);

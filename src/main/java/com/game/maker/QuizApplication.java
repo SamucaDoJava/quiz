@@ -19,7 +19,7 @@ public class QuizApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:4200", "http://maisumaurlqualquer")
+						.allowedOrigins("http://localhost:4200", "http://localhost:8080/swagger-ui/index.html")
 						.allowedMethods("GET", "POST", "PUT", "DELETE");
 //						.allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
 //						.allowCredentials(true);

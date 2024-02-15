@@ -1,8 +1,6 @@
 package com.game.maker.controller;
 
-import com.game.maker.dto.InGameAlternativeResponse;
-import com.game.maker.dto.InGameQuestionAndAlternativesDTO;
-import com.game.maker.dto.InGameSessionDTO;
+import com.game.maker.dto.*;
 import com.game.maker.service.GameplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +13,19 @@ public class GameplayController {
     private GameplayService gameplayService;
 
 
-    @GetMapping("/start-gameplay/{userId}/{theme}/{level}")
-    public InGameSessionDTO startGameplay(@PathVariable Long userId, @PathVariable String theme, @PathVariable String level) {
-       return gameplayService.generateSessionQuestionsForPlayer(userId, theme, level);
+    @PostMapping("/start")
+    public StartGameResponse startGameplay(@RequestBody StartGameSessionParams startGameSessionParams) {
+       return gameplayService.generateSessionQuestionsForPlayer(startGameSessionParams);
     }
 
-    @PostMapping("/find-question-in-session")
-    public InGameQuestionAndAlternativesDTO findQuestionInSession(@RequestBody InGameSessionDTO inGameSessionDTO) {
-        return gameplayService.findRandomQuestionActiveInPlayerSession(inGameSessionDTO);
+    @GetMapping("/find-question-in-session/{userId}/{gameplaySessionId}")
+    public InGameQuestionAndAlternativesDTO findQuestionInSession(@PathVariable Long userId, @PathVariable Long gameplaySessionId) {
+        return gameplayService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
     }
 
-    @GetMapping("/validate-question-selected-alternative/{gameplaySessionId}/{selectedAlternative}")
-    public InGameAlternativeResponse validateQuestionAlternative(@PathVariable Long gameplaySessionId, @PathVariable String selectedAlternative) {
-        return gameplayService.validateAlternativeSession(gameplaySessionId, selectedAlternative);
+    @PostMapping("/validate-selected-question-alternative")
+    public InGameAlternativeResponse validateQuestionAlternative(@RequestBody AlternativeValidationParams alternativeValidationParams) {
+        return gameplayService.validateAlternativeSession(alternativeValidationParams);
     }
 
  }
