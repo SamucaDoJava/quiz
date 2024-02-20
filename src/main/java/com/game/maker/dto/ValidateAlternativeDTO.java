@@ -8,7 +8,6 @@ import lombok.Data;
 public class ValidateAlternativeDTO {
 
   private Long id;
-
   private Boolean alternativeStatus;
 
 }

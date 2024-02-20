@@ -203,8 +203,8 @@ public class PlayRoomService {
     return unplayedQuestions == 1;
   }
 
-  private boolean isAlternativePresentInUnrespondedSession(Long uplayerdQuestions) {
-    return (Objects.nonNull(uplayerdQuestions) && uplayerdQuestions > 0 ? true : false);
+  private boolean isAlternativePresentInUnrespondedSession(Long unplayedQuestions) {
+    return (Objects.nonNull(unplayedQuestions) && unplayedQuestions > 0);
   }
 
   private void setValuesToDisablePlayerSession(InGameAlternativeResponse inGameAlternativeResponse, Long gameplaySessionId) {
@@ -293,7 +293,7 @@ public class PlayRoomService {
   }
 
   private String userNotHaveActiveQuestionsMessage() {
-    return "O id do usuário enviado não está dentro de nenhuma sala válida, crie uma sala com um id de usuário válido antes de iniciar um jogo";
+    return "O id do usuário enviado não está dentro de nenhuma sala válida, crie uma sala com um id de usuário válido antes de iniciar um jogo.";
   }
 
   private String sessionNotFoundMessage() {
