@@ -18,21 +18,21 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GameplaySessionDTO {
 
-    @JsonProperty("theme")
-    private String theme;
+  @JsonProperty("theme")
+  private String theme;
 
-    @Schema(hidden = true)
-    private List<PlayerDTO> playerDTOList = new ArrayList<>();
+  @Schema(hidden = true)
+  private List<PlayerDTO> playerDTOList = new ArrayList<>();
 
-    public GameplaySessionDTO(String theme, PlayerDTO playerDTO) {
-        this.theme = theme;
-        this.playerDTOList.add(playerDTO);
-    }
+  public GameplaySessionDTO(String theme, PlayerDTO playerDTO) {
+    this.theme = theme;
+    this.playerDTOList.add(playerDTO);
+  }
 
-    @Override
-    public String toString() {
-        return "GameplaySessionDTO: " +
-                "\ntheme= " + theme +
-                "\nplayerDTOList= " + playerDTOList;
-    }
+  @Override
+  public String toString() {
+    return "GameplaySessionDTO: " +
+        "\ntheme= " + theme +
+        "\nplayerDTOList= " + playerDTOList;
+  }
 }

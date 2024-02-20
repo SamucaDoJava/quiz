@@ -9,24 +9,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/gameplay")
 public class GameplayController {
 
-    @Autowired
-    private GameplayService gameplayService;
+  @Autowired
+  private GameplayService gameplayService;
 
+  @PostMapping("/start")
+  public StartGameResponse startGameplay(@RequestBody StartGameSessionParams startGameSessionParams) {
+    return gameplayService.generateSessionQuestionsForPlayer(startGameSessionParams);
+  }
 
-    @PostMapping("/start")
-    public StartGameResponse startGameplay(@RequestBody StartGameSessionParams startGameSessionParams) {
-       return gameplayService.generateSessionQuestionsForPlayer(startGameSessionParams);
-    }
+  @GetMapping("/find-question-in-session/{userId}/{gameplaySessionId}")
+  public InGameQuestionAndAlternativesDTO findQuestionInSession(@PathVariable Long userId, @PathVariable Long gameplaySessionId) {
+    return gameplayService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
+  }
 
-    @GetMapping("/find-question-in-session/{userId}/{gameplaySessionId}")
-    public InGameQuestionAndAlternativesDTO findQuestionInSession(@PathVariable Long userId, @PathVariable Long gameplaySessionId) {
-        return gameplayService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
-    }
+  @PostMapping("/validate-selected-question-alternative")
+  public InGameAlternativeResponse validateQuestionAlternative(@RequestBody AlternativeValidationParams alternativeValidationParams) {
+    return gameplayService.validateAlternativeSession(alternativeValidationParams);
+  }
 
-    @PostMapping("/validate-selected-question-alternative")
-    public InGameAlternativeResponse validateQuestionAlternative(@RequestBody AlternativeValidationParams alternativeValidationParams) {
-        return gameplayService.validateAlternativeSession(alternativeValidationParams);
-    }
-
- }
-
+}

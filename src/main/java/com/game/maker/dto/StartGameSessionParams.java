@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StartGameSessionParams {
 
-    private Long userId;
-    private String theme;
-    private String level;
+  private Long userId;
+  private String theme;
+  private String level;
 
 }

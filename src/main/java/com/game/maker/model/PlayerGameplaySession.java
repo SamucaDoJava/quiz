@@ -10,137 +10,132 @@ import java.util.List;
 @Table(name = "tb_sessao_jogador")
 public class PlayerGameplaySession {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_jogador_seq")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_sessao_jogador_seq")
+  private Long id;
 
-    @Column(name = "usuario_id")
-    private Long userId;
+  @Column(name = "usuario_id")
+  private Long userId;
 
-    @Column(name = "pontuacao")
-    private Long score;
+  @Column(name = "pontuacao")
+  private Long score;
 
-    @Column(name = "sessao_ativada")
-    private Boolean sessionActivated;
+  @Column(name = "sessao_ativada")
+  private Boolean sessionActivated;
 
-    @Column(name = "level")
-    private String level;
+  @Column(name = "level")
+  private String level;
 
-    @OneToMany(mappedBy = "playerGameplaySession", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<PlayerQuestionSession> playerQuestionSessions = new ArrayList<>();
+  @OneToMany(mappedBy = "playerGameplaySession", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  private List<PlayerQuestionSession> playerQuestionSessions = new ArrayList<>();
+
+  public PlayerGameplaySession() {
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public Long getScore() {
+    return score;
+  }
+
+  public void setScore(Long score) {
+    this.score = score;
+  }
+
+  public Boolean getSessionActivated() {
+    return sessionActivated;
+  }
+
+  public void setSessionActivated(Boolean sessionActivated) {
+    this.sessionActivated = sessionActivated;
+  }
+
+  public List<PlayerQuestionSession> getPlayerGameplaySessionQuestions() {
+    return playerQuestionSessions;
+  }
+
+  public void setPlayerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
+    this.playerQuestionSessions = playerQuestionSessions;
+  }
+
+  public void setLevel(String level) {
+    this.level = level;
+  }
+
+  public String getLevel() {
+    return level;
+  }
+
+  @Override
+  public String toString() {
+    return "\nPlayerGameplaySession{" +
+        "\nid=" + id +
+        "\nuserId=" + userId +
+        "\nscore=" + score +
+        "\nsessionActivated=" + sessionActivated +
+        "\nlevel=" + level;
+  }
 
 
+  public static final class Builder {
+    private PlayerGameplaySession playerGameplaySession;
 
-    public PlayerGameplaySession() {
-
+    private Builder() {
+      playerGameplaySession = new PlayerGameplaySession();
     }
 
-
-
-    public Long getId() {
-        return id;
+    public static Builder aPlayerSession() {
+      return new Builder();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Builder id(Long id) {
+      playerGameplaySession.setId(id);
+      return this;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Builder userId(Long userId) {
+      playerGameplaySession.setUserId(userId);
+      return this;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public Builder score(Long score) {
+      playerGameplaySession.setScore(score);
+      return this;
     }
 
-    public Long getScore() {
-        return score;
+    public Builder sessionEnd(Boolean sessionActivated) {
+      playerGameplaySession.setSessionActivated(sessionActivated);
+      return this;
     }
 
-    public void setScore(Long score) {
-        this.score = score;
+    public Builder playerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
+      playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessions);
+      return this;
     }
 
-    public Boolean getSessionActivated() {
-        return sessionActivated;
+    public Builder level(String level) {
+      playerGameplaySession.setLevel(level);
+      return this;
     }
 
-    public void setSessionActivated(Boolean sessionActivated) {
-        this.sessionActivated = sessionActivated;
+    public PlayerGameplaySession build() {
+      return playerGameplaySession;
     }
 
-    public List<PlayerQuestionSession> getPlayerGameplaySessionQuestions() {
-        return playerQuestionSessions;
-    }
-
-    public void setPlayerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
-        this.playerQuestionSessions = playerQuestionSessions;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    @Override
-    public String toString() {
-        return "\nPlayerGameplaySession{" +
-                "\nid=" + id +
-                "\nuserId=" + userId +
-                "\nscore=" + score +
-                "\nsessionActivated=" + sessionActivated +
-                "\nlevel=" + level;
-    }
-
-    public static final class Builder {
-        private PlayerGameplaySession playerGameplaySession;
-
-        private Builder() {
-            playerGameplaySession = new PlayerGameplaySession();
-        }
-
-        public static Builder aPlayerSession() {
-            return new Builder();
-        }
-
-        public Builder id(Long id) {
-            playerGameplaySession.setId(id);
-            return this;
-        }
-
-        public Builder userId(Long userId) {
-            playerGameplaySession.setUserId(userId);
-            return this;
-        }
-
-        public Builder score(Long score) {
-            playerGameplaySession.setScore(score);
-            return this;
-        }
-
-        public Builder sessionEnd(Boolean sessionActivated) {
-            playerGameplaySession.setSessionActivated(sessionActivated);
-            return this;
-        }
-
-        public Builder playerGameplaySessionQuestions(List<PlayerQuestionSession> playerQuestionSessions) {
-            playerGameplaySession.setPlayerGameplaySessionQuestions(playerQuestionSessions);
-            return this;
-        }
-
-        public Builder level(String level) {
-            playerGameplaySession.setLevel(level);
-            return this;
-        }
-
-        public PlayerGameplaySession build() {
-            return playerGameplaySession;
-        }
-    }
-
-
+  }
 
 }

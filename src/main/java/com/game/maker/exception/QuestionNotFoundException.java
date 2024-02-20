@@ -5,9 +5,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class QuestionNotFoundException extends ResponseStatusException {
 
-    public QuestionNotFoundException(String message) {
-        super(HttpStatus.NOT_FOUND, message);
-    }
+  public QuestionNotFoundException(String message) {
+    super(HttpStatus.NOT_FOUND, message);
+  }
 
 }
-

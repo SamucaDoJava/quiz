@@ -7,24 +7,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameplayService {
 
-    @Autowired
-    private PlayRoomService playRoomService;
+  @Autowired
+  private PlayRoomService playRoomService;
 
+  public StartGameResponse generateSessionQuestionsForPlayer(StartGameSessionParams startGameSessionParams) {
+    return playRoomService.createSessionAndGeneratedQuestions(
+        startGameSessionParams.getUserId(), startGameSessionParams.getTheme(), startGameSessionParams.getLevel());
+  }
 
-    public StartGameResponse generateSessionQuestionsForPlayer(StartGameSessionParams startGameSessionParams) {
-       return playRoomService.createSessionAndGeneratedQuestions(
-               startGameSessionParams.getUserId(), startGameSessionParams.getTheme(), startGameSessionParams.getLevel());
-    }
+  public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(Long userId, Long gameplaySessionId) {
+    return playRoomService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
+  }
 
-    public InGameQuestionAndAlternativesDTO findRandomQuestionActiveInPlayerSession(Long userId, Long gameplaySessionId){
-        return playRoomService.findRandomQuestionActiveInPlayerSession(userId, gameplaySessionId);
-    }
-
-    public InGameAlternativeResponse validateAlternativeSession(AlternativeValidationParams alternativeValidationParams){
-        return playRoomService.validatePLayerQuestionAlternative(
-                alternativeValidationParams.getUserId(),
-                alternativeValidationParams.getGameplaySessionId(),
-                alternativeValidationParams.getSelectedAlternative());
-    }
+  public InGameAlternativeResponse validateAlternativeSession(AlternativeValidationParams alternativeValidationParams) {
+    return playRoomService.validatePLayerQuestionAlternative(
+        alternativeValidationParams.getUserId(),
+        alternativeValidationParams.getGameplaySessionId(),
+        alternativeValidationParams.getSelectedAlternative());
+  }
 
 }

@@ -12,27 +12,26 @@ import java.util.List;
 @RequestMapping("/configuration")
 public class GameConfigurationController {
 
-    private final GameConfigurationService gameConfigurationService;
+  private final GameConfigurationService gameConfigurationService;
 
-    @GetMapping
-    public List<GameConfigurationDTO> findAll() {
-       return gameConfigurationService.findAll();
-    }
+  @GetMapping
+  public List<GameConfigurationDTO> findAll() {
+    return gameConfigurationService.findAll();
+  }
 
-    @PostMapping("/save")
-    public GameConfigurationDTO save(@RequestBody GameConfigurationDTO gameConfigurationDTO) {
-        return gameConfigurationService.save(gameConfigurationDTO);
-    }
+  @PostMapping("/save")
+  public GameConfigurationDTO save(@RequestBody GameConfigurationDTO gameConfigurationDTO) {
+    return gameConfigurationService.save(gameConfigurationDTO);
+  }
 
-    @GetMapping("/{id}")
-    public GameConfigurationDTO findById(@PathVariable Long id) {
-        return gameConfigurationService.findById(id);
-    }
+  @GetMapping("/{id}")
+  public GameConfigurationDTO findById(@PathVariable Long id) {
+    return gameConfigurationService.findById(id);
+  }
 
-    @GetMapping("/{level}")
-    public GameConfigurationDTO findByLevel(@PathVariable String level) {
-        return gameConfigurationService.findByLevel(level);
-    }
+  @GetMapping("/{level}")
+  public GameConfigurationDTO findByLevel(@PathVariable String level) {
+    return gameConfigurationService.findByLevel(level);
+  }
 
- }
-
+}

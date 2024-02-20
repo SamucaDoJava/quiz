@@ -5,9 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-
 public interface GameConfigurationRepository extends JpaRepository<GameConfiguration, Long> {
 
-    Optional<GameConfiguration> findByLevelIgnoreCase(String configLevel);
+  Optional<GameConfiguration> findByLevelIgnoreCase(String configLevel);
 
 }

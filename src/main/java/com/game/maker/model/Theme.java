@@ -10,78 +10,78 @@ import java.util.List;
 @Table(name = "tb_tema")
 public class Theme {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_tema_seq")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_tema_seq")
+  private Long id;
 
-    @Column(name = "theme")
-    private String theme;
+  @Column(name = "theme")
+  private String theme;
 
-    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Question> questions = new ArrayList<>();
+  @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  private List<Question> questions = new ArrayList<>();
+
+  public Theme() {
+  }
+
+  public Theme(Long id, String theme) {
+    this.id = id;
+    this.theme = theme;
+  }
+
+  public Theme(String theme) {
+    this.theme = theme;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getTheme() {
+    return theme;
+  }
+
+  public void setTheme(String theme) {
+    this.theme = theme;
+  }
+
+  @Override
+  public String toString() {
+    return "Theme{" +
+        "id=" + id +
+        ", theme='" + theme + '\'' +
+        '}';
+  }
 
 
-    public Theme(){
+  public static final class Builder {
+    private Theme theme;
 
+    private Builder() {
+      theme = new Theme();
     }
 
-    public Theme(Long id, String theme) {
-        this.id = id;
-        this.theme = theme;
+    public static Builder aTema() {
+      return new Builder();
     }
 
-    public Theme(String theme) {
-        this.theme = theme;
+    public Builder id(Long id) {
+      theme.setId(id);
+      return this;
     }
 
-    public Long getId() {
-        return id;
+    public Builder theme(String theme) {
+      this.theme.setTheme(theme);
+      return this;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Theme build() {
+      return theme;
     }
 
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    @Override
-    public String toString() {
-        return "Theme{" +
-                "id=" + id +
-                ", theme='" + theme + '\'' +
-                '}';
-    }
-
-    public static final class Builder {
-        private Theme theme;
-
-        private Builder() {
-            theme = new Theme();
-        }
-
-        public static Builder aTema() {
-            return new Builder();
-        }
-
-        public Builder id(Long id) {
-            theme.setId(id);
-            return this;
-        }
-
-        public Builder theme(String theme) {
-            this.theme.setTheme(theme);
-            return this;
-        }
-
-        public Theme build() {
-            return theme;
-        }
-    }
+  }
 
 }

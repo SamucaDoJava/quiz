@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AlternativeValidationParams {
 
-    private Long userId;
-    private Long gameplaySessionId;
-    private String selectedAlternative;
+  private Long userId;
+  private Long gameplaySessionId;
+  private String selectedAlternative;
 
 }

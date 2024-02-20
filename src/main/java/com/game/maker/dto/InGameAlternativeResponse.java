@@ -1,6 +1,5 @@
 package com.game.maker.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,28 +12,28 @@ import lombok.ToString;
 @NoArgsConstructor
 public class InGameAlternativeResponse {
 
-    @JsonProperty("playerMessage")
-    private String playerMessage;
+  @JsonProperty("playerMessage")
+  private String playerMessage;
 
-    @JsonProperty("questionScore")
-    private Long questionScore;
+  @JsonProperty("questionScore")
+  private Long questionScore;
 
-    @JsonProperty("selectedAlternative")
-    private String selectedAlternative;
+  @JsonProperty("selectedAlternative")
+  private String selectedAlternative;
 
-    @JsonProperty("correctAlternative")
-    private String correctAlternative;
+  @JsonProperty("correctAlternative")
+  private String correctAlternative;
 
-    @JsonProperty("currentSessionScore")
-    private Long currentSessionScore;
+  @JsonProperty("currentSessionScore")
+  private Long currentSessionScore;
 
-    @JsonProperty("isSessionOver")
-    private boolean isSessionOver;
+  @JsonProperty("isSessionOver")
+  private boolean isSessionOver;
 
-    @JsonProperty("sessionOverMessage")
-    private String sessionOverMessage;
+  @JsonProperty("sessionOverMessage")
+  private String sessionOverMessage;
 
-    @JsonProperty("currentQuestionPosition")
-    private Long currentQuestionPosition;
+  @JsonProperty("currentQuestionPosition")
+  private Long currentQuestionPosition;
 
 }

@@ -11,27 +11,27 @@ import java.util.List;
 @RequestMapping("/question")
 public class QuestionController {
 
-    @Autowired
-    private QuestionService questionService;
+  @Autowired
+  private QuestionService questionService;
 
-    @PostMapping("/save")
-    public QuestionDTO save(@RequestBody QuestionDTO questionDTO){
-        return questionService.save(questionDTO);
-    }
+  @PostMapping("/save")
+  public QuestionDTO save(@RequestBody QuestionDTO questionDTO) {
+    return questionService.save(questionDTO);
+  }
 
-    @GetMapping("/{id}")
-    public QuestionDTO findById(@PathVariable Long id){
-        return questionService.findById(id);
-    }
+  @GetMapping("/{id}")
+  public QuestionDTO findById(@PathVariable Long id) {
+    return questionService.findById(id);
+  }
 
-    @PostMapping("save/list")
-    public List<QuestionDTO> save(@RequestBody List<QuestionDTO> questionDTOList){
-        return questionService.saveAll(questionDTOList);
-    }
+  @PostMapping("save/list")
+  public List<QuestionDTO> save(@RequestBody List<QuestionDTO> questionDTOList) {
+    return questionService.saveAll(questionDTOList);
+  }
 
-    @GetMapping("find-all")
-    public List<QuestionDTO> findAllQuestions() {
-        return questionService.findAll();
-    }
+  @GetMapping("find-all")
+  public List<QuestionDTO> findAllQuestions() {
+    return questionService.findAll();
+  }
 
 }

@@ -11,17 +11,11 @@ import lombok.ToString;
 @AllArgsConstructor
 public class PlayerQuestionSessionDTO {
 
-    private Long id;
-
-    private Question question;
-
-    private Boolean wasPlayed;
-
-    private Boolean playerWin;
-
-    private Boolean questionIsActive;
-
-    private PlayerGameplaySession playerGameplaySession;
-
+  private Long id;
+  private Question question;
+  private Boolean wasPlayed;
+  private Boolean playerWin;
+  private Boolean questionIsActive;
+  private PlayerGameplaySession playerGameplaySession;
 
 }

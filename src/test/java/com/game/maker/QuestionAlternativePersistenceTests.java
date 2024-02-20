@@ -14,61 +14,60 @@ import java.util.List;
 @SpringBootTest
 class QuestionAlternativePersistenceTests {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+  @Autowired
+  private QuestionRepository questionRepository;
 
+  @Test
+  public void persistenceAlternatives() {
 
-    @Test
-    public void persistenceAlternatives() {
+    Question question = createQuestionTest();
+    List<Alternative> alternativeList = createQuestionAlternativeTest(question);
 
-        Question question = createQuestionTest();
-        List<Alternative> alternativeList = createQuestionAlternativeTest(question);
+    question.setAlternativeList(alternativeList);
+    Question questionResponseDB = questionRepository.save(question);
 
-        question.setAlternativeList(alternativeList);
-        Question questionResponseDB = questionRepository.save(question);
+    System.out.println("O nosso banco de dados retornou: " + questionResponseDB);
+  }
 
-        System.out.println("O nosso banco de dados retornou: " + questionResponseDB);
-    }
+  private Question createQuestionTest() {
+    Question question = new Question();
+    question.setTheme(new Theme("Cinema")); //TODO ajustar com novo objeto do tipo objeto theme.
+    question.setQuestion("Qual é o filme mais premiado da história do Oscar?");
+    return question;
+  }
 
-    private Question createQuestionTest(){
-        Question question = new Question();
-        question.setTheme(new Theme("Cinema")); //TODO ajustar com novo objeto do tipo objeto theme.
-        question.setQuestion("Qual é o filme mais premiado da história do Oscar?");
-        return question;
-    }
+  private List<Alternative> createQuestionAlternativeTest(Question question) {
+    List<Alternative> alternativeList = new ArrayList<>();
 
-    private List<Alternative> createQuestionAlternativeTest(Question question){
-        List<Alternative> alternativeList = new ArrayList<>();
+    Alternative alternativeA = new Alternative();
+    alternativeA.setAlternative("A");
+    alternativeA.setItsCorrect(true);
+    alternativeA.setReferenceLetter("O Senhor dos Anéis: O Retorno do Rei");
+    alternativeA.setQuestion(question);
+    alternativeList.add(alternativeA);
 
-        Alternative alternativeA = new Alternative();
-        alternativeA.setAlternative("A");
-        alternativeA.setItsCorrect(true);
-        alternativeA.setReferenceLetter("O Senhor dos Anéis: O Retorno do Rei");
-        alternativeA.setQuestion(question);
-        alternativeList.add(alternativeA);
+    Alternative alternativeB = new Alternative();
+    alternativeB.setAlternative("B");
+    alternativeB.setItsCorrect(false);
+    alternativeB.setReferenceLetter("Titanic");
+    alternativeB.setQuestion(question);
+    alternativeList.add(alternativeB);
 
-        Alternative alternativeB = new Alternative();
-        alternativeB.setAlternative("B");
-        alternativeB.setItsCorrect(false);
-        alternativeB.setReferenceLetter("Titanic");
-        alternativeB.setQuestion(question);
-        alternativeList.add(alternativeB);
+    Alternative alternativeC = new Alternative();
+    alternativeC.setAlternative("C");
+    alternativeC.setItsCorrect(false);
+    alternativeC.setReferenceLetter("Ben-Hur");
+    alternativeC.setQuestion(question);
+    alternativeList.add(alternativeC);
 
-        Alternative alternativeC = new Alternative();
-        alternativeC.setAlternative("C");
-        alternativeC.setItsCorrect(false);
-        alternativeC.setReferenceLetter("Ben-Hur");
-        alternativeC.setQuestion(question);
-        alternativeList.add(alternativeC);
+    Alternative alternativeD = new Alternative();
+    alternativeD.setAlternative("D");
+    alternativeD.setItsCorrect(false);
+    alternativeD.setReferenceLetter("Gandhi");
+    alternativeD.setQuestion(question);
+    alternativeList.add(alternativeD);
 
-        Alternative alternativeD = new Alternative();
-        alternativeD.setAlternative("D");
-        alternativeD.setItsCorrect(false);
-        alternativeD.setReferenceLetter("Gandhi");
-        alternativeD.setQuestion(question);
-        alternativeList.add(alternativeD);
-
-        return alternativeList;
-    }
+    return alternativeList;
+  }
 
 }

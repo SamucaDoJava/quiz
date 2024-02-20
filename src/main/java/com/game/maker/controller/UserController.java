@@ -12,30 +12,27 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
+  @GetMapping("/{id}")
+  public UserDTO findById(@PathVariable Long id) {
+    return userService.findUserById(id);
+  }
 
-    @GetMapping("/{id}")
-    public UserDTO findById(@PathVariable Long id) {
-        return userService.findUserById(id);
-    }
+  @PostMapping("save")
+  public UserDTO save(@RequestBody UserDTO userDTO) {
+    return userService.save(userDTO);
+  }
 
-    @PostMapping("save")
-    public UserDTO save(@RequestBody UserDTO userDTO) {
-        return userService.save(userDTO);
-    }
+  @GetMapping
+  public List<UserDTO> findAll() {
+    return userService.findAll();
+  }
 
-    @GetMapping
-    public List<UserDTO> findAll() {
-        return userService.findAll();
-    }
-
-    @PostMapping("login")
-    public UserDTO findByEmailPassword(@RequestBody LoginDTO loginDTO) {
-        return userService.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-    }
-
+  @PostMapping("login")
+  public UserDTO findByEmailPassword(@RequestBody LoginDTO loginDTO) {
+    return userService.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+  }
 
 }
-
