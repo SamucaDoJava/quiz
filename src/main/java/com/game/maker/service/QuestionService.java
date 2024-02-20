@@ -85,7 +85,7 @@ public class QuestionService {
       }
       return questionMapper.toListDTO(questions);
     } catch(DataAccessException ex) {
-      ex.printStackTrace(); // Logar a exceção de alguma maneira apropriada
+      ex.printStackTrace(); // TODO 'Logar' a exceção de alguma maneira apropriada
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR,
           "Ocorreu um erro ao tentar recuperar a QuestionDTO na consulta findByTheme", ex);
