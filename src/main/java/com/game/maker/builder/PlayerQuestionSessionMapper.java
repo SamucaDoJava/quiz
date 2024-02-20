@@ -11,29 +11,28 @@ import java.util.stream.Collectors;
 @Component
 public class PlayerQuestionSessionMapper {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
+  public PlayerQuestionSessionMapper(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
+  }
 
-    public PlayerQuestionSessionMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+  public PlayerQuestionSessionDTO toDTO(PlayerQuestionSession model) {
+    return modelMapper.map(model, PlayerQuestionSessionDTO.class);
+  }
 
-    public PlayerQuestionSessionDTO toDTO(PlayerQuestionSession model) {
-        return modelMapper.map(model, PlayerQuestionSessionDTO.class);
-    }
+  public PlayerQuestionSession toEntity(PlayerQuestionSessionDTO dto) {
+    return modelMapper.map(dto, PlayerQuestionSession.class);
+  }
 
-    public PlayerQuestionSession toEntity(PlayerQuestionSessionDTO dto) {
-        return modelMapper.map(dto, PlayerQuestionSession.class);
-    }
+  public List<PlayerQuestionSessionDTO> toListDTO(List<PlayerQuestionSession> modelList) {
+    return modelList.stream()
+        .map(this::toDTO).collect(Collectors.toList());
+  }
 
-    public List<PlayerQuestionSessionDTO> toListDTO(List<PlayerQuestionSession> modelList) {
-        return modelList.stream()
-                .map(this::toDTO).collect(Collectors.toList());
-    }
-
-    public List<PlayerQuestionSession> toList(List<PlayerQuestionSessionDTO> dtosList) {
-        return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toList());
-    }
+  public List<PlayerQuestionSession> toList(List<PlayerQuestionSessionDTO> dtosList) {
+    return dtosList.stream()
+        .map(this::toEntity).collect(Collectors.toList());
+  }
 
 }

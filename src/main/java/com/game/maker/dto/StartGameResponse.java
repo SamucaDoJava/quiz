@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StartGameResponse {
 
-    private Long gameplaySessionId;
-    private String responseMessage;
+  private Long gameplaySessionId;
+  private String responseMessage;
 
 }

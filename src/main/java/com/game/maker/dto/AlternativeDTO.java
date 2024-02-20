@@ -14,29 +14,29 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AlternativeDTO {
 
-    @JsonProperty("id")
-    private Long id;
+  @JsonProperty("id")
+  private Long id;
 
-    @JsonProperty("alternative")
-    private String alternative;
+  @JsonProperty("alternative")
+  private String alternative;
 
-    @JsonProperty("itsCorrect")
-    private Boolean itsCorrect;
+  @JsonProperty("itsCorrect")
+  private Boolean itsCorrect;
 
-    @JsonProperty("referenceLetter")
-    private String referenceLetter;
+  @JsonProperty("referenceLetter")
+  private String referenceLetter;
 
-    @JsonProperty("questionId")
-    private Long questionId;
+  @JsonProperty("questionId")
+  private Long questionId;
 
-    @Override
-    public String toString() {
-        return "Alternative: " +
-                "---> id= " + id +
-                "---> Reference= " + referenceLetter +
-                "---> isCorrect= " + itsCorrect +
-                "---> Alternative= " + alternative +
-                "---> Question Id= " + questionId;
-    }
-    
+  @Override
+  public String toString() {
+    return "Alternative: " +
+        "---> id= " + id +
+        "---> Reference= " + referenceLetter +
+        "---> isCorrect= " + itsCorrect +
+        "---> Alternative= " + alternative +
+        "---> Question Id= " + questionId;
+  }
+
 }

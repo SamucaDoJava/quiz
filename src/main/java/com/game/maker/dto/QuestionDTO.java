@@ -16,24 +16,24 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuestionDTO {
 
-    @JsonProperty("id")
-    private Long id;
+  @JsonProperty("id")
+  private Long id;
 
-    @JsonProperty("theme")
-    private String theme;
+  @JsonProperty("theme")
+  private String theme;
 
-    @JsonProperty("question")
-    private String question;
+  @JsonProperty("question")
+  private String question;
 
-    @JsonProperty("alternativeList")
-    private ArrayList<AlternativeDTO> alternativeList = new ArrayList<>();
+  @JsonProperty("alternativeList")
+  private ArrayList<AlternativeDTO> alternativeList = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "\n\nQuestionDTO:" +
-                "\nid = " + id +
-                "\ntheme = " + theme +
-                "\nquestion = " + question +
-                "\nquestionAlternativeDTOArrayList = " + alternativeList;
-    }
+  @Override
+  public String toString() {
+    return "\n\nQuestionDTO:" +
+        "\nid = " + id +
+        "\ntheme = " + theme +
+        "\nquestion = " + question +
+        "\nquestionAlternativeDTOArrayList = " + alternativeList;
+  }
 }

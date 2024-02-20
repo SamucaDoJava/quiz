@@ -13,16 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class PlayerGameplaySessionDTO {
 
-    private Long id;
-
-    private Long userId;
-
-    private Long score;
-
-    private Boolean sessionActivated;
-
-    private String level;
-
-    private List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
+  private Long id;
+  private Long userId;
+  private Long score;
+  private Boolean sessionActivated;
+  private String level;
+  private List<PlayerQuestionSession> playerQuestionSessionList = new ArrayList<>();
 
 }

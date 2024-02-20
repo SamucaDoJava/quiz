@@ -7,9 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class ValidateAlternativeDTO {
 
-    private Long id;
-    private Boolean alternativeStatus;
+  private Long id;
+
+  private Boolean alternativeStatus;
 
 }
-
-

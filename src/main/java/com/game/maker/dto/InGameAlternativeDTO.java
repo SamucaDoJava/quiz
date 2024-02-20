@@ -14,20 +14,20 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InGameAlternativeDTO {
 
-    @JsonProperty("id")
-    private Long id;
+  @JsonProperty("id")
+  private Long id;
 
-    @JsonProperty("alternative")
-    private String alternative;
+  @JsonProperty("alternative")
+  private String alternative;
 
-    @JsonProperty("referenceLetter")
-    private String referenceLetter;
+  @JsonProperty("referenceLetter")
+  private String referenceLetter;
 
-    @Override
-    public String toString() {
-        return "\nInGameAlternativeDTO " +
-                "\nid=" + id +
-                "\nalternative='" + alternative +
-                "\nreferenceLetter='" + referenceLetter;
-    }
+  @Override
+  public String toString() {
+    return "\nInGameAlternativeDTO " +
+        "\nid=" + id +
+        "\nalternative='" + alternative +
+        "\nreferenceLetter='" + referenceLetter;
+  }
 }

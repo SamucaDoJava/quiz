@@ -11,29 +11,29 @@ import java.util.stream.Collectors;
 @Component
 public class GameConfigurationMapper {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    public GameConfigurationMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+  public GameConfigurationMapper(ModelMapper modelMapper) {
+    this.modelMapper = modelMapper;
+  }
 
-    public GameConfigurationDTO toDTO(GameConfiguration model) {
-        return modelMapper.map(model, GameConfigurationDTO.class);
-    }
+  public GameConfigurationDTO toDTO(GameConfiguration model) {
+    return modelMapper.map(model, GameConfigurationDTO.class);
+  }
 
-    public GameConfiguration toEntity(GameConfigurationDTO dto) {
-        return modelMapper.map(dto, GameConfiguration.class);
-    }
+  public GameConfiguration toEntity(GameConfigurationDTO dto) {
+    return modelMapper.map(dto, GameConfiguration.class);
+  }
 
 
-    public List<GameConfigurationDTO> toListDTO(List<GameConfiguration> modelList) {
-        return modelList.stream()
-                .map(this::toDTO).collect(Collectors.toList());
-    }
+  public List<GameConfigurationDTO> toListDTO(List<GameConfiguration> modelList) {
+    return modelList.stream()
+        .map(this::toDTO).collect(Collectors.toList());
+  }
 
-    public List<GameConfiguration> toList(List<GameConfigurationDTO> dtosList) {
-        return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toList());
-    }
+  public List<GameConfiguration> toList(List<GameConfigurationDTO> dtosList) {
+    return dtosList.stream()
+        .map(this::toEntity).collect(Collectors.toList());
+  }
 
 }

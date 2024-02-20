@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerSessionDTO {
 
-    @JsonProperty("theme")
-    private String theme;
+  @JsonProperty("theme")
+  private String theme;
 
-    @JsonProperty("userId")
-    private Long userId;
+  @JsonProperty("userId")
+  private Long userId;
 
 }
