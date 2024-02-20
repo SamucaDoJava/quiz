@@ -72,6 +72,7 @@ public class GameConfiguration {
         '}';
   }
 
+
   public static final class Builder {
     private GameConfiguration gameConfiguration;
 
