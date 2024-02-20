@@ -73,7 +73,7 @@ public class AlternativeService {
       Long questionId = alternatives.stream().findFirst().map(AlternativeDTO::getQuestionId).orElse(null);
 
       if(Objects.isNull(questionId) || questionId <= 0) {
-        throw new QuestionNotFoundException(msgQuestionIdNotPresent("id numm ou menor que zero"));
+        throw new QuestionNotFoundException(msgQuestionIdNotPresent("id null ou menor que zero"));
       }
       Optional<Question> question = questionRepository.findById(questionId);
 
@@ -124,7 +124,7 @@ public class AlternativeService {
   }
 
   private String msgQuestionIdNotPresent(String status) {
-    return "O id da questão não foi encontrada ou é inválida é necessário preencher o valor questionId com um id válido! Status error: " + status;
+    return "O id da questão não foi encontrado ou é inválido, é necessário preencher o valor questionId com um id válido! Status error: " + status;
   }
 
 }

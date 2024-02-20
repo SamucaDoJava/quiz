@@ -110,7 +110,7 @@ public class PlayerGameplaySessionService {
       PlayerGameplaySession playerGameplaySession = playerGameplaySessionRepository.findByUserId(id)
           .orElseThrow(() ->
               new NoSuchElementException(
-                  "Não existe um id na base para esse user id, método findByUserId"));
+                  "Não existe um playerGameplaySession na base para esse id, método findByUserId"));
       return playerGameplaySessionMapper.toDTO(playerGameplaySession);
     } catch(DataAccessException ex) {
       LOGGER.error("Ocorreu um erro no método findByUserId, erro: ", ex);

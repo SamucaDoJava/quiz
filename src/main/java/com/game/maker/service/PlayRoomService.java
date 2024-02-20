@@ -39,7 +39,7 @@ public class PlayRoomService {
     try {
       if(existActiveUserSessionInDataBase(playerGameplaySessionDTOList)) {
         startGameResponse.setGameplaySessionId(playerGameplaySessionDTOList.getFirst().getId());
-        startGameResponse.setResponseMessage("Existe uma sessão carregada para o usuário, você precisa primeoro terminar a sessão atual para começar outra.");
+        startGameResponse.setResponseMessage("Existe uma sessão carregada para o usuário, você precisa primeiro terminar a sessão atual para começar outra.");
         LOGGER.warn("Já existe uma sessão carregada para userId [{}]", userId);
       } else {
         startGameResponse.setResponseMessage("Bem vindo ao jogo quiz! As perguntas para o seu tema e level foram carregadas com sucesso!");
@@ -63,7 +63,7 @@ public class PlayRoomService {
     Long unplayedQuestions = questionSessionService.countUnplayedQuestions(gameplaySessionId);
 
     inGameQuestionAndAlternativesDTO.setUnplayedQuestions(unplayedQuestions);
-    LOGGER.debug("Quantidade de questões ainda não usadasa: [{}]", unplayedQuestions);
+    LOGGER.debug("Quantidade de questões ainda não usadas: [{}]", unplayedQuestions);
 
     PlayerQuestionSession playerQuestionSessionIntoDataBase = questionSessionService.findActiveUnansweredQuestionsInSession(gameplaySessionId, userId);
 
@@ -81,7 +81,7 @@ public class PlayRoomService {
 
         this.questionSessionService.save(playerQuestionSession);
         addValuesIntoInGameQuestionAndAlternativesDTO(playerQuestionSession, inGameQuestionAndAlternativesDTO);
-        inGameQuestionAndAlternativesDTO.setUserMessage("Muito bem meu caro jogador responda a pergunta para continuar o jogo!");
+        inGameQuestionAndAlternativesDTO.setUserMessage("Muito bem jogador(a) responda a pergunta para continuar o jogo!");
       } catch(Exception ex) {
         LOGGER.error("Erro ao tentar buscar dados da questão na sessão. Erro: ", ex);
       }
@@ -123,19 +123,19 @@ public class PlayRoomService {
         inGameAlternativeResponse.setQuestionScore(0L);
         currentPlayerQuestionSession.setPlayerWin(false);
         LOGGER.debug("O jogador perdeu! E não recebeu pontos na sessão até o momento!");
-        inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! e não recebeu pontos na sessão até o momento!");
+        inGameAlternativeResponse.setPlayerMessage("O jogador perdeu! E não recebeu pontos na sessão até o momento!");
       }
 
       if(isTheLastAlternativeOfSession(currentUnplayedQuestions)) {
         setValuesToDisablePlayerSession(inGameAlternativeResponse, gameplaySessionId);
-        inGameAlternativeResponse.setSessionOverMessage("Todas as alternativas já foram respondidas para essa sessão chegou ao fim!");
+        inGameAlternativeResponse.setSessionOverMessage("Todas as alternativas já foram respondidas para essa sessão. Chegou ao fim!");
         inGameAlternativeResponse.setSessionOver(true);
         inGameAlternativeResponse.setCurrentQuestionPosition(currentUnplayedQuestions);
       }
       disableCurrentPlayerQuestion(currentPlayerQuestionSession);
       addInGameAlternativeResponseValues(inGameAlternativeResponse, correctSessionAlternative.get(), selectedAlternative, currentUnplayedQuestions, gameplaySessionId);
     } else {
-      LOGGER.error("A base de dados está inconsistente e tem alternativas cadastradas com nenhuma alternativa correta! O que impede o jogador de jogar corrtamente! verifique na lista de alternativas: [{}]", currentSessionAlternativeList);
+      LOGGER.error("A base de dados está inconsistente e tem alternativas cadastradas com nenhuma alternativa correta! O que impede o jogador de jogar corretamente! verifique na lista de alternativas: [{}]", currentSessionAlternativeList);
     }
     return inGameAlternativeResponse;
   }
@@ -211,7 +211,7 @@ public class PlayRoomService {
     inGameAlternativeResponse.setSessionOver(true);
     inGameAlternativeResponse.setSessionOverMessage("A Sessão chegou ao seu fim!");
     disableGameplaySession(gameplaySessionId);
-    LOGGER.debug("Chegou na ultima alternativa válida do sistema.");
+    LOGGER.debug("Chegou na última alternativa válida do sistema.");
   }
 
   private Long getScoreConfigurationBySessionLevel(Long gameplaySessionId) {
@@ -237,7 +237,7 @@ public class PlayRoomService {
   }
 
   private boolean isCorrectAlternative(Optional<Alternative> correctSessionAlternative, String selectedAlternative) {
-    LOGGER.debug("Foi encontrada uma alvernativa para a sessão, agora será validada se a alternativa condiz com a alternative selecionada que é [{}] ", selectedAlternative);
+    LOGGER.debug("Foi encontrada uma alternativa para a sessão, agora será validada se a alternativa condiz com a alternativa selecionada que é [{}] ", selectedAlternative);
     return correctSessionAlternative.map(alternative -> alternative.getReferenceLetter().equals(selectedAlternative)).orElse(false);
   }
 

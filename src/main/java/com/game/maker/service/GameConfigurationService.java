@@ -63,7 +63,7 @@ public class GameConfigurationService {
   }
 
   private String msgError(String method) {
-    return "Ocorreu um erro em game configuration ao tentar fazer a operação no método: " + method;
+    return "Ocorreu um erro em GameConfigurationService ao tentar fazer a operação no método: " + method;
   }
 
 }
