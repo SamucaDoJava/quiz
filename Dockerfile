@@ -33,6 +33,7 @@ COPY src ./src
 
 # Execute o Maven para construir a aplicação
 RUN mvn clean install -U -DskipTests
+RUN ls -la target
 
 # Copie o arquivo WAR gerado para o diretório apropriado
 COPY target/quiz-0.0.1-SNAPSHOT.war /app/quiz-0.0.1-SNAPSHOT.war
