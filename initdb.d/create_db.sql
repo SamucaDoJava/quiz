@@ -1,0 +1,1 @@
+CREATE DATABASE quiz_moba_db;

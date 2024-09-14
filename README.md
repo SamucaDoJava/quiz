@@ -226,3 +226,8 @@ entre uma mensagem informando que você ganhou ou perdeu a partida.
     Caso isSessionOver retornar true que condiz com uma sessão que acabou de terminar, o campo sessionOverMessage
     retornará também uma mensagem informativa explicando que a sessão do usuário terminou.
 
+### Adicione as enviroments para rodar localmente a partir dos arquivos da raiz do projeto:
+````
+ENV_FILE=windows-local;ENV_PATH=./env;APPLICATION_ENVIRONMENT=local
+````
+

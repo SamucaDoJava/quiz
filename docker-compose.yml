@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_DB: quiz_moba_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123Mudar
+    ports:
+      - "5432:5432"
+
+  flyway:
+    image: flyway/flyway
+    container_name: flyway
+    depends_on:
+      - postgres
+    environment:
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
+      FLYWAY_USER: postgres
+      FLYWAY_PASSWORD: 123Mudar
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+
+  quiz-app:
+    build: .
+    container_name: quiz-app
+    ports:
+      - "8082:8080"  # Mapeia a porta 8080 do container para a porta 8080 do host
+      - "5005:5005"
+    depends_on:
+      - postgres
+      - flyway
+    environment:
+      JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
+      JDBC_DATABASE_USERNAME: postgres
+      JDBC_DATABASE_PASSWORD: 123Mudar
+      ENV_FILE: docker
+      ENV_PATH: /app/env
+      # Adicione outras variáveis necessárias
