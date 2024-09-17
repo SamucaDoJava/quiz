@@ -227,7 +227,27 @@ entre uma mensagem informando que você ganhou ou perdeu a partida.
     retornará também uma mensagem informativa explicando que a sessão do usuário terminou.
 
 ### Adicione as enviroments para rodar localmente a partir dos arquivos da raiz do projeto:
+No Intellij inserir as env da forma que estão a seguir para ativar a leitura do arquivo windows-local
+pasta que fica na raiz do projeto de nome ENV_FILE caso precise de uma configuração extra apenas
+crie o arquivo com a nova configuração e mude o ENVI_FILE para o nome do seu arquivo.
 ````
 ENV_FILE=windows-local;ENV_PATH=./env;APPLICATION_ENVIRONMENT=local
 ````
 
+### Comandos docker importantes para construir a aplicação:
+
+Fazer o build da aplicação:
+````
+docker build --no-cache -t quiz-quiz-app .
+````
+
+Subir a aplicação:
+````
+docker-compose up -d  
+````
+
+Verificar os logs da aplicação:
+
+````
+docker-compose logs quiz-app
+````
