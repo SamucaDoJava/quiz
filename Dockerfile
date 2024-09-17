@@ -41,6 +41,9 @@ COPY target/quiz-0.0.1-SNAPSHOT.war /app/quiz-0.0.1-SNAPSHOT.war
 # Copie o diretório env para o contêiner
 COPY env /app/env
 
+# Verifique o conteúdo do diretório /app/env
+RUN echo "Conteúdo do diretório /app/env:" && ls -la /app/env
+
 # Defina o arquivo de configuração das variáveis de ambiente
 ENV USE_ENV_FOLDER_PROFILE_ENVIRONMENTS=true
 ENV ENV_FILE=digital-ocean-remote
