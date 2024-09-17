@@ -2,7 +2,6 @@ package com.game.maker;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +47,7 @@ public class QuizApplication {
 	}
 
 	private static void loadEnvironmentsConfigurations(){
-		String isLoadLocalEnvironments = System.getenv("USE_ENV_PATH_ENVIRONMENTS");
+		String isLoadLocalEnvironments = System.getenv("USE_ENV_FOLDER_PROFILE_ENVIRONMENTS");
 
 		if (isLoadLocalEnvironments.equalsIgnoreCase("TRUE")) {
 			LOGGER.info("Ambiente LOCAL detectado. Usando variáveis de ambiente configuradas no sistema.");

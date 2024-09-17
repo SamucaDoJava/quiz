@@ -42,7 +42,7 @@ COPY target/quiz-0.0.1-SNAPSHOT.war /app/quiz-0.0.1-SNAPSHOT.war
 COPY env /app/env
 
 # Defina o arquivo de configuração das variáveis de ambiente
-ENV USE_ENV_PATH_ENVIRONMENTS=true
+ENV USE_ENV_FOLDER_PROFILE_ENVIRONMENTS=false
 ENV ENV_FILE=docker
 ENV ENV_PATH=/app/env
 
