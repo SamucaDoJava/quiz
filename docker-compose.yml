@@ -8,6 +8,8 @@ services:
       POSTGRES_DB: quiz_moba_db
       POSTGRES_USER: ${JDBC_DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${JDBC_DATABASE_PASSWORD}
+    env_file:
+      - ./env/digital-ocean-remote.env
     ports:
       - "5432:5432"
     volumes:
@@ -22,6 +24,8 @@ services:
       FLYWAY_URL: ${JDBC_DATABASE_URL}
       FLYWAY_USER: ${JDBC_DATABASE_USERNAME}
       FLYWAY_PASSWORD: ${JDBC_DATABASE_PASSWORD}
+    env_file:
+      - ./env/digital-ocean-remote.env
     volumes:
       - ./src/main/resources/db/migration:/flyway/sql
 
@@ -34,14 +38,16 @@ services:
     depends_on:
       - postgres
       - flyway
+    env_file:
+      - ./env/digital-ocean-remote.env
     environment:
       JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
       JDBC_DATABASE_USERNAME: postgres
       JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
       ENV_FILE: docker
       ENV_PATH: /app/env
-      FLYWAY_URL: jdbc:postgresql://localhost:5432/quiz_moba_db
-      FLYWAY_USER: postgres
+      FLYWAY_URL: ${JDBC_DATABASE_URL}
+      FLYWAY_USER: ${JDBC_DATABASE_USERNAME}
       FLYWAY_PASSWORD: ${JDBC_DATABASE_PASSWORD}
       FLYWAY_SCHEMAS: public
       FLYWAY_BASELINE_ON_MIGRATE: true
