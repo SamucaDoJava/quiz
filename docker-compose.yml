@@ -39,6 +39,6 @@ services:
       - postgres
       - flyway
     env_file:
-      - ./env/digital-ocean-remote.env
+      - ./src:/app/src/main/resources/env/digital-ocean-remote.env
     volumes:
       - ./src:/app/src
