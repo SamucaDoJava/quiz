@@ -10,6 +10,8 @@ services:
       POSTGRES_PASSWORD: ${JDBC_DATABASE_PASSWORD}
     ports:
       - "5432:5432"
+    env_file:
+      - ./src/main/resources/env/digital-ocean-remote.env
     volumes:
       - ./initdb:/docker-entrypoint-initdb.d
 
@@ -26,6 +28,8 @@ services:
       FLYWAY_BASELINE_ON_MIGRATE: ${FLYWAY_BASELINE_ON_MIGRATE}
       FLYWAY_VALIDATE_ON_MIGRATE: ${FLYWAY_VALIDATE_ON_MIGRATE}
       FLYWAY_VALIDATE_MIGRATION_NAMING: ${FLYWAY_VALIDATE_MIGRATION_NAMING}
+    env_file:
+      - ./src/main/resources/env/digital-ocean-remote.env
     volumes:
       - ./src/main/resources/db/migration:/flyway/sql
 
