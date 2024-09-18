@@ -51,8 +51,8 @@ ENV ENV_PATH=/app/env
 
 # Exponha as portas para o aplicativo e para a depuração
 EXPOSE 8080
-EXPOSE 8081
 EXPOSE 8082
+EXPOSE 4200
 EXPOSE 50
 
 # Comando para iniciar a aplicação Spring Boot
