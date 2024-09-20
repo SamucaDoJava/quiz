@@ -29,7 +29,8 @@ mvn clean install -DskipTests
 
 ### Criação da Base de Dados
 
-1° No banco de dados PostgreSQL, crie uma base de dados vazia com o nome (quiz_db).
+#### método  1 criando banco de dados manualmente: 
+1° No banco de dados PostgreSQL, crie uma base de dados vazia com o nome (quiz_moba_db).
 2° Em seguida, abra o prompt de comando (CMD) na raiz do projeto e execute:
 
 ```
@@ -50,7 +51,20 @@ mvn flyway:migrate -Dflyway.password=123Mudar
 
 Este comando cria questões, alternativas e configurações do sistema, além de três usuários válidos com IDs 1, 2 e 3.
 
+#### método 02 rodando os migrations a partir de um arquivo bat na raiz da aplicação.
+Execute o arquivo load-my-flayway-migrations.bat para rodar as migrations do sistema, a base de dados precisa existir no banco de dados.
 
+#### método 03 rodando a partir do docker.
+O docker já vai criar as migrations caso você especifique um arquivo válido, atualmente os arquivos válidos são docker.env e digital-ocean-remote.env
+verifique a estrutura desses arquivos para entender de todas as variáveis de ambientes estão declaradas corretamente dentro deles, lembrese de que o docker-compose.yml
+precisa de 3 enviroments locais para ativar essa leitura mas elas já está lá declaradas no arquivo, sendo elas:
+````
+    environment:
+      ENV_FILE: digital-ocean-remote
+      ENV_PATH: /app/env
+      USE_ENV_FOLDER_PROFILE_ENVIRONMENTS: true
+````
+Se USE_ENV_FOLDER_PROFILE_ENVIRONMENTS for false o sistema ignorará os arquivos de enviroments e tentará ler as env no local aonde a aplicação está sendo ininicializada.
 
 ## Testando a API (Iniciando uma Partida)
 
