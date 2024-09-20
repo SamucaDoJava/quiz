@@ -33,6 +33,9 @@ COPY target/quiz-0.0.1-SNAPSHOT.war /app/quiz-0.0.1-SNAPSHOT.war
 # Copie o diretório env para o contêiner
 COPY env /app/env
 
+RUN cat /app/env/digital-ocean-remote.env
+
+
 # Verifique o conteúdo do diretório /app/env
 RUN echo "Conteúdo do diretório /app/env:" && ls -la /app/env
 

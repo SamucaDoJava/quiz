@@ -22,12 +22,9 @@ services:
     depends_on:
       - postgres
     environment:
-      JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
-      JDBC_DATABASE_USERNAME: postgres
-      JDBC_DATABASE_PASSWORD: chocolate1122
-      ENV_FILE: docker
+      ENV_FILE: digital-ocean-remote
       ENV_PATH: /app/env
-      FLYWAY_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
-      FLYWAY_USER: postgres
-      FLYWAY_PASSWORD: chocolate1122
       USE_ENV_FOLDER_PROFILE_ENVIRONMENTS: true
+    env_file:
+      - ./env/digital-ocean-remote.env
+

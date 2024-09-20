@@ -72,6 +72,7 @@ public class QuizApplication {
 			System.setProperty("spring.datasource.username", dotenv.get("JDBC_DATABASE_USERNAME"));
 			System.setProperty("spring.datasource.password", dotenv.get("JDBC_DATABASE_PASSWORD"));
 			System.setProperty("spring.jpa.hibernate.ddl-auto", dotenv.get("HIBERNATE_DDL_AUTO"));
+			System.setProperty("spring.jpa.show-sql", dotenv.get("SHOW_SQL"));
 
 			LOGGER.info("Variáveis de ambiente carregadas do .env: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], JDBC_DATABASE_PASSWORD: [{}], HIBERNATE_DDL_AUTO: [{}]",
 					dotenv.get("JDBC_DATABASE_URL"),
@@ -90,6 +91,7 @@ public class QuizApplication {
 
 			System.setProperty("server.port", System.getenv("SERVER_PORT"));
 			System.setProperty("allowed.cors.origins", System.getenv("ALLOWED_CORS_ORIGINS"));
+			System.setProperty("spring.jpa.show-sql", System.getenv("SHOW_SQL"));
 
 			LOGGER.info("Variáveis de ambiente do sistema configuradas: JDBC_DATABASE_URL: [{}], JDBC_DATABASE_USERNAME: [{}], JDBC_DATABASE_PASSWORD: [{}], HIBERNATE_DDL_AUTO: [{}]",
 					System.getenv("JDBC_DATABASE_URL"),
