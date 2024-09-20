@@ -1,6 +1,26 @@
 ## Execução do Sistema e Configuração da Base de Dados
 
 ### Antes de iniciar o sistema, execute os seguintes comandos:
+## IMPORTANTE!
+para iniciar a aplicação é preciso escolher um dos arquivos enviroments que estão na pasta raiz do sistema de nome env dentro desta pasta 
+existe arquivos de enviroments necessários par aa aplicação funcionar, para ativalos você precisará criar três variáveis de ambiente, exemplo:
+
+Caso use no Intellij em "Edit configurations da aplicação *local aonde roda a aplicação" coloque as seguintes variáveis no campo 
+Enviroment variables:
+````
+ENV_FILE=windows-local;ENV_PATH=./env;USE_ENV_FOLDER_PROFILE_ENVIRONMENTS=true
+````
+Isso fará com que o sistema pegue as configurações de banco de dados do arquivo "windows-local" que está dentro da pasta env logo na raiz do projeto.
+por isso especificamos ENV_PATH como ./env e ENV_FILE como windows-local, dito isso precisamos entender mais um atributo.
+
+O USE_ENV_FOLDER_PROFILE_ENVIRONMENTS é a variável que ativa a leitura dos arquivos da pasta env, ou seja, além de especificar o caminho e nome da pasta env
+você precisa especificar como true para a variável de ambiente USE_ENV_FOLDER_PROFILE_ENVIRONMENTS, caso contrário o sistema irá ignorar esses arquivos e tentar 
+ler os valores das variáveis de ambiente, direto no ambiente, ou seja do sistema operacional, você poderá mudar de ambiente usando arquivos diferentes ou desativar todos eles
+e pegar os valores do ambiente local da aplicação destivando essa variável USE_ENV_FOLDER_PROFILE_ENVIRONMENTS = false.
+
+### Iniciando via docker file:
+Com docker file a ideia é a mesma, o arquivo docker-composer.yml por default está usando as enviroments que são provenientes de um dos arquivos da pasta env por exemplo docker.env ou digital-ocean-remote.env
+São esses arquivos que especificam por exemplo usuário e senha da base de dados e url de conexão e outras configurações.
 
 instale as dependências:
 ```
