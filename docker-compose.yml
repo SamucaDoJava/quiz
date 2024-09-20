@@ -8,43 +8,26 @@ services:
       POSTGRES_DB: quiz_moba_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: chocolate1122
+    volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
-    volumes:
-      - ./initdb:/docker-entrypoint-initdb.d
-
-  flyway:
-    image: flyway/flyway
-    container_name: flyway
-    depends_on:
-      - postgres
-    environment:
-      FLYWAY_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
-      FLYWAY_USER: postgres
-      FLYWAY_PASSWORD: chocolate1122
-    volumes:
-      - ./src/main/resources/db/migration:/flyway/sql
 
   quiz-app:
     build: .
     container_name: quiz-app
     ports:
-      - "8082:8080"  # Mapeia a porta 8080 do container para a porta 8080 do host
+      - "8082:8080"
       - "5005:5005"
     depends_on:
       - postgres
-      - flyway
     environment:
       JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
       JDBC_DATABASE_USERNAME: postgres
       JDBC_DATABASE_PASSWORD: chocolate1122
-      ENV_FILE: digital-ocean-remote
+      ENV_FILE: docker
       ENV_PATH: /app/env
-      FLYWAY_URL: jdbc:postgresql://localhost:5432/quiz_moba_db
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/quiz_moba_db
       FLYWAY_USER: postgres
       FLYWAY_PASSWORD: chocolate1122
-      FLYWAY_SCHEMAS: public
-      FLYWAY_BASELINE_ON_MIGRATE: true
-      FLYWAY_VALIDATE_ON_MIGRATE: true
-      FLYWAY_VALIDATE_MIGRATION_NAMING: true
-      # Adicione outras variáveis necessárias
+      USE_ENV_FOLDER_PROFILE_ENVIRONMENTS: true

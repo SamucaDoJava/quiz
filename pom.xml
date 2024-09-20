@@ -115,6 +115,9 @@
 				<configuration>
 					<configFiles>flyway.conf</configFiles>
 					<validateMigrationNaming>true</validateMigrationNaming>
+					<locations>
+						<location>filesystem:src/main/resources/db/migration</location>
+					</locations>
 				</configuration>
 			</plugin>
 		</plugins>

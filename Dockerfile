@@ -4,11 +4,9 @@ FROM openjdk:21-jdk-slim
 # Defina as variáveis de ambiente MAVEN_HOME e M2_HOME
 ENV MAVEN_VERSION=3.9.1 \
     MAVEN_HOME=/opt/maven \
-    M2_HOME=/opt/maven \
-    FLYWAY_VERSION=9.16.0 \
-    FLYWAY_HOME=/opt/flyway
+    M2_HOME=/opt/maven
 
-# Instale o Maven, Flyway CLI e outras dependências necessárias
+# Instale o Maven e outras dependências necessárias
 RUN apt-get update && \
     apt-get install -y wget libfreetype6 libfontconfig1 && \
     # Instalar Maven
@@ -16,13 +14,7 @@ RUN apt-get update && \
     tar -xzf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt && \
     mv /opt/apache-maven-$MAVEN_VERSION /opt/maven && \
     ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
-    rm apache-maven-$MAVEN_VERSION-bin.tar.gz && \
-    # Instalar Flyway CLI
-    wget -O flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/$FLYWAY_VERSION/flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz && \
-    tar -xzf flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz -C /opt && \
-    mv /opt/flyway-$FLYWAY_VERSION $FLYWAY_HOME && \
-    ln -s $FLYWAY_HOME/flyway /usr/local/bin/flyway && \
-    rm flyway-commandline-$FLYWAY_VERSION-linux-x64.tar.gz
+    rm apache-maven-$MAVEN_VERSION-bin.tar.gz
 
 # Defina o diretório de trabalho
 WORKDIR /app
@@ -44,12 +36,7 @@ COPY env /app/env
 # Verifique o conteúdo do diretório /app/env
 RUN echo "Conteúdo do diretório /app/env:" && ls -la /app/env
 
-# Defina o arquivo de configuração das variáveis de ambiente
-ENV USE_ENV_FOLDER_PROFILE_ENVIRONMENTS=true
-ENV ENV_FILE=digital-ocean-remote
-ENV ENV_PATH=/app/env
-
-# Exponha as portas para o aplicativo e para a depuração
+# Exponha as portas para o aplicativo
 EXPOSE 8080
 EXPOSE 8082
 EXPOSE 4200
